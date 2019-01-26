@@ -1,3 +1,4 @@
+using AutoFixture.Idioms;
 using FluentAssertions;
 using System.Linq;
 using Waes.Diff.Core.UnitTests.AutoData;
@@ -9,18 +10,24 @@ namespace Waes.Diff.Core.UnitTests
     public class BytesCheckerTests
     {
         [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHaveSameSizeAndAreEqual_DiffsShouldBeEmpty(BytesChecker sut)
+        public void Constructors_GuardTests(GuardClauseAssertion guard)
+        {
+            guard.Verify(typeof(BytesChecker).GetConstructors());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void Check_WhenSameSizeAndEqual_DiffsShouldBeEmpty(BytesChecker sut)
         {
             var leftBytes = BinaryDataWriter.Write("abc123");
             var rightBytes = BinaryDataWriter.Write("abc123");
 
             var result = sut.Check(leftBytes, rightBytes);
 
-            result.Diffs.Should().HaveCount(0);
+            result.Diffs.Should().BeEmpty();
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHaveSameSizeAndAreDifferents_ShouldReturnTheStartOffSetAndLengthOfIt(BytesChecker sut)
+        public void Check_WhenSameSizeAndDifferents_ShouldReturnTheStartOffSetAndLengthOfIt(BytesChecker sut)
         {
             var leftBytes = BinaryDataWriter.Write("abc123");
             var rightBytes = BinaryDataWriter.Write("XYZ987");
@@ -33,7 +40,7 @@ namespace Waes.Diff.Core.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHaveSameSizeAndHaveManyDifferences_ShouldReturnResultAsExpected(BytesChecker sut)
+        public void Check_WhenSameSizeAndManyDifferences_ShouldReturnResultAsExpected(BytesChecker sut)
         {
             var leftBytes = BinaryDataWriter.Write("abc123 xyz qwer");
             var rightBytes = BinaryDataWriter.Write("abc123 xrz q   ");
@@ -46,6 +53,17 @@ namespace Waes.Diff.Core.UnitTests
 
             result.Diffs.ToList()[1].StartOffSet.Should().Be(13);
             result.Diffs.ToList()[1].Length.Should().Be(3);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void Check_WhenEmpty_DiffsShouldBeEmpty(BytesChecker sut)
+        {
+            var leftBytes = BinaryDataWriter.Write("");
+            var rightBytes = BinaryDataWriter.Write("");
+
+            var result = sut.Check(leftBytes, rightBytes);
+
+            result.Diffs.Should().BeEmpty();
         }
     }
 }

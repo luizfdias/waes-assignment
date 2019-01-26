@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoFixture.Idioms;
+using FluentAssertions;
 using NSubstitute;
 using Waes.Diff.Core.Models;
 using Waes.Diff.Core.UnitTests.AutoData;
@@ -9,6 +10,12 @@ namespace Waes.Diff.Core.UnitTests
 {
     public class SizeCheckerTests
     {
+        [Theory, AutoNSubstituteData]
+        public void Constructors_GuardTests(GuardClauseAssertion guard)
+        {
+            guard.Verify(typeof(SizeChecker).GetConstructors());
+        }
+
         [Theory, AutoNSubstituteData]
         public void Check_WhenBinaryDataHaveSameSizeAndAreEqual_SameSizePropertyShouldBeTrue(SizeChecker sut)
         {
