@@ -10,12 +10,12 @@ namespace Waes.Diff.Core.UnitTests
     public class SizeCheckerTests
     {
         [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHasSameSizeAndAreEqual_SameSizePropertyShouldBeTrue(SizeChecker sut)
+        public void Check_WhenBinaryDataHaveSameSizeAndAreEqual_SameSizePropertyShouldBeTrue(SizeChecker sut)
         {
             var leftBytes = BinaryDataWriter.Write("abc123");
             var rightBytes = BinaryDataWriter.Write("abc123");
 
-            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult { SameSize = true });
+            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult());
 
             var result = sut.Check(leftBytes, rightBytes);
 
@@ -23,12 +23,12 @@ namespace Waes.Diff.Core.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHasSameSizeAndAreDifferents_SameSizePropertyShouldBeTrue(SizeChecker sut)
+        public void Check_WhenBinaryDataHaveSameSizeAndAreDifferents_SameSizePropertyShouldBeTrue(SizeChecker sut)
         {
             var leftBytes = BinaryDataWriter.Write("abc123");
             var rightBytes = BinaryDataWriter.Write("XYZ987");
 
-            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult { SameSize = true });
+            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult());
 
             var result = sut.Check(leftBytes, rightBytes);
 
@@ -36,12 +36,12 @@ namespace Waes.Diff.Core.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHasDifferentSizes_SameSizePropertyShouldBeFalse(SizeChecker sut)
+        public void Check_WhenBinaryDataHaveDifferentSizes_SameSizePropertyShouldBeFalse(SizeChecker sut)
         {
             var leftBytes = BinaryDataWriter.Write("abc1234");
             var rightBytes = BinaryDataWriter.Write("abc123");
 
-            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult { SameSize = true });
+            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult());
 
             var result = sut.Check(leftBytes, rightBytes);
 
