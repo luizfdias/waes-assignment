@@ -22,7 +22,7 @@ namespace Waes.Diff.Api.Controllers
         // POST v1/diff/id/left
         [HttpPost("{id}/left")]
         public async Task<IActionResult> PostLeft(string id)
-        {
+        {            
             await BinaryStorageHandler.Save("left" + id, Request.Body);
             
             return CreatedAtAction(nameof(Get), new { id }, null);

@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Api", "Waes.Diff.Api\Waes.Diff.Api.csproj", "{8B7344F8-846D-4819-A1E5-DF94E6E98F49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.Api", "Waes.Diff.Api\Waes.Diff.Api.csproj", "{8B7344F8-846D-4819-A1E5-DF94E6E98F49}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6AF8FDBD-D32D-4DBD-ABA4-E113AB2614ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Core", "Waes.Diff.Core\Waes.Diff.Core.csproj", "{67F05B18-6FF3-45FB-8266-89122469F084}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.Core", "Waes.Diff.Core\Waes.Diff.Core.csproj", "{67F05B18-6FF3-45FB-8266-89122469F084}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Core.UnitTests", "Waes.Diff.Core.UnitTests\Waes.Diff.Core.UnitTests.csproj", "{F2861D6E-89EA-4093-A527-CF5878D76FE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.Core.UnitTests", "Waes.Diff.Core.UnitTests\Waes.Diff.Core.UnitTests.csproj", "{F2861D6E-89EA-4093-A527-CF5878D76FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Infrastructure", "Waes.Diff.Infrastructure\Waes.Diff.Infrastructure.csproj", "{91F61B34-45C0-4ED2-843F-734F1112CA1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.Infrastructure", "Waes.Diff.Infrastructure\Waes.Diff.Infrastructure.csproj", "{91F61B34-45C0-4ED2-843F-734F1112CA1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Infrastructure.UnitTests", "Waes.Diff.Infrastructure.UnitTests\Waes.Diff.Infrastructure.UnitTests.csproj", "{89981243-045A-495C-BCE5-2AB0F34B5573}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Api.UnitTests", "Waes.Diff.Api.UnitTests\Waes.Diff.Api.UnitTests.csproj", "{DF0BD07C-C632-4A37-9B09-38A6A355D1C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.IntegrationTests", "Waes.Diff.IntegrationTests\Waes.Diff.IntegrationTests.csproj", "{3B6B03AB-4035-4462-8C61-022BC1AB1B20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +41,27 @@ Global
 		{91F61B34-45C0-4ED2-843F-734F1112CA1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91F61B34-45C0-4ED2-843F-734F1112CA1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91F61B34-45C0-4ED2-843F-734F1112CA1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89981243-045A-495C-BCE5-2AB0F34B5573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89981243-045A-495C-BCE5-2AB0F34B5573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89981243-045A-495C-BCE5-2AB0F34B5573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89981243-045A-495C-BCE5-2AB0F34B5573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF0BD07C-C632-4A37-9B09-38A6A355D1C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF0BD07C-C632-4A37-9B09-38A6A355D1C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF0BD07C-C632-4A37-9B09-38A6A355D1C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF0BD07C-C632-4A37-9B09-38A6A355D1C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B6B03AB-4035-4462-8C61-022BC1AB1B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B6B03AB-4035-4462-8C61-022BC1AB1B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B6B03AB-4035-4462-8C61-022BC1AB1B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B6B03AB-4035-4462-8C61-022BC1AB1B20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F2861D6E-89EA-4093-A527-CF5878D76FE9} = {6AF8FDBD-D32D-4DBD-ABA4-E113AB2614ED}
+		{89981243-045A-495C-BCE5-2AB0F34B5573} = {6AF8FDBD-D32D-4DBD-ABA4-E113AB2614ED}
+		{DF0BD07C-C632-4A37-9B09-38A6A355D1C4} = {6AF8FDBD-D32D-4DBD-ABA4-E113AB2614ED}
+		{3B6B03AB-4035-4462-8C61-022BC1AB1B20} = {6AF8FDBD-D32D-4DBD-ABA4-E113AB2614ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3AD6C4E6-F8BA-4239-8A68-128675653D68}

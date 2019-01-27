@@ -6,14 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="9.4.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Waes.Diff.Core\Waes.Diff.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MemoryStorage\" />
   </ItemGroup>
 
 </Project>
