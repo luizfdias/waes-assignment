@@ -4,6 +4,6 @@ namespace Waes.Diff.Core.Interfaces
 {
     public interface IDiffChecker
     {
-        DiffResult Check(byte[] leftBuffer, byte[] rightBuffer);
+        DiffResult Check(byte[] leftData, byte[] rightData);
     }
 }

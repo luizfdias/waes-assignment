@@ -16,13 +16,13 @@ namespace Waes.Diff.Core
         /// <summary>
         /// This method check the sizes of the datas.
         /// </summary>
-        /// <param name="leftBuffer"></param>
-        /// <param name="rightBuffer"></param>
+        /// <param name="leftData"></param>
+        /// <param name="rightData"></param>
         /// <returns></returns>
-        public DiffResult Check(byte[] leftBuffer, byte[] rightBuffer)
+        public DiffResult Check(byte[] leftData, byte[] rightData)
         {
             //// I assumed that if the size is different, it is not necessary to compare the data itself.
-            if (leftBuffer.Length != rightBuffer.Length)
+            if (leftData.Length != rightData.Length)
             {
                 return new DiffResult
                 {
@@ -30,7 +30,7 @@ namespace Waes.Diff.Core
                 };
             }
 
-            var result = DiffChecker.Check(leftBuffer, rightBuffer);
+            var result = DiffChecker.Check(leftData, rightData);
 
             result.SameSize = true;
 

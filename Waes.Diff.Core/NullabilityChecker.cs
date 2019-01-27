@@ -13,19 +13,19 @@ namespace Waes.Diff.Core
             DiffChecker = diffChecker ?? throw new ArgumentNullException(nameof(diffChecker));
         }        
 
-        public DiffResult Check(byte[] leftBuffer, byte[] rightBuffer)
+        public DiffResult Check(byte[] leftData, byte[] rightData)
         {
-            if (leftBuffer == null)
+            if (leftData == null)
             {
-                throw new ArgumentNullException(nameof(leftBuffer));
+                throw new ArgumentNullException(nameof(leftData));
             }
 
-            if (rightBuffer == null)
+            if (rightData == null)
             {
-                throw new ArgumentNullException(nameof(rightBuffer));
+                throw new ArgumentNullException(nameof(rightData));
             }
 
-            return DiffChecker.Check(leftBuffer, rightBuffer);
+            return DiffChecker.Check(leftData, rightData);
         }
     }
 }
