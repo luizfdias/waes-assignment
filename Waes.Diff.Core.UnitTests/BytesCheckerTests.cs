@@ -16,7 +16,7 @@ namespace Waes.Diff.Core.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenSameSizeAndEqual_DiffsShouldBeEmpty(BytesChecker sut)
+        public void Check_WhenEquals_DiffsShouldBeEmpty(BytesChecker sut)
         {
             var leftBytes = BinaryDataWriter.Write("abc123");
             var rightBytes = BinaryDataWriter.Write("abc123");

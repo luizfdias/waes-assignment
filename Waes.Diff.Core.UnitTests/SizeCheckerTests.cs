@@ -16,43 +16,22 @@ namespace Waes.Diff.Core.UnitTests
             guard.Verify(typeof(SizeChecker).GetConstructors());
         }
 
-        [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHaveSameSizeAndAreEqual_SameSizePropertyShouldBeTrue(SizeChecker sut)
+        [Theory]
+        [InlineNSubstituteData("abc123", "abc123", true)]
+        [InlineNSubstituteData("abc123", "XYZ987", true)]
+        [InlineNSubstituteData("   ", "   ", true)]
+        [InlineNSubstituteData("abc1234", "abc123", false)]
+        [InlineNSubstituteData("    ", "  ", false)]
+        public void Check_WhenBytesAreProvided_ShouldReturnSameSizeAsExpected(string leftData, string rightData, bool resultExpected, SizeChecker sut)
         {
-            var leftBytes = BinaryDataWriter.Write("abc123");
-            var rightBytes = BinaryDataWriter.Write("abc123");
+            var leftBytes = BinaryDataWriter.Write(leftData);
+            var rightBytes = BinaryDataWriter.Write(rightData);
 
             sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult());
 
             var result = sut.Check(leftBytes, rightBytes);
 
-            result.SameSize.Should().BeTrue();
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHaveSameSizeAndAreDifferents_SameSizePropertyShouldBeTrue(SizeChecker sut)
-        {
-            var leftBytes = BinaryDataWriter.Write("abc123");
-            var rightBytes = BinaryDataWriter.Write("XYZ987");
-
-            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult());
-
-            var result = sut.Check(leftBytes, rightBytes);
-
-            result.SameSize.Should().BeTrue();
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void Check_WhenBinaryDataHaveDifferentSizes_SameSizePropertyShouldBeFalse(SizeChecker sut)
-        {
-            var leftBytes = BinaryDataWriter.Write("abc1234");
-            var rightBytes = BinaryDataWriter.Write("abc123");
-
-            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult());
-
-            var result = sut.Check(leftBytes, rightBytes);
-
-            result.SameSize.Should().BeFalse();
-        }
+            result.SameSize.Should().Be(resultExpected);
+        }        
     }
 }

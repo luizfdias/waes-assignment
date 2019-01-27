@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Core", "Waes.Diff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Core.UnitTests", "Waes.Diff.Core.UnitTests\Waes.Diff.Core.UnitTests.csproj", "{F2861D6E-89EA-4093-A527-CF5878D76FE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Infrastructure", "Waes.Diff.Infrastructure\Waes.Diff.Infrastructure.csproj", "{91F61B34-45C0-4ED2-843F-734F1112CA1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{F2861D6E-89EA-4093-A527-CF5878D76FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2861D6E-89EA-4093-A527-CF5878D76FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2861D6E-89EA-4093-A527-CF5878D76FE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91F61B34-45C0-4ED2-843F-734F1112CA1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91F61B34-45C0-4ED2-843F-734F1112CA1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91F61B34-45C0-4ED2-843F-734F1112CA1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91F61B34-45C0-4ED2-843F-734F1112CA1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

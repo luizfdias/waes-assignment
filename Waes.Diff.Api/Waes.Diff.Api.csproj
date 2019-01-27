@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Waes.Diff.Core\Waes.Diff.Core.csproj" />
+    <ProjectReference Include="..\Waes.Diff.Infrastructure\Waes.Diff.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
