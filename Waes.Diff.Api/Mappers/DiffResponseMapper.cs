@@ -20,17 +20,34 @@ namespace Waes.Diff.Api.Mappers
     {
         public DiffResponse Map(DiffResult diffResult)
         {
-            var diffResponse = new DiffResponse
-            {
-                EqualsSize = diffResult.SameSize
+            var diffResponse = new DiffResponse()
+            {                
+                DataInfo = new List<DataInfo>
+                {
+                    new DataInfo(diffResult.LeftDataInfo.Id, diffResult.LeftDataInfo.Length),
+                    new DataInfo(diffResult.RightDataInfo.Id, diffResult.RightDataInfo.Length)
+                }
             };
 
-            diffResponse.Differences = diffResult.Differences.Any() ? diffResult.Differences.Select(x => new Difference(x.StartOffSet, x.Length)) : null;
-            diffResponse.DataInfo = new List<DataInfo>
+            if (!diffResult.SameSize)
             {
-                new DataInfo(diffResult.LeftDataInfo.Id, diffResult.LeftDataInfo.Length),
-                new DataInfo(diffResult.RightDataInfo.Id, diffResult.RightDataInfo.Length)
-            };
+                diffResponse.Code = ApiReturns.NotOfEqualSize.Code;
+                diffResponse.Message = ApiReturns.NotOfEqualSize.Message;
+
+                return diffResponse;
+            }
+
+            if (diffResult.Differences.Any())
+            {
+                diffResponse.Differences = diffResult.Differences.Select(x => new Difference(x.StartOffSet, x.Length));
+                diffResponse.Code = ApiReturns.NotEqual.Code;
+                diffResponse.Message = ApiReturns.NotEqual.Message;
+
+                return diffResponse;
+            }
+
+            diffResponse.Code = ApiReturns.Equal.Code;
+            diffResponse.Message = ApiReturns.Equal.Message;
 
             return diffResponse;
         }

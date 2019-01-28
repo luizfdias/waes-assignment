@@ -4,7 +4,9 @@ namespace Waes.Diff.Api.Contracts
 {
     public class DiffResponse
     {
-        public bool EqualsSize { get; set; }
+        public string Code { get; set; }
+
+        public string Message { get; set; }
 
         public IEnumerable<DataInfo> DataInfo { get; set; }
 

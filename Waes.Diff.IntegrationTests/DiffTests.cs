@@ -51,7 +51,9 @@ namespace Waes.Diff.IntegrationTests
 
             var diffResponse = ((OkObjectResult)result).Value as DiffResponse;
 
-            diffResponse.EqualsSize.Should().BeTrue();
+            diffResponse.Code.Should().Be(ApiReturns.Equal.Code);
+            diffResponse.Message.Should().Be(ApiReturns.Equal.Message);
+
             diffResponse.Differences.Should().BeNull();
 
             diffResponse.DataInfo.Should().HaveCount(2);
@@ -61,7 +63,7 @@ namespace Waes.Diff.IntegrationTests
 
         //// CASE 2: Data have same size but are differents
         [Theory, AutoNSubstituteData]
-        public async void GetDiff_WhenSameSizeButDifferents_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, string id)
+        public async void GetDiff_WhenNotEqual_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, string id)
         {
             memory.Set($"left_{id}", new byte[] { 1, 2, 3 });
             memory.Set($"right_{id}", new byte[] { 2, 3, 3 });
@@ -70,7 +72,8 @@ namespace Waes.Diff.IntegrationTests
 
             var diffResponse = ((OkObjectResult)result).Value as DiffResponse;
 
-            diffResponse.EqualsSize.Should().BeTrue();
+            diffResponse.Code.Should().Be(ApiReturns.NotEqual.Code);
+            diffResponse.Message.Should().Be(ApiReturns.NotEqual.Message);
 
             diffResponse.Differences.Should().HaveCount(1);
             diffResponse.Differences.FirstOrDefault().StartOffSet.Should().Be(0);
@@ -83,7 +86,7 @@ namespace Waes.Diff.IntegrationTests
 
         //// CASE 3: Data don't have same size
         [Theory, AutoNSubstituteData]
-        public async void GetDiff_WhenNotSameSize_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, string id)
+        public async void GetDiff_WhenNotOfEqualSize_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, string id)
         {
             memory.Set($"left_{id}", new byte[] { 1, 2, 3 });
             memory.Set($"right_{id}", new byte[] { 2, 3, 3, 4 });
@@ -92,7 +95,8 @@ namespace Waes.Diff.IntegrationTests
 
             var diffResponse = ((OkObjectResult)result).Value as DiffResponse;
 
-            diffResponse.EqualsSize.Should().BeFalse();
+            diffResponse.Code.Should().Be(ApiReturns.NotOfEqualSize.Code);
+            diffResponse.Message.Should().Be(ApiReturns.NotOfEqualSize.Message);
 
             diffResponse.Differences.Should().BeNull();
 
