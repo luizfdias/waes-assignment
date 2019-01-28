@@ -4,7 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
+using Waes.Diff.Api.Filters;
+using Waes.Diff.Api.Interfaces;
+using Waes.Diff.Api.Mappers;
 using Waes.Diff.Core;
 using Waes.Diff.Core.Handlers;
 using Waes.Diff.Core.Interfaces;
@@ -27,13 +31,20 @@ namespace Waes.Diff.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options => options.Filters.Add(new ExceptionsFilter()))
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                    .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
+            //// Api
+            services.AddTransient<IDiffResponseMapper, DiffResponseMapper>();
+
+            //// Core
             services.AddTransient<IDiffChecker>(x => new NullabilityChecker(new SizeChecker(new BytesChecker())));
-
             services.AddTransient<IBinaryStorageHandler, BinaryStorageHandler>();
-            services.AddTransient<IDiffHandler, DiffHandler>();            
+            services.AddTransient<IDiffHandler, DiffHandler>();
 
+            //// Infrastructure
+            //// If the StorageType is AzureBlob, I setup the BinaryDataStorage with the BlobStorageRepository. If not, I use the MemoryRepository
             if (Configuration["AppSettings:StorageType"].Equals("AzureBlob", StringComparison.InvariantCultureIgnoreCase))
             {
                 services.AddTransient<IBinaryDataStorage, BlobStorageRepository>();
@@ -45,10 +56,9 @@ namespace Waes.Diff.Api
                 services.AddTransient<IBinaryDataStorage>(x => new MemoryRepository(x.GetService<IMemoryCache>(), Convert.ToInt32(Configuration["MemoryStorage:DataExpirationInSeconds"])));
             }
 
-            services.AddMemoryCache();
+            services.AddMemoryCache();            
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

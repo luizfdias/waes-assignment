@@ -4,6 +4,9 @@ using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Core
 {
+    /// <summary>
+    /// DiffChecker implementation. This class check the size of datas
+    /// </summary>
     public class SizeChecker : IDiffChecker
     {
         public IDiffChecker DiffChecker { get; }
@@ -11,22 +14,22 @@ namespace Waes.Diff.Core
         public SizeChecker(IDiffChecker diffChecker)
         {
             DiffChecker = diffChecker ?? throw new ArgumentNullException(nameof(diffChecker));
-        }        
+        }
 
         /// <summary>
-        /// This method check the sizes of the datas.
+        /// Check the size of the datas
         /// </summary>
-        /// <param name="leftData"></param>
-        /// <param name="rightData"></param>
-        /// <returns></returns>
+        /// <param name="leftData">The left data</param>
+        /// <param name="rightData">The right data</param>
+        /// <returns>The result of the diff</returns>
         public DiffResult Check(byte[] leftData, byte[] rightData)
-        {
-            //// I assumed that if the size is different, it is not necessary to compare the data itself.
+        {            
+            //// I assumed for this assignment, if the data size is different, it is not necessary to compare the data itself.
             if (leftData.Length != rightData.Length)
             {
                 return new DiffResult
                 {
-                    SameSize = false
+                    SameSize = false                    
                 };
             }
 

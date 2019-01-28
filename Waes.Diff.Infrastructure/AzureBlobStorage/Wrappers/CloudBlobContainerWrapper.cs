@@ -6,6 +6,13 @@ using Waes.Diff.Infrastructure.AzureBlobStorage.Interfaces;
 
 namespace Waes.Diff.Infrastructure.AzureBlobStorage.Wrappers
 {
+    /*
+        I created this wrapper to isolate the not testable code. Its wrapper the use of Azure Blob Storage.
+    */
+
+    /// <summary>
+    /// Implementation of ICloudBlobContainerWrapper
+    /// </summary>
     public class CloudBlobContainerWrapper : ICloudBlobContainerWrapper
     {
         private readonly CloudBlobContainer _container;

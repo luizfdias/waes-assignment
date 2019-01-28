@@ -23,7 +23,7 @@ namespace Waes.Diff.Core.UnitTests
 
             var result = sut.Check(leftData, rightData);
 
-            result.Diffs.Should().BeEmpty();
+            result.Differences.Should().BeEmpty();
         }
 
         [Theory, AutoNSubstituteData]
@@ -34,9 +34,9 @@ namespace Waes.Diff.Core.UnitTests
 
             var result = sut.Check(leftData, rightData);
 
-            result.Diffs.Should().HaveCount(1);
-            result.Diffs.FirstOrDefault().StartOffSet.Should().Be(1);
-            result.Diffs.FirstOrDefault().Length.Should().Be(6);
+            result.Differences.Should().HaveCount(1);
+            result.Differences.FirstOrDefault().StartOffSet.Should().Be(1);
+            result.Differences.FirstOrDefault().Length.Should().Be(6);
         }
 
         [Theory, AutoNSubstituteData]
@@ -47,12 +47,12 @@ namespace Waes.Diff.Core.UnitTests
 
             var result = sut.Check(leftData, rightData);
 
-            result.Diffs.Should().HaveCount(2);
-            result.Diffs.FirstOrDefault().StartOffSet.Should().Be(9);
-            result.Diffs.FirstOrDefault().Length.Should().Be(1);
+            result.Differences.Should().HaveCount(2);
+            result.Differences.FirstOrDefault().StartOffSet.Should().Be(9);
+            result.Differences.FirstOrDefault().Length.Should().Be(1);
 
-            result.Diffs.ToList()[1].StartOffSet.Should().Be(13);
-            result.Diffs.ToList()[1].Length.Should().Be(3);
+            result.Differences.ToList()[1].StartOffSet.Should().Be(13);
+            result.Differences.ToList()[1].Length.Should().Be(3);
         }
 
         [Theory, AutoNSubstituteData]
@@ -63,7 +63,7 @@ namespace Waes.Diff.Core.UnitTests
 
             var result = sut.Check(leftData, rightData);
 
-            result.Diffs.Should().BeEmpty();
+            result.Differences.Should().BeEmpty();
         }
     }
 }

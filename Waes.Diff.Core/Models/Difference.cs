@@ -1,6 +1,6 @@
 ﻿namespace Waes.Diff.Core.Models
 {
-    public class DiffData
+    public class Difference
     {
         public int StartOffSet { get; set; }
 

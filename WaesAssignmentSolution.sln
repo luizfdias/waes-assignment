@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.Core.UnitTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.Infrastructure", "Waes.Diff.Infrastructure\Waes.Diff.Infrastructure.csproj", "{91F61B34-45C0-4ED2-843F-734F1112CA1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Infrastructure.UnitTests", "Waes.Diff.Infrastructure.UnitTests\Waes.Diff.Infrastructure.UnitTests.csproj", "{89981243-045A-495C-BCE5-2AB0F34B5573}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.Infrastructure.UnitTests", "Waes.Diff.Infrastructure.UnitTests\Waes.Diff.Infrastructure.UnitTests.csproj", "{89981243-045A-495C-BCE5-2AB0F34B5573}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.Api.UnitTests", "Waes.Diff.Api.UnitTests\Waes.Diff.Api.UnitTests.csproj", "{DF0BD07C-C632-4A37-9B09-38A6A355D1C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.Api.UnitTests", "Waes.Diff.Api.UnitTests\Waes.Diff.Api.UnitTests.csproj", "{DF0BD07C-C632-4A37-9B09-38A6A355D1C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waes.Diff.IntegrationTests", "Waes.Diff.IntegrationTests\Waes.Diff.IntegrationTests.csproj", "{3B6B03AB-4035-4462-8C61-022BC1AB1B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waes.Diff.IntegrationTests", "Waes.Diff.IntegrationTests\Waes.Diff.IntegrationTests.csproj", "{3B6B03AB-4035-4462-8C61-022BC1AB1B20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

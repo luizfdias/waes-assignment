@@ -6,6 +6,9 @@ using Waes.Diff.Core.Interfaces;
 
 namespace Waes.Diff.Core.Handlers
 {
+    /// <summary>
+    /// BinaryStorageHandler implementation
+    /// </summary>
     public class BinaryStorageHandler : IBinaryStorageHandler
     {
         public IBinaryDataStorage BinaryDataStorage { get; }

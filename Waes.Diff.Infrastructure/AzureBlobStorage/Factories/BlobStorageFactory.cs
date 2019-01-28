@@ -6,6 +6,9 @@ using Waes.Diff.Infrastructure.AzureBlobStorage.Interfaces;
 
 namespace Waes.Diff.Infrastructure.AzureBlobStorage.Factories
 {
+    /// <summary>
+    /// Implementation of IBlobStorageFactory
+    /// </summary>
     public class BlobStorageFactory : IBlobStorageFactory
     {
         public string ConnectionString { get; }

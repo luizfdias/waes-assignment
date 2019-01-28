@@ -5,6 +5,15 @@ using Waes.Diff.Core.Interfaces;
 
 namespace Waes.Diff.Infrastructure.MemoryStorage.Repositories
 {
+    /* 
+        This is one of the alternatives to store the binary data. I chose in memory cache because would be easier
+        to test the application with that. In a distributed environment, the azure blob storage or a distributed cache
+        would be a better choice.
+    */
+
+    /// <summary>
+    /// BinaryDataStorage implementation using in memory cache
+    /// </summary>
     public class MemoryRepository : IBinaryDataStorage
     {
         public IMemoryCache MemoryCache { get; }

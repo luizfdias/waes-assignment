@@ -3,8 +3,22 @@ using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Core
 {
+    /*
+        It's important to say that I assumed I could find the differences comparing de bytes of each data.
+        In case any difference is found, I get the initial position and the length of that.
+    */
+
+    /// <summary>
+    /// DiffChecker implementation. This class check the differences between two datas
+    /// </summary>
     public class BytesChecker : IDiffChecker
     {
+        /// <summary>
+        /// Check the differences between datas
+        /// </summary>
+        /// <param name="leftData">The left data</param>
+        /// <param name="rightData">The right data</param>
+        /// <returns>Returns the DiffResult with the StartOffSet and Length of the difference</returns>
         public DiffResult Check(byte[] leftData, byte[] rightData)
         {
             var diffResult = new DiffResult();
@@ -22,7 +36,7 @@ namespace Waes.Diff.Core
                     diffLength += 1;
 
                     if (i + 1 == leftData.Length)
-                        diffResult.Diffs.Add(new DiffData
+                        diffResult.Differences.Add(new Difference
                         {
                             Length = diffLength,
                             StartOffSet = startOffSet
@@ -31,7 +45,7 @@ namespace Waes.Diff.Core
                 else
                 {
                     if (diffLength > 0)
-                        diffResult.Diffs.Add(new DiffData
+                        diffResult.Differences.Add(new Difference
                         {
                             Length = diffLength,
                             StartOffSet = startOffSet

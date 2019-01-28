@@ -1,4 +1,4 @@
-﻿namespace Waes.Diff.Api.Contracts
+﻿namespace Waes.Diff.Core.Models
 {
     public class DataInfo
     {

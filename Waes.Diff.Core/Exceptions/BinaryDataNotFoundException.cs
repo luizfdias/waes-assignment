@@ -2,6 +2,9 @@
 
 namespace Waes.Diff.Core.Exceptions
 {
+    /// <summary>
+    /// Custom exception to be used when binary data is not found
+    /// </summary>
     public class BinaryDataNotFoundException : Exception
     {
         public string Id { get; set; }
