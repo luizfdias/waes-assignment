@@ -14,9 +14,9 @@ ASP.NET CORE 2.1 or above
 
 ### Configuration
 
-Before to get a development env running, it's necessary to setup some configurations in "appsettings.json".
+In order to get the development environment running, it is first necessary to set up the configurations in 'appsettings.json'.
 
-This API works with two storage types to store the data that will be analyzed (Memory cache and Azure Blob Storage). To setup this settings, the AppSettings:StorageType must be set as following:
+This API works with two storage types to store the data that will be analyzed (Memory cache and Azure Blob Storage). To set up the settings, the AppSettings:StorageType must be set as following:
 
 ```
   "AppSettings": {
@@ -41,7 +41,7 @@ if AzureBlob is chosen, the BlobStorage:ConnectionString and BlobStorage:Contain
   }
 ```
 
-Here's is a sample appsettings.json:
+Here is a sample appsettings.json:
 
 ```
   "BlobStorage": {
@@ -56,11 +56,9 @@ Here's is a sample appsettings.json:
   }
 ```
 
-## Running the tests
+## How to use the Diff Api
 
-### Functionality tests
-
-The API has 3 entry points as following
+The API has 3 entry points as following:
 
 ```
   POST HOST/v1/diff/{id}/left
@@ -72,7 +70,7 @@ The provided {Id} must be the same between all callings. It will be used as the 
 
 First step is provide the data to be Analyzed.
 
-Here’s a sample request to left and right resources:
+Here is a sample request to left and right resources:
 
 ```
   POST HOST/v1/diff/1/left
@@ -83,7 +81,7 @@ Here’s a sample request to left and right resources:
   BODY 2nd_data  
 ```
 
-Here's a sample success response to both endpoints:
+Here is a sample success response to both endpoints:
 
 ```
   HTTP 201 Created
@@ -97,7 +95,7 @@ Here's a sample request to accomplish this:
   GET HOST/v1/diff/1
 ```
 
-Here's a sample response:
+Here is a sample response:
 
 ```
 HTTP 200 OK
@@ -127,11 +125,13 @@ HTTP 200 OK
 }
 ```
 
+## Running the tests
+
 ### Automated tests
 
 The tests of this project is divided in two categories: Unit tests and integration tests. 
 
-Each component has its own project for their unit tests and there is just one project for the integration tests. They are easy to recognize, by its name. The unit tests projects has the suffix "UnitTests" while the integration tests project has the suffix "IntegrationTests".
+Each component has its own project for their unit tests and there is just one project for the integration tests. They are easy to recognize, by its name. The unit tests projects have the suffix "UnitTests" while the integration tests project has the suffix "IntegrationTests".
 
 The tests can be executed in Visual Studio or any similar tool.
 
