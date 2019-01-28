@@ -69,9 +69,10 @@ The API has 3 entry points.
 
 First it's need to provide the data to be Analyzed. The left and the right data, as following:
 
-```POST - HOST/v1/diff/{id}/left´´´ 
-
-```POST - HOST/v1/diff/{id}/right´´´
+```
+  POST - HOST/v1/diff/{id}/left
+  POST - HOST/v1/diff/{id}/right
+´´´ 
 
 The {Id} must be the same between the data used to be compared, because it will be used as the identification to get the diff between the them. An example of usage:
 
@@ -81,11 +82,13 @@ The {Id} must be the same between the data used to be compared, because it will 
   
   POST - HOST/v1/diff/1/right
   BODY: 2nd_data
-´´´
+´´´ 
 
 To get the result of the diff, a third endpoint must be called:
 
-```GET - HOST/v1/diff/{id}´´´ 
+```
+  GET - HOST/v1/diff/{id}
+´´´ 
 
 An example of a request would be:
 
