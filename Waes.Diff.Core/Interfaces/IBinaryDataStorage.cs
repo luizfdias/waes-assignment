@@ -3,7 +3,8 @@
 namespace Waes.Diff.Core.Interfaces
 {
     /*
-         
+        I chose to create the interface that is implemented by the repositories here, in the Core layer. 
+        In that way, the domain doesn't depend of the Infrastructure layer, which make easier to change non business components as the data storage and etc.
     */
 
     /// <summary>
