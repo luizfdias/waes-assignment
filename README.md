@@ -12,10 +12,6 @@ To get started in a development environment, it's only necessary to clone this r
 
 ASP.NET CORE 2.1 or above
 
-```
-Give examples
-```
-
 ### Configuration
 
 Before to get a development env running, it's necessary to setup some configurations in "appsettings.json".
@@ -45,7 +41,7 @@ if AzureBlob is chosen, the BlobStorage:ConnectionString and BlobStorage:Contain
   }
 ```
 
-This is an example of an appsettings.json:
+Here's is a sample appsettings.json:
 
 ```
   "BlobStorage": {
@@ -64,31 +60,33 @@ This is an example of an appsettings.json:
 
 ### Functionality tests
 
-The API has 3 entry points. 
-
-First it's need to provide the data to be Analyzed in the following endpoints:
+The API has 3 entry points as following
 
 ```
   POST HOST/v1/diff/{id}/left
   POST HOST/v1/diff/{id}/right
+  GET HOST/v1/diff/{id}
 ```
 
-The {Id} must be the same between the data used to be compared, because it will be used as the identification to get the diff between the them. 
+The provided {Id} must be the same between all callings. It will be used as the identification of the whole process to check the diff and obtain the results.
+
+First step is provide the data to be Analyzed.
 
 Here’s a sample request to left and right resources:
 
 ```
   POST HOST/v1/diff/1/left
   BODY 1st_data  
-
+```
+```
   POST HOST/v1/diff/1/right
   BODY 2nd_data  
 ```
 
-Here's a sample response to both endpoints:
+Here's a sample success response to both endpoints:
 
 ```
-201 Created
+  HTTP 201 Created
 ```
 
 To get the result of the diff, the third endpoint must be called, passing the same identification as before.
@@ -102,6 +100,8 @@ Here's a sample request to accomplish this:
 Here's a sample response:
 
 ```
+HTTP 200 OK
+
   {
     "equalsSize": true, // Its says if the data have same sizes
     "dataInfo": [ // It contains the data info that was analyzed
@@ -135,44 +135,16 @@ Each component has its own project for their unit tests and there is just one pr
 
 The tests can be executed in Visual Studio or any similar tool.
 
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
+API:
+* [ASP.NET CORE](https://www.asp.net/core/overview/aspnet-vnext) 
 
 Test:
 * [AutoFixture](https://github.com/AutoFixture/AutoFixture) 
 * [NSubstitute](https://github.com/nsubstitute/NSubstitute) 
 * [XUnit](https://github.com/xunit/xunit) 
-* [XUnit](https://github.com/fluentassertions/fluentassertions) 
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* [FluentAssertions](https://github.com/fluentassertions/fluentassertions) 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+* **Luiz Fernando Dias Rezende** 
