@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Waes.Diff.Infrastructure.AzureBlobStorage.Interfaces;
 
@@ -39,6 +40,20 @@ namespace Waes.Diff.Infrastructure.AzureBlobStorage.Wrappers
         public async Task<Stream> DownloadToStreamAsync(string id)
         {            
             var blockBlobReference = _container.GetBlockBlobReference(id);
+
+            var dataExist = _container.ListBlobs().Any(
+                x => 
+                {
+                    if (x is CloudBlockBlob item)
+                    {
+                        return item.Name.Equals(id);
+                    }
+
+                    return false;
+                });
+
+            if (!dataExist)
+                return null;
 
             using (var ms = new MemoryStream())
             {

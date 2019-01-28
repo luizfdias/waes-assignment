@@ -29,6 +29,16 @@ namespace Waes.Diff.Infrastructure.UnitTests.Repositories.AzureBlobStorage
         }
 
         [Theory, AutoNSubstituteData]
+        public async void Get_WhenDownloadToStreamReturnsNull_ShouldReturnsNull(BlobStorageRepository sut, string id)
+        {
+            sut.CloudBlobContainerWrapper.DownloadToStreamAsync(id).Returns((Stream)null);
+
+            var result = await sut.Get(id);
+
+            result.Should().BeNull();
+        }
+
+        [Theory, AutoNSubstituteData]
         public async void Save_CallingSave_ShouldCallUploadFromByteArrayAsync(BlobStorageRepository sut, string id, byte[] data)
         {
             await sut.Save(id, data);

@@ -28,7 +28,7 @@ namespace Waes.Diff.Infrastructure.AzureBlobStorage.Repositories
         {
             var stream = await CloudBlobContainerWrapper.DownloadToStreamAsync(id);
 
-            return ((MemoryStream)stream).ToArray();
+            return stream != null ? ((MemoryStream)stream).ToArray() : null;
         }
 
         public async Task Save(string id, byte[] data)
