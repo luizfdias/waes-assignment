@@ -5,7 +5,7 @@ using Waes.Diff.Core.Models;
 namespace Waes.Diff.Core
 {
     /// <summary>
-    /// DiffChecker implementation. This class check the size of datas
+    /// DiffChecker implementation. This class check the size of data
     /// </summary>
     public class SizeChecker : IDiffChecker
     {
@@ -17,7 +17,7 @@ namespace Waes.Diff.Core
         }
 
         /// <summary>
-        /// Check the size of the datas
+        /// Check the size of the data
         /// </summary>
         /// <param name="leftData">The left data</param>
         /// <param name="rightData">The right data</param>

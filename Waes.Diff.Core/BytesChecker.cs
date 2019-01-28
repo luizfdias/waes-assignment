@@ -9,12 +9,12 @@ namespace Waes.Diff.Core
     */
 
     /// <summary>
-    /// DiffChecker implementation. This class check the differences between two datas
+    /// DiffChecker implementation. This class check the differences between two data
     /// </summary>
     public class BytesChecker : IDiffChecker
     {
         /// <summary>
-        /// Check the differences between datas
+        /// Check the differences between data
         /// </summary>
         /// <param name="leftData">The left data</param>
         /// <param name="rightData">The right data</param>

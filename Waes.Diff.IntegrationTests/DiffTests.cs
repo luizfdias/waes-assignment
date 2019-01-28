@@ -40,7 +40,7 @@ namespace Waes.Diff.IntegrationTests
         }
 
 
-        //// CASE 1: Datas are equals        
+        //// CASE 1: Data are equals        
         [Theory, AutoNSubstituteData]
         public async void GetDiff_WhenEquals_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, byte[] data, string id)
         {
@@ -59,7 +59,7 @@ namespace Waes.Diff.IntegrationTests
             diffResponse.DataInfo.First().Length.Should().Be(data.Length);
         }
 
-        //// CASE 2: Datas have same size but are differents
+        //// CASE 2: Data have same size but are differents
         [Theory, AutoNSubstituteData]
         public async void GetDiff_WhenSameSizeButDifferents_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, string id)
         {
@@ -81,7 +81,7 @@ namespace Waes.Diff.IntegrationTests
             diffResponse.DataInfo.First().Length.Should().Be(3);
         }
 
-        //// CASE 3: Datas don't have same size
+        //// CASE 3: Data don't have same size
         [Theory, AutoNSubstituteData]
         public async void GetDiff_WhenNotSameSize_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, string id)
         {

@@ -17,7 +17,7 @@ namespace Waes.Diff.Core
         }
 
         /// <summary>
-        /// Check if datas are null. If they are, throw an ArgumentNullException
+        /// Check if data are null. If they are, throw an ArgumentNullException
         /// </summary>
         /// <param name="leftData">The left data</param>
         /// <param name="rightData">The right data</param>

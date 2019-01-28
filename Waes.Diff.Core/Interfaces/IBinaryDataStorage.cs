@@ -2,6 +2,10 @@
 
 namespace Waes.Diff.Core.Interfaces
 {
+    /*
+         
+    */
+
     /// <summary>
     /// BinaryDataStorage contract, used to handle binary data stored.
     /// </summary>

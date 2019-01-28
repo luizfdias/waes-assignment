@@ -51,7 +51,7 @@ namespace Waes.Diff.Api.Controllers
 
         // GET v1/diff/id
         /// <summary>
-        /// Get the differences between the datas
+        /// Get the differences between the data
         /// </summary>
         /// <param name="id">The identification</param>
         /// <returns>The DiffResponse</returns>
