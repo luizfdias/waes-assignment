@@ -32,7 +32,7 @@ If Memory is chosen, the MemoryStorage:DataExpirationInSeconds must be provided:
   }
 ```
 
-if AzureBlob is chosen, the BlobStorage:ConnectionString and BlobStorage:ContainerName must be set:
+If AzureBlob is chosen, the BlobStorage:ConnectionString and BlobStorage:ContainerName must be set:
 
 ```
   "BlobStorage": {
@@ -89,37 +89,79 @@ Here is a sample success response to both endpoints:
 
 To get the result of the diff, the third endpoint must be called, passing the same identification as before.
 
-Here's a sample request to accomplish this:
+Here is a sample request to accomplish this:
 
 ```
   GET HOST/v1/diff/1
 ```
 
-Here is a sample response:
+Here is a sample response when differences are not found:
 
 ```
 HTTP 200 OK
 
-  {
-    "equalsSize": true, // Its says if the data have same sizes
-    "dataInfo": [ // It contains the data info that was analyzed
+{
+    "code": "00",
+    "message": "Equal",
+    "dataInfo": [
         {
-            "id": "left_abc123", // Side and identification of the data. This id is generate by the application for internal control
-            "length": 9 // Length of the data analyzed
+            "id": "left_abc1235",
+            "length": 6
         },
         {
-            "id": "right_abc123",
-            "length": 9
+            "id": "right_abc1235",
+            "length": 6
+        }
+    ]
+}
+```
+
+Here is a sample response when differences are found:
+
+```
+HTTP 200 OK
+
+{
+    "code": "01",
+    "message": "Not equal",
+    "dataInfo": [
+        {
+            "id": "left_abc1235",
+            "length": 6
+        },
+        {
+            "id": "right_abc1235",
+            "length": 6
         }
     ],
-    "differences": [ // this is where the differences are showed. It contains the start position of the difference and its length
+    "differences": [
         {
-            "startOffSet": 3,
+            "startOffSet": 1,
             "length": 1
         },
         {
-            "startOffSet": 5,
-            "length": 3
+            "startOffSet": 3,
+            "length": 2
+        }
+    ]
+}
+```
+
+Here is a sample response when the data in each set is not the same sized:
+
+```
+HTTP 200 OK
+{
+    "code": "02",
+    "message": "Not of equal size",
+    "dataInfo": [
+        {
+            "id": "left_abc1235",
+            "length": 8
+        },
+        {
+            "id": "right_abc1235",
+            "length": 6
         }
     ]
 }
@@ -129,7 +171,7 @@ HTTP 200 OK
 
 ### Automated tests
 
-The tests of this project is divided in two categories: Unit tests and integration tests. 
+The tests of this project are divided in two categories: Unit tests and integration tests. 
 
 Each component has its own project for their unit tests and there is just one project for the integration tests. They are easy to recognize, by its name. The unit tests projects have the suffix "UnitTests" while the integration tests project has the suffix "IntegrationTests".
 
