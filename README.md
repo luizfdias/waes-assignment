@@ -48,7 +48,6 @@ if AzureBlob is chosen, the BlobStorage:ConnectionString and BlobStorage:Contain
 This is an example of an appsettings.json:
 
 ```
-  "AllowedHosts": "*",
   "BlobStorage": {
     "ConnectionString": "YOUR_CONNECTION_STRING_TO_AZURE_BLOB_STORAGE", 
     "ContainerName": "YOUR_CONTAINER_NAME"
@@ -59,7 +58,7 @@ This is an example of an appsettings.json:
   "AppSettings": {
     "StorageType": "AzureBlob" // or Memory
   }
-´´´
+```
 
 ## Running the tests
 
@@ -72,7 +71,7 @@ First it's need to provide the data to be Analyzed. The left and the right data,
 ```
   POST - HOST/v1/diff/{id}/left
   POST - HOST/v1/diff/{id}/right
-´´´ 
+```
 
 The {Id} must be the same between the data used to be compared, because it will be used as the identification to get the diff between the them. An example of usage:
 
@@ -82,19 +81,19 @@ The {Id} must be the same between the data used to be compared, because it will 
   
   POST - HOST/v1/diff/1/right
   BODY: 2nd_data
-´´´ 
+```
 
 To get the result of the diff, a third endpoint must be called:
 
 ```
   GET - HOST/v1/diff/{id}
-´´´ 
+```
 
 An example of a request would be:
 
 ```
   GET - HOST/v1/diff/1
-´´´
+```
 
 ### Automated tests
 
