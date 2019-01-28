@@ -66,33 +66,65 @@ This is an example of an appsettings.json:
 
 The API has 3 entry points. 
 
-First it's need to provide the data to be Analyzed. The left and the right data, as following:
+First it's need to provide the data to be Analyzed in the following endpoints:
 
 ```
-  POST - HOST/v1/diff/{id}/left
-  POST - HOST/v1/diff/{id}/right
+  POST HOST/v1/diff/{id}/left
+  POST HOST/v1/diff/{id}/right
 ```
 
-The {Id} must be the same between the data used to be compared, because it will be used as the identification to get the diff between the them. An example of usage:
+The {Id} must be the same between the data used to be compared, because it will be used as the identification to get the diff between the them. 
+
+Here’s a sample request to left and right resources:
 
 ```
-  POST - HOST/v1/diff/1/left
-  BODY: 1st_data
-  
-  POST - HOST/v1/diff/1/right
-  BODY: 2nd_data
+  POST HOST/v1/diff/1/left
+  BODY 1st_data  
+
+  POST HOST/v1/diff/1/right
+  BODY 2nd_data  
 ```
 
-To get the result of the diff, a third endpoint must be called:
+Here's a sample response to both endpoints:
 
 ```
-  GET - HOST/v1/diff/{id}
+201 Created
 ```
 
-An example of a request would be:
+To get the result of the diff, the third endpoint must be called, passing the same identification as before.
+
+Here's a sample request to accomplish this:
 
 ```
-  GET - HOST/v1/diff/1
+  GET HOST/v1/diff/1
+```
+
+Here's a sample response:
+
+```
+  {
+    "equalsSize": true, // Its says if the data have same sizes
+    "dataInfo": [ // It contains the data info that was analyzed
+        {
+            "id": "left_abc123", // Side and identification of the data. This id is generate by the application for internal control
+            "length": 9 // Length of the data analyzed
+        },
+        {
+            "id": "right_abc123",
+            "length": 9
+        }
+    ],
+    "differences": [ // this is where the differences are showed. It contains the start position of the difference and its length
+        {
+            "startOffSet": 3,
+            "length": 1
+        },
+        {
+            "startOffSet": 5,
+            "length": 3
+        }
+    ]
+}
 ```
 
 ### Automated tests
