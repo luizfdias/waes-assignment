@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Waes.Diff.Api.Filters;
 using Waes.Diff.Api.Interfaces;
 using Waes.Diff.Api.Mappers;
@@ -59,6 +60,7 @@ namespace Waes.Diff.Api
             services.AddMemoryCache();            
         }
 
+        [ExcludeFromCodeCoverage]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

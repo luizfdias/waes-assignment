@@ -33,7 +33,7 @@ namespace Waes.Diff.Api.Controllers
         {            
             await BinaryStorageHandler.Save($"left_{id}", Request.Body);
             
-            return CreatedAtAction(nameof(Get), new { id }, null);
+            return CreatedAtAction(nameof(GetDiff), new { id }, null);
         }
 
         // POST v1/diff/id/right
@@ -46,7 +46,7 @@ namespace Waes.Diff.Api.Controllers
         {
             await BinaryStorageHandler.Save($"right_{id}", Request.Body);
 
-            return CreatedAtAction(nameof(Get), new { id }, null);
+            return CreatedAtAction(nameof(GetDiff), new { id }, null);
         }
 
         // GET v1/diff/id
@@ -56,7 +56,7 @@ namespace Waes.Diff.Api.Controllers
         /// <param name="id">The identification</param>
         /// <returns>The DiffResponse</returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetDiff(string id)
         {            
             var result = await DiffHandler.Diff(id);
 
