@@ -8,12 +8,12 @@ namespace Waes.Diff.Core.Interfaces
     */
 
     /// <summary>
-    /// BinaryDataStorage contract, used to handle binary data stored.
+    /// DataStorage contract, used to handle data stored.
     /// </summary>
-    public interface IBinaryDataStorage
+    public interface IDataStorage
     {
         /// <summary>
-        /// Saves the data in a BinaryDataStorage
+        /// Saves the data in a DataStorage
         /// </summary>
         /// <param name="id">The identification of data</param>
         /// <param name="data">The data to be saved</param>

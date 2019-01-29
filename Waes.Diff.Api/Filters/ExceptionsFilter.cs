@@ -19,7 +19,7 @@ namespace Waes.Diff.Api.Filters
         {            
             switch (context.Exception)
             {
-                case BinaryDataNotFoundException bdex:
+                case DataNotFoundException bdex:
                     context.Result = new JsonResult(new { bdex.Message })
                     {
                         StatusCode = (int)HttpStatusCode.NotFound

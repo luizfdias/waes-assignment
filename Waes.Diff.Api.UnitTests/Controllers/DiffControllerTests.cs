@@ -23,7 +23,7 @@ namespace Waes.Diff.Api.UnitTests.Controllers
         {
             var result = await sut.PostLeft(id);
 
-            await sut.BinaryStorageHandler.Received(1).Save($"left_{id}", sut.Request.Body);
+            await sut.DataStorageHandler.Received(1).Save($"left_{id}", sut.Request.Body);
 
             result.Should().BeOfType<CreatedAtActionResult>();
         }
@@ -33,7 +33,7 @@ namespace Waes.Diff.Api.UnitTests.Controllers
         {
             var result = await sut.PostRight(id);
 
-            await sut.BinaryStorageHandler.Received(1).Save($"right_{id}", sut.Request.Body);
+            await sut.DataStorageHandler.Received(1).Save($"right_{id}", sut.Request.Body);
 
             result.Should().BeOfType<CreatedAtActionResult>();
         }

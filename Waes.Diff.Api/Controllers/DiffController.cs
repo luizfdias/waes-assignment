@@ -10,15 +10,15 @@ namespace Waes.Diff.Api.Controllers
     [ApiController]
     public class DiffController : ControllerBase
     {
-        public IBinaryStorageHandler BinaryStorageHandler { get; }
+        public IDataStorageHandler DataStorageHandler { get; }
 
         public IDiffHandler DiffHandler { get; }
 
         public IDiffResponseMapper DiffResponseMapper { get; }
 
-        public DiffController(IBinaryStorageHandler binaryStorageHandler, IDiffHandler diffHandler, IDiffResponseMapper diffResponseMapper)
+        public DiffController(IDataStorageHandler dataStorageHandler, IDiffHandler diffHandler, IDiffResponseMapper diffResponseMapper)
         {
-            BinaryStorageHandler = binaryStorageHandler ?? throw new ArgumentNullException(nameof(binaryStorageHandler));
+            DataStorageHandler = dataStorageHandler ?? throw new ArgumentNullException(nameof(dataStorageHandler));
             DiffHandler = diffHandler ?? throw new ArgumentNullException(nameof(diffHandler));
             DiffResponseMapper = diffResponseMapper ?? throw new ArgumentNullException(nameof(diffResponseMapper));
         }
@@ -31,7 +31,7 @@ namespace Waes.Diff.Api.Controllers
         [HttpPost("{id}/left")]
         public async Task<IActionResult> PostLeft(string id)
         {            
-            await BinaryStorageHandler.Save($"left_{id}", Request.Body);
+            await DataStorageHandler.Save($"left_{id}", Request.Body);
 
             return CreatedAtAction(nameof(GetDiff), new { id }, null);
         }
@@ -44,7 +44,7 @@ namespace Waes.Diff.Api.Controllers
         [HttpPost("{id}/right")]
         public async Task<IActionResult> PostRight(string id)
         {
-            await BinaryStorageHandler.Save($"right_{id}", Request.Body);
+            await DataStorageHandler.Save($"right_{id}", Request.Body);
 
             return CreatedAtAction(nameof(GetDiff), new { id }, null);
         }

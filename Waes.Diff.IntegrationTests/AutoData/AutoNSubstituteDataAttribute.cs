@@ -34,7 +34,7 @@ namespace Waes.Diff.IntegrationTests.AutoData
             var container = serviceCollection.BuildServiceProvider();
 
             var diffController = new DiffController(
-                container.GetService<IBinaryStorageHandler>(),
+                container.GetService<IDataStorageHandler>(),
                 container.GetService<IDiffHandler>(),
                 container.GetService<IDiffResponseMapper>());
 

@@ -10,13 +10,13 @@ namespace Waes.Diff.Core.Handlers
     /// </summary>
     public class DiffHandler : IDiffHandler
     {
-        public IBinaryDataStorage BinaryDataStorage { get; }
+        public IDataStorage DataStorage { get; }
 
         public IDiffChecker DiffChecker { get; }
 
-        public DiffHandler(IBinaryDataStorage binaryDataStorage, IDiffChecker diffChecker)
+        public DiffHandler(IDataStorage dataStorage, IDiffChecker diffChecker)
         {
-            BinaryDataStorage = binaryDataStorage ?? throw new System.ArgumentNullException(nameof(binaryDataStorage));
+            DataStorage = dataStorage ?? throw new System.ArgumentNullException(nameof(dataStorage));
             DiffChecker = diffChecker ?? throw new System.ArgumentNullException(nameof(diffChecker));
         }
 
@@ -25,13 +25,13 @@ namespace Waes.Diff.Core.Handlers
             var leftId = $"left_{id}";
             var rightId = $"right_{id}";
 
-            var task1 = BinaryDataStorage.Get(leftId);
-            var task2 = BinaryDataStorage.Get(rightId);
+            var task1 = DataStorage.Get(leftId);
+            var task2 = DataStorage.Get(rightId);
 
             await Task.WhenAll(task1, task2);
 
-            var leftData = task1.Result ?? throw new BinaryDataNotFoundException(leftId);
-            var rightData = task2.Result ?? throw new BinaryDataNotFoundException(rightId);
+            var leftData = task1.Result ?? throw new DataNotFoundException(leftId);
+            var rightData = task2.Result ?? throw new DataNotFoundException(rightId);
 
             var result = DiffChecker.Check(leftData, rightData);
 
