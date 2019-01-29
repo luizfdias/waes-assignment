@@ -167,6 +167,8 @@ HTTP 200 OK
 }
 ```
 
+All samples are in a [Postman's collection](https://www.getpostman.com/collections/1aeff3fb3b950742d4c3). The requests are using the APP Service hosted in Azure (https://waesdiffapi.azurewebsites.net/).
+
 ## Running the tests
 
 ### Automated tests
@@ -180,8 +182,9 @@ The tests can be executed in Visual Studio or any similar tool.
 ## Built With
 API:
 * [ASP.NET CORE](https://www.asp.net/core/overview/aspnet-vnext) 
+* [Serilog-AspnetCore](https://github.com/serilog/serilog-aspnetcore) 
 
-Test:
+Tests:
 * [AutoFixture](https://github.com/AutoFixture/AutoFixture) 
 * [NSubstitute](https://github.com/nsubstitute/NSubstitute) 
 * [XUnit](https://github.com/xunit/xunit) 
