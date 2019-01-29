@@ -1,6 +1,6 @@
 # Waes Diff API
 
-This is an API developed in ASP.NET Core with diff functionality that analyzes two data (left and right) and respond the differences.
+This is an API developed in ASP.NET Core with diff functionality that analyzes two data (left and right) and shows their differences.
 
 ## Getting Started
 
