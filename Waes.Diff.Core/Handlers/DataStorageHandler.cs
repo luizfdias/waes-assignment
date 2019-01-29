@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Waes.Diff.Core.Extensions;
 using Waes.Diff.Core.Interfaces;
@@ -22,7 +23,12 @@ namespace Waes.Diff.Core.Handlers
         {
             var result = await stream.ConvertToByteArrayAsync();
 
-            await DataStorage.Save(id, result);
+            var text = Encoding.UTF8.GetString(result);
+
+            if (text.IsBase64String())
+                await DataStorage.Save(id, Convert.FromBase64String(text));
+            else
+                await DataStorage.Save(id, result);
         }
     }
 }
