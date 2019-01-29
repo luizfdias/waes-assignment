@@ -179,6 +179,12 @@ Each component has its own project for their unit tests and there is just one pr
 
 The tests can be executed in Visual Studio or any similar tool.
 
+## Future improvements
+
+All data is put in memory before the diff analysis. If the use of this API is intended to work with huge data, it probably would have some problems with lack of memory.
+
+A good improvement would be a better control in how to put this data in Memory. It could working with paged data or something similar.
+
 ## Built With
 API:
 * [ASP.NET CORE](https://www.asp.net/core/overview/aspnet-vnext) 
