@@ -13,7 +13,7 @@ namespace Waes.Diff.Api.UnitTests.Filters
     public class ExceptionsFilterTests
     {
         [Theory, AutoNSubstituteData]
-        public void OnException_WhenContextHasBinaryDataNotFoundException_ShouldSetContextAsExpected(BinaryDataNotFoundException ex,
+        public void OnException_WhenContextHasDataNotFoundException_ShouldSetContextAsExpected(DataNotFoundException ex,
             ExceptionsFilter sut, ExceptionContext context)
         {
             context.Exception = ex;

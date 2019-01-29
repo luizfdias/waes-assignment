@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 namespace Waes.Diff.Core.Interfaces
 {
     /// <summary>
-    /// BinaryStorageHandler contract, used to handle binary data.
+    /// DataStorageHandler contract, used to handle data.
     /// </summary>
-    public interface IBinaryStorageHandler
+    public interface IDataStorageHandler
     {
         /// <summary>
-        /// Saves the data in a BinaryDataStorage
+        /// Saves the data in a DataStorage
         /// </summary>
         /// <param name="id">The identification of data</param>
         /// <param name="stream">The stream to be handled</param>

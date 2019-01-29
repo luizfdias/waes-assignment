@@ -8,14 +8,14 @@ namespace Waes.Diff.Infrastructure.AzureBlobStorage.Repositories
 {
     /*
         Besides the use of in memory cache, I developed an alternative to it in case of be necessary to persist data for futures comparisons.
-        Blob storage for Azure is a good choice for store binary data. A improvement in this part could be to store metadata as for example 
-        the size of the binary.
+        Blob storage for Azure is a good choice for store data. A improvement in this part could be to store metadata as for example 
+        the size of the data.
     */
 
     /// <summary>
-    /// BinaryDataStorage implementation using Azure Blob Storage
+    /// DataStorage implementation using Azure Blob Storage
     /// </summary>
-    public class BlobStorageRepository : IBinaryDataStorage
+    public class BlobStorageRepository : IDataStorage
     {
         public ICloudBlobContainerWrapper CloudBlobContainerWrapper { get; }
 

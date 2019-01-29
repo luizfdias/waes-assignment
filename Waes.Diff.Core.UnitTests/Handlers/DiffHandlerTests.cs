@@ -18,10 +18,10 @@ namespace Waes.Diff.Core.UnitTests.Handlers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Diff_WhenBinaryDataFound_ShouldReturnDiffResult(DiffHandler sut, string id, byte[] data1, byte[] data2, DiffResult diffResult)
+        public async void Diff_WhenDataFound_ShouldReturnDiffResult(DiffHandler sut, string id, byte[] data1, byte[] data2, DiffResult diffResult)
         {
-            sut.BinaryDataStorage.Get($"left_{id}").Returns(data1);
-            sut.BinaryDataStorage.Get($"right_{id}").Returns(data2);
+            sut.DataStorage.Get($"left_{id}").Returns(data1);
+            sut.DataStorage.Get($"right_{id}").Returns(data2);
 
             sut.DiffChecker.Check(data1, data2).Returns(diffResult);
 
@@ -37,22 +37,22 @@ namespace Waes.Diff.Core.UnitTests.Handlers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Diff_WhenLeftBinaryDataNotFound_ShouldThrowBinaryDataNotFoundException(DiffHandler sut, string id, byte[] data2)
+        public async void Diff_WhenLeftDataNotFound_ShouldThrowDataNotFoundException(DiffHandler sut, string id, byte[] data2)
         {
-            sut.BinaryDataStorage.Get($"left_{id}").Returns((byte[])null);
-            sut.BinaryDataStorage.Get($"right_{id}").Returns(data2);
+            sut.DataStorage.Get($"left_{id}").Returns((byte[])null);
+            sut.DataStorage.Get($"right_{id}").Returns(data2);
             
-            var exception = await Assert.ThrowsAsync<BinaryDataNotFoundException>(() => sut.Diff(id));
+            var exception = await Assert.ThrowsAsync<DataNotFoundException>(() => sut.Diff(id));
             exception.Id.Should().Be($"left_{id}");
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Diff_WhenRightBinaryDataNotFound_ShouldThrowBinaryDataNotFoundException(DiffHandler sut, string id, byte[] data1)
+        public async void Diff_WhenRightDataNotFound_ShouldThrowDataNotFoundException(DiffHandler sut, string id, byte[] data1)
         {
-            sut.BinaryDataStorage.Get($"left_{id}").Returns(data1);
-            sut.BinaryDataStorage.Get($"right_{id}").Returns((byte[])null);
+            sut.DataStorage.Get($"left_{id}").Returns(data1);
+            sut.DataStorage.Get($"right_{id}").Returns((byte[])null);
 
-            var exception = await Assert.ThrowsAsync<BinaryDataNotFoundException>(() => sut.Diff(id));
+            var exception = await Assert.ThrowsAsync<DataNotFoundException>(() => sut.Diff(id));
             exception.Id.Should().Be($"right_{id}");
         }
     }

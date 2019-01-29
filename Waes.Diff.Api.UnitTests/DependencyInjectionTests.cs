@@ -22,8 +22,8 @@ namespace Waes.Diff.Api.UnitTests
         [Theory]
         [InlineNSubstituteData(typeof(IDiffResponseMapper), typeof(DiffResponseMapper))]
         [InlineNSubstituteData(typeof(IDiffHandler), typeof(DiffHandler))]
-        [InlineNSubstituteData(typeof(IBinaryStorageHandler), typeof(BinaryStorageHandler))]
-        [InlineNSubstituteData(typeof(IBinaryDataStorage), typeof(MemoryRepository))]
+        [InlineNSubstituteData(typeof(IDataStorageHandler), typeof(DataStorageHandler))]
+        [InlineNSubstituteData(typeof(IDataStorage), typeof(MemoryRepository))]
         public void GetService_ShouldResolveAllDependencies(Type typeSource, Type typeExpected, ServiceCollection serviceCollection,
             IConfiguration configuration)
         {
@@ -63,7 +63,7 @@ namespace Waes.Diff.Api.UnitTests
 
             var container = serviceCollection.BuildServiceProvider();
 
-            container.GetService<IBinaryDataStorage>().Should().BeOfType<BlobStorageRepository>();
+            container.GetService<IDataStorage>().Should().BeOfType<BlobStorageRepository>();
             container.GetService<IBlobStorageFactory>().Should().BeOfType<BlobStorageFactory>();
             container.GetService<ICloudBlobContainerWrapper>().Should().BeOfType<CloudBlobContainerWrapper>();
         }
