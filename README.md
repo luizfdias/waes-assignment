@@ -167,7 +167,7 @@ HTTP 200 OK
 }
 ```
 
-All samples are in a [Postman's collection](https://www.getpostman.com/collections/1aeff3fb3b950742d4c3). The requests are using the APP Service hosted in Azure (https://waesdiffapi.azurewebsites.net/).
+All samples are in a [Postman's collection](https://www.getpostman.com/collections/1aeff3fb3b950742d4c3). The requests are using an APP Service hosted in Azure (https://waesdiffapi.azurewebsites.net/).
 
 ## Running the tests
 
