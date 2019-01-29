@@ -32,7 +32,7 @@ namespace Waes.Diff.Api.Controllers
         public async Task<IActionResult> PostLeft(string id)
         {            
             await BinaryStorageHandler.Save($"left_{id}", Request.Body);
-            
+
             return CreatedAtAction(nameof(GetDiff), new { id }, null);
         }
 

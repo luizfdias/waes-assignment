@@ -10,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using Waes.Diff.Api.Filters;
 using Waes.Diff.Api.Interfaces;
 using Waes.Diff.Api.Mappers;
+using Waes.Diff.Api.Modules;
 using Waes.Diff.Core;
 using Waes.Diff.Core.Handlers;
 using Waes.Diff.Core.Interfaces;
@@ -32,7 +33,8 @@ namespace Waes.Diff.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options => options.Filters.Add(new ExceptionsFilter()))
+            services.AddSerilogModule();
+            services.AddMvc(options => options.Filters.Add<ExceptionsFilter>())
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                     .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 

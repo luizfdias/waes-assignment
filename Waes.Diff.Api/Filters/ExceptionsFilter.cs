@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Serilog;
 using System.Net;
 using Waes.Diff.Core.Exceptions;
 
@@ -7,8 +8,15 @@ namespace Waes.Diff.Api.Filters
 {
     public class ExceptionsFilter : ExceptionFilterAttribute
     {
-        public override void OnException(ExceptionContext context)
+        public ILogger Logger { get; }
+
+        public ExceptionsFilter(ILogger logger)
         {
+            Logger = logger;
+        }        
+
+        public override void OnException(ExceptionContext context)
+        {            
             switch (context.Exception)
             {
                 case BinaryDataNotFoundException bdex:
@@ -18,11 +26,14 @@ namespace Waes.Diff.Api.Filters
                     };
                     break;                
                 default:
-                    context.Result = new JsonResult(new { Message = "Unexpected error" })
                     {
-                        StatusCode = (int)HttpStatusCode.InternalServerError
-                    };
-                    break;
+                        Logger.Error(context.Exception, "An unexpected error occurred");
+                        context.Result = new JsonResult(new { Message = "Unexpected error" })
+                        {
+                            StatusCode = (int)HttpStatusCode.InternalServerError
+                        };
+                        break;
+                    }
             }
         }
     }
