@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
 using Waes.Diff.Core.Exceptions;
 using Waes.Diff.Core.Interfaces;
 using Waes.Diff.Core.Models;
@@ -32,7 +34,7 @@ namespace Waes.Diff.Core.Handlers
 
             var leftData = task1.Result ?? throw new DataNotFoundException(leftId);
             var rightData = task2.Result ?? throw new DataNotFoundException(rightId);
-
+                        
             var result = DiffChecker.Check(leftData, rightData);
 
             result.LeftDataInfo = new DataInfo(leftId, leftData.Length);

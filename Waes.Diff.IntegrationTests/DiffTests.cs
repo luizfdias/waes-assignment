@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.IO;
 using System.Linq;
 using Waes.Diff.Api.Contracts;
@@ -38,7 +39,6 @@ namespace Waes.Diff.IntegrationTests
             leftData.Should().BeOfType<byte[]>();
             leftData.Should().BeEquivalentTo(data);
         }
-
 
         //// CASE 1: Data are equals        
         [Theory, AutoNSubstituteData]
@@ -107,6 +107,34 @@ namespace Waes.Diff.IntegrationTests
 
             diffResponse.DataInfo.ToList()[1].Id.Should().Be($"right_{id}");
             diffResponse.DataInfo.ToList()[1].Length.Should().Be(4);
+        }
+
+        //// CASE 4: Data equal and in base64
+        [Theory, AutoNSubstituteData]
+        public async void PostLeftPostRightAndGetDiff_WhenDataIsBase64AndEqual_ShouldReturnDiffResponseAsExpected(DiffController sutLeft, DiffController sutRight, DiffController sutDiff, string id)
+        {
+            sutLeft.ControllerContext.HttpContext.Request.Body = new MemoryStream(Convert.FromBase64String("dGVzdGUgZGUgZW5jb2RlZA=="));
+            await sutLeft.PostLeft(id);
+
+            sutRight.ControllerContext.HttpContext.Request.Body = new MemoryStream(Convert.FromBase64String("dGVzdGUgZGUgZW5jb2RlZA=="));
+            await sutRight.PostRight(id);
+
+            var result = await sutDiff.GetDiff(id);
+
+            var diffResponse = ((OkObjectResult)result).Value as DiffResponse;
+
+            diffResponse.Code.Should().Be(ApiReturns.Equal.Code);
+            diffResponse.Message.Should().Be(ApiReturns.Equal.Message);
+
+            diffResponse.Differences.Should().BeNull();
+
+            diffResponse.DataInfo.Should().HaveCount(2);
+
+            diffResponse.DataInfo.ToList()[0].Id.Should().Be($"left_{id}");
+            diffResponse.DataInfo.ToList()[0].Length.Should().Be(16);
+
+            diffResponse.DataInfo.ToList()[1].Id.Should().Be($"right_{id}");
+            diffResponse.DataInfo.ToList()[1].Length.Should().Be(16);
         }
     }
 }
