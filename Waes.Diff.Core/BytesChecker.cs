@@ -1,4 +1,5 @@
-﻿using Waes.Diff.Core.Interfaces;
+﻿using System.Linq;
+using Waes.Diff.Core.Interfaces;
 using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Core
@@ -26,15 +27,21 @@ namespace Waes.Diff.Core
             int diffLength = 0;
             int startOffSet = 0;
 
+            // Passing through all items of the left byte array
             for (int i = 0; i < leftData.Length; i++)
             {
+                // I compare the left side with the right side. If they are not equal
                 if (leftData[i] != rightData[i])
                 {
+                    // And if it is the first occurence of a difference in a sequence
                     if (diffLength == 0)
+                        // I set the startoffset
                         startOffSet = i;
 
+                    // And then I increment the length of the it
                     diffLength += 1;
 
+                    // In case of the bytes were all analyzed, I add the difference to be returned. It means the array was fully analyzed
                     if (i + 1 == leftData.Length)
                         diffResult.Differences.Add(new Difference
                         {
@@ -42,8 +49,10 @@ namespace Waes.Diff.Core
                             StartOffSet = startOffSet
                         });
                 }
+                // If items of arrays are equal
                 else
                 {
+                    // and the length of the difference is bigger than zero, I add a diference on the list
                     if (diffLength > 0)
                         diffResult.Differences.Add(new Difference
                         {
@@ -51,6 +60,7 @@ namespace Waes.Diff.Core
                             StartOffSet = startOffSet
                         });
 
+                    // And then I restart the count of the length
                     diffLength = 0;
                 }
             }
