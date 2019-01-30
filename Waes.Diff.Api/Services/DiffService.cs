@@ -6,7 +6,7 @@ using Waes.Diff.Core.Interfaces;
 
 namespace Waes.Diff.Api.Services
 {
-    public class DiffService : IHandleRequest<BaseRequest<string>, BaseResponse<DiffInfo>>
+    public class DiffService : IHandleRequest<string, BaseResponse<DiffInfo>>
     {
         public IDiffHandler DiffHandler { get; }
 
@@ -15,9 +15,9 @@ namespace Waes.Diff.Api.Services
             DiffHandler = diffHandler ?? throw new System.ArgumentNullException(nameof(diffHandler));
         }        
 
-        public async Task<BaseResponse<DiffInfo>> Handle(BaseRequest<string> request)
+        public async Task<BaseResponse<DiffInfo>> Handle(string request)
         {
-            var diffResult = await DiffHandler.Diff(request.Request);
+            var diffResult = await DiffHandler.Diff(request);
 
             return BaseResponseFactory.Create(diffResult);
         }

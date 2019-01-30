@@ -1,4 +1,5 @@
 ﻿using System;
+using Waes.Diff.Core.Factories;
 using Waes.Diff.Core.Interfaces;
 using Waes.Diff.Core.Models;
 
@@ -27,10 +28,7 @@ namespace Waes.Diff.Core
             //// I assumed for this assignment, if the data size is different, it is not necessary to compare the data itself.
             if (leftData.Length != rightData.Length)
             {
-                return new DiffResult
-                {
-                    SameSize = false                    
-                };
+                return DiffResultFactory.Create(false);
             }
 
             var result = DiffChecker.Check(leftData, rightData);

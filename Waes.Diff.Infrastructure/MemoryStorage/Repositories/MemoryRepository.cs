@@ -40,12 +40,19 @@ namespace Waes.Diff.Infrastructure.MemoryStorage.Repositories
         }
 
         public async Task<IEnumerable<Data>> GetByCorrelationId(string correlationId)
-        {            
-            return new List<Data>
-            {
-                MemoryCache.Get<Data>(correlationId + SideEnum.Left),
-                MemoryCache.Get<Data>(correlationId + SideEnum.Right)
-            };            
+        {
+            var data = new List<Data>();
+
+            var leftData = MemoryCache.Get<Data>(correlationId + SideEnum.Left);
+            var rightData = MemoryCache.Get<Data>(correlationId + SideEnum.Right);
+
+            if (leftData != null)
+                data.Add(leftData);
+
+            if (rightData != null)
+                data.Add(rightData);
+
+            return data;
         }
     }
 }

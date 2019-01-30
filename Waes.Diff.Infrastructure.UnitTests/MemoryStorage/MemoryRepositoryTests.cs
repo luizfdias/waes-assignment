@@ -59,5 +59,15 @@ namespace Waes.Diff.Infrastructure.UnitTests.MemoryStorage
             result.ToList()[0].Should().BeEquivalentTo(data1);
             result.ToList()[1].Should().BeEquivalentTo(data2);
         }
+
+        [Theory, AutoNSubstituteData]
+        public async void GetByCorrelationId_WhenDataIsNotFound_ShouldReturnAnEmptyList(string id)
+        {            
+            var sut = new MemoryRepository(Substitute.For<IMemoryCache>(), 5);
+
+            var result = await sut.GetByCorrelationId(id);
+
+            result.Should().BeEmpty();
+        }
     }
 }

@@ -2,10 +2,10 @@
 using FluentAssertions;
 using NSubstitute;
 using System.Collections.Generic;
+using Waes.Diff.Core.Factories;
 using Waes.Diff.Core.Handlers;
 using Waes.Diff.Core.Models;
 using Waes.Diff.Core.UnitTests.AutoData;
-using Waes.Diff.Core.UnitTests.Helpers;
 using Xunit;
 
 namespace Waes.Diff.Core.UnitTests.Handlers
@@ -23,8 +23,8 @@ namespace Waes.Diff.Core.UnitTests.Handlers
         {
             var data = new List<Data>
             {
-                DataHelper.CreateData(new byte[] { 1, 2, 3}, 3, SideEnum.Left),
-                DataHelper.CreateData(new byte[] { 1, 2, 3}, 3, SideEnum.Right)
+                DataFactory.Create(new byte[] { 1, 2, 3}, "abc123", SideEnum.Left),
+                DataFactory.Create(new byte[] { 1, 2, 3}, "abc123", SideEnum.Right)
             };
 
             sut.DataStorage.GetByCorrelationId(correlationId).Returns(data);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using Waes.Diff.Api.Contracts;
 using Waes.Diff.Api.Contracts.Enums;
@@ -24,10 +25,10 @@ namespace Waes.Diff.Api.Controllers
         /// </summary>
         /// <param name="id">The identification</param>
         [HttpPost("{correlationId}/left")]
-        public async Task<IActionResult> PostLeft(string correlationId, BaseRequest<SaveDataModel> request)
+        public async Task<IActionResult> PostLeft(string correlationId, [FromBody]BaseRequest<SaveDataModel> request)
         {
-            request.Request.CorrelationId = correlationId;
-            request.Request.Side = SideEnum.Left;
+            request.Data.CorrelationId = correlationId;
+            request.Data.Side = SideEnum.Left;
 
             var result = await Mediator.Send<BaseRequest<SaveDataModel>, BaseResponse<SaveDataModel>>(request);
 
@@ -40,10 +41,10 @@ namespace Waes.Diff.Api.Controllers
         /// </summary>
         /// <param name="id">The identification</param>
         [HttpPost("{correlationId}/right")]
-        public async Task<IActionResult> PostRight(string correlationId, BaseRequest<SaveDataModel> request)
+        public async Task<IActionResult> PostRight(string correlationId, [FromBody]BaseRequest<SaveDataModel> request)
         {
-            request.Request.CorrelationId = correlationId;
-            request.Request.Side = SideEnum.Right;
+            request.Data.CorrelationId = correlationId;
+            request.Data.Side = SideEnum.Right;
 
             var result = await Mediator.Send<BaseRequest<SaveDataModel>, BaseResponse<SaveDataModel>>(request);
 

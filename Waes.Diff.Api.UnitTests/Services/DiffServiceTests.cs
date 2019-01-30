@@ -4,11 +4,12 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Waes.Diff.Api.Contracts;
 using Waes.Diff.Api.Contracts.Enums;
 using Waes.Diff.Api.Controllers;
+using Waes.Diff.Api.Factories;
 using Waes.Diff.Api.Services;
 using Waes.Diff.Api.UnitTests.AutoData;
+using Waes.Diff.Core.Factories;
 using Waes.Diff.Core.Models;
 using Xunit;
 using Difference = Waes.Diff.Core.Models.Difference;
@@ -24,11 +25,11 @@ namespace Waes.Diff.Api.UnitTests.Services
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Handle_WhenEqualData_ShouldReturnResponseAsExpected(DiffService sut, BaseRequest<string> request)
+        public async void Handle_WhenEqualData_ShouldReturnResponseAsExpected(DiffService sut, string correlationId)
         {
-            sut.DiffHandler.Diff(request.Request).Returns(CreateEqualDiffResult());
+            sut.DiffHandler.Diff(correlationId).Returns(CreateEqualDiffResult());
 
-            var result = await sut.Handle(request);
+            var result = await sut.Handle(correlationId);
 
             result.Success.Should().BeTrue();
             result.Result.Status.Should().Be(DiffStatus.Equal);
@@ -36,35 +37,35 @@ namespace Waes.Diff.Api.UnitTests.Services
 
             var dataInfo = result.Result.DataInfo.ToList();
 
-            dataInfo[0].CorrelationId.Should().Be("123456789");
+            dataInfo[0].CorrelationId.Should().Be("abc123");
             dataInfo[0].Id.Should().NotBe(Guid.Empty);
             dataInfo[0].Length.Should().Be(3);
             dataInfo[0].Side.Should().Be(Contracts.Enums.SideEnum.Left);
 
-            dataInfo[1].CorrelationId.Should().Be("123456789");
+            dataInfo[1].CorrelationId.Should().Be("abc123");
             dataInfo[1].Id.Should().NotBe(Guid.Empty);
             dataInfo[1].Length.Should().Be(3);
             dataInfo[1].Side.Should().Be(Contracts.Enums.SideEnum.Right);
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Handle_WhenNotEqualData_ShouldReturnResponseAsExpected(DiffService sut, BaseRequest<string> request)
+        public async void Handle_WhenNotEqualData_ShouldReturnResponseAsExpected(DiffService sut, string correlationId)
         {
-            sut.DiffHandler.Diff(request.Request).Returns(CreateNotEqualDiffResult());
+            sut.DiffHandler.Diff(correlationId).Returns(CreateNotEqualDiffResult());
 
-            var result = await sut.Handle(request);
+            var result = await sut.Handle(correlationId);
 
             result.Success.Should().BeTrue();
             result.Result.Status.Should().Be(DiffStatus.NotEqual);
             
             var dataInfo = result.Result.DataInfo.ToList();
 
-            dataInfo[0].CorrelationId.Should().Be("123456789");
+            dataInfo[0].CorrelationId.Should().Be("abc123");
             dataInfo[0].Id.Should().NotBe(Guid.Empty);
             dataInfo[0].Length.Should().Be(4);
             dataInfo[0].Side.Should().Be(Contracts.Enums.SideEnum.Left);
 
-            dataInfo[1].CorrelationId.Should().Be("123456789");
+            dataInfo[1].CorrelationId.Should().Be("abc123");
             dataInfo[1].Id.Should().NotBe(Guid.Empty);
             dataInfo[1].Length.Should().Be(4);
             dataInfo[1].Side.Should().Be(Contracts.Enums.SideEnum.Right);
@@ -79,11 +80,11 @@ namespace Waes.Diff.Api.UnitTests.Services
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Handle_WhenNotOfEqualSizeData_ShouldReturnResponseAsExpected(DiffService sut, BaseRequest<string> request)
+        public async void Handle_WhenNotOfEqualSizeData_ShouldReturnResponseAsExpected(DiffService sut, string correlationId)
         {
-            sut.DiffHandler.Diff(request.Request).Returns(CreateNotOfEqualSizeDiffResult());
+            sut.DiffHandler.Diff(correlationId).Returns(CreateNotOfEqualSizeDiffResult());
 
-            var result = await sut.Handle(request);
+            var result = await sut.Handle(correlationId);
 
             result.Success.Should().BeTrue();
             result.Result.Status.Should().Be(DiffStatus.NotOfEqualSize);
@@ -91,12 +92,12 @@ namespace Waes.Diff.Api.UnitTests.Services
 
             var dataInfo = result.Result.DataInfo.ToList();
 
-            dataInfo[0].CorrelationId.Should().Be("123456789");
+            dataInfo[0].CorrelationId.Should().Be("abc123");
             dataInfo[0].Id.Should().NotBe(Guid.Empty);
             dataInfo[0].Length.Should().Be(3);
             dataInfo[0].Side.Should().Be(Contracts.Enums.SideEnum.Left);
 
-            dataInfo[1].CorrelationId.Should().Be("123456789");
+            dataInfo[1].CorrelationId.Should().Be("abc123");
             dataInfo[1].Id.Should().NotBe(Guid.Empty);
             dataInfo[1].Length.Should().Be(4);
             dataInfo[1].Side.Should().Be(Contracts.Enums.SideEnum.Right);
@@ -110,8 +111,8 @@ namespace Waes.Diff.Api.UnitTests.Services
                 Differences = new List<Difference>(),
                 Data = new List<Data>
                 {
-                    CreateData(new byte[] { 1, 2, 3}, 3, Core.Models.SideEnum.Left),
-                    CreateData(new byte[] { 1, 2, 3}, 3, Core.Models.SideEnum.Right)
+                    DataFactory.Create(new byte[] { 1, 2, 3}, "abc123", Core.Models.SideEnum.Left),
+                    DataFactory.Create(new byte[] { 1, 2, 3}, "abc123", Core.Models.SideEnum.Right)
                 }
             };
         }
@@ -123,13 +124,13 @@ namespace Waes.Diff.Api.UnitTests.Services
                 SameSize = true,
                 Differences = new List<Difference>()
                 {
-                    CreateDifference(1, 1),
-                    CreateDifference(1, 3)
+                    DifferenceFactory.Create(1, 1),
+                    DifferenceFactory.Create(3, 1)
                 },
                 Data = new List<Data>
                 {
-                    CreateData(new byte[] { 1, 7, 3, 4}, 4, Core.Models.SideEnum.Left),
-                    CreateData(new byte[] { 1, 2, 3, 8}, 4, Core.Models.SideEnum.Right)
+                    DataFactory.Create(new byte[] { 1, 7, 3, 4}, "abc123", Core.Models.SideEnum.Left),
+                    DataFactory.Create(new byte[] { 1, 2, 3, 8}, "abc123", Core.Models.SideEnum.Right)
                 }                
             };
         }
@@ -142,31 +143,10 @@ namespace Waes.Diff.Api.UnitTests.Services
                 Differences = new List<Difference>(),                
                 Data = new List<Data>
                 {
-                    CreateData(new byte[] { 1, 2, 3}, 3, Core.Models.SideEnum.Left),
-                    CreateData(new byte[] { 1, 2, 3, 4}, 4, Core.Models.SideEnum.Right)
+                    DataFactory.Create(new byte[] { 1, 2, 3}, "abc123", Core.Models.SideEnum.Left),
+                    DataFactory.Create(new byte[] { 1, 2, 3, 4}, "abc123", Core.Models.SideEnum.Right)
                 }                
             };
-        }
-
-        private static Data CreateData(byte[] content, int length, Core.Models.SideEnum side)
-        {
-            return new Data
-            {
-                Content = content,
-                Id = Guid.NewGuid(),
-                CorrelationId = "123456789",
-                Length = length,
-                Side = side
-            };        
-        }
-
-        private static Difference CreateDifference(int length, int startOffset)
-        {
-            return new Difference
-            {
-                Length = length,
-                StartOffSet = startOffset
-            };
-        }
+        }       
     }
 }

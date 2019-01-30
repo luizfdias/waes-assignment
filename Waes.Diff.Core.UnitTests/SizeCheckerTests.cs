@@ -2,9 +2,9 @@
 using FluentAssertions;
 using NSubstitute;
 using System.Text;
+using Waes.Diff.Core.Factories;
 using Waes.Diff.Core.Models;
 using Waes.Diff.Core.UnitTests.AutoData;
-using Waes.Diff.Core.UnitTests.Helpers;
 using Xunit;
 
 namespace Waes.Diff.Core.UnitTests
@@ -25,8 +25,8 @@ namespace Waes.Diff.Core.UnitTests
         [InlineNSubstituteData("    ", "  ", false)]
         public void Check_WhenDataProvided_ShouldReturnResultAsExpected(string leftContent, string rightContent, bool resultExpected, SizeChecker sut)
         {            
-            var leftData =  DataHelper.CreateData(Encoding.UTF8.GetBytes(leftContent), leftContent.Length, SideEnum.Left);
-            var rightData = DataHelper.CreateData(Encoding.UTF8.GetBytes(rightContent), rightContent.Length, SideEnum.Right);
+            var leftData = DataFactory.Create(Encoding.UTF8.GetBytes(leftContent), "abc123", SideEnum.Left);
+            var rightData = DataFactory.Create(Encoding.UTF8.GetBytes(rightContent), "abc123", SideEnum.Right);
 
             sut.DiffChecker.Check(leftData, rightData).Returns(new DiffResult());
 

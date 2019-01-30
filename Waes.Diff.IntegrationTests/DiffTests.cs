@@ -2,138 +2,97 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.IO;
-using System.Linq;
+using Waes.Diff.Api.Contracts;
+using Waes.Diff.Api.Contracts.Enums;
 using Waes.Diff.Api.Controllers;
+using Waes.Diff.Core.Factories;
+using Waes.Diff.Core.Models;
 using Waes.Diff.IntegrationTests.AutoData;
 using Xunit;
 
 namespace Waes.Diff.IntegrationTests
 {
-    //public class DiffTests
-    //{
-    //    [Theory, AutoNSubstituteData]
-    //    public async void PostLeft_WhenPostLeftIsCalled_ShouldStoreDataAsExpected(DiffController sut, IMemoryCache memory, byte[] data)
-    //    {
-    //        sut.ControllerContext.HttpContext.Request.Body = new MemoryStream(data);
+    public class DiffTests
+    {
+        [Theory, AutoNSubstituteData]
+        public async void PostLeft_WhenPostLeftIsCalled_ShouldStoreDataAsExpected(DiffController sut, IMemoryCache memory, string correlationId, BaseRequest<SaveDataModel> request)
+        {
+            request.Data.Content = new byte[] { 1, 2, 3 };
 
-    //        await sut.PostLeft("Abc123");
+            await sut.PostLeft(correlationId, request);
 
-    //        var leftData = memory.Get("left_Abc123");
+            var leftData = memory.Get(correlationId + Api.Contracts.Enums.SideEnum.Left.ToString());
 
-    //        leftData.Should().BeOfType<byte[]>();
-    //        leftData.Should().BeEquivalentTo(data);
-    //    }
+            leftData.Should().BeOfType<Data>();
+            ((Data)leftData).Content.Should().BeEquivalentTo(request.Data.Content);
+        }
 
-    //    [Theory, AutoNSubstituteData]
-    //    public async void PostRight_WhenPostRightIsCalled_ShouldStoreDataAsExpected(DiffController sut, IMemoryCache memory, byte[] data)
-    //    {
-    //        sut.ControllerContext.HttpContext.Request.Body = new MemoryStream(data);
+        [Theory, AutoNSubstituteData]
+        public async void PostRight_WhenPostRightIsCalled_ShouldStoreDataAsExpected(DiffController sut, IMemoryCache memory, string correlationId, BaseRequest<SaveDataModel> request)
+        {
+            request.Data.Content = new byte[] { 1, 2, 3 };
 
-    //        await sut.PostRight("Abc123");
+            await sut.PostRight(correlationId, request);
 
-    //        var leftData = memory.Get("right_Abc123");
+            var rightData = memory.Get(correlationId + Api.Contracts.Enums.SideEnum.Right.ToString());
 
-    //        leftData.Should().BeOfType<byte[]>();
-    //        leftData.Should().BeEquivalentTo(data);
-    //    }
+            rightData.Should().BeOfType<Data>();
+            ((Data)rightData).Content.Should().BeEquivalentTo(request.Data.Content);
+        }
 
-    //    //// CASE 1: Data are equals        
-    //    [Theory, AutoNSubstituteData]
-    //    public async void GetDiff_WhenEquals_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, byte[] data, string id)
-    //    {
-    //        memory.Set($"left_{id}", data);
-    //        memory.Set($"right_{id}", data);
+        [Theory, AutoNSubstituteData]
+        public async void GetDiff_WhenEquals_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory)
+        {
+            var dataLeft = DataFactory.Create(new byte[] { 1, 2, 3 }, "abc123", Core.Models.SideEnum.Left);
+            var dataRight = DataFactory.Create(new byte[] { 1, 2, 3 }, "abc123", Core.Models.SideEnum.Right);
 
-    //        var result = await sut.GetDiff(id);
+            memory.Set(dataLeft.CorrelationId + dataLeft.Side.ToString(), dataLeft);
+            memory.Set(dataRight.CorrelationId + dataRight.Side.ToString(), dataRight);
 
-    //        var diffResponse = ((OkObjectResult)result).Value as Api.Contracts.DiffInfo;
+            var result = await sut.GetDiff("abc123");
 
-    //        diffResponse.Code.Should().Be(ApiReturns.Equal.Code);
-    //        diffResponse.Message.Should().Be(ApiReturns.Equal.Message);
+            var response = ((OkObjectResult)result).Value as BaseResponse<DiffInfo>;
 
-    //        diffResponse.Differences.Should().BeNull();
+            response.Result.Status.Should().Be(DiffStatus.Equal);
+            response.Result.Differences.Should().BeNull();
 
-    //        diffResponse.DataInfo.Should().HaveCount(2);
-    //        diffResponse.DataInfo.First().Id.Should().Be($"left_{id}");
-    //        diffResponse.DataInfo.First().Length.Should().Be(data.Length);
-    //    }
+            response.Result.DataInfo.Should().HaveCount(2);            
+        }
 
-    //    //// CASE 2: Data have same size but are differents
-    //    [Theory, AutoNSubstituteData]
-    //    public async void GetDiff_WhenNotEqual_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, string id)
-    //    {
-    //        memory.Set($"left_{id}", new byte[] { 1, 2, 3 });
-    //        memory.Set($"right_{id}", new byte[] { 2, 3, 3 });
+        [Theory, AutoNSubstituteData]
+        public async void GetDiff_WhenNotEqual_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory)
+        {
+            var dataLeft = DataFactory.Create(new byte[] { 1, 2, 3 }, "abc123", Core.Models.SideEnum.Left);
+            var dataRight = DataFactory.Create(new byte[] { 1, 3, 1 }, "abc123", Core.Models.SideEnum.Right);
 
-    //        var result = await sut.GetDiff(id);
+            memory.Set(dataLeft.CorrelationId + dataLeft.Side.ToString(), dataLeft);
+            memory.Set(dataRight.CorrelationId + dataRight.Side.ToString(), dataRight);
 
-    //        var diffResponse = ((OkObjectResult)result).Value as Api.Contracts.DiffInfo;
+            var result = await sut.GetDiff("abc123");
 
-    //        diffResponse.Code.Should().Be(ApiReturns.NotEqual.Code);
-    //        diffResponse.Message.Should().Be(ApiReturns.NotEqual.Message);
+            var response = ((OkObjectResult)result).Value as BaseResponse<DiffInfo>;
 
-    //        diffResponse.Differences.Should().HaveCount(1);
-    //        diffResponse.Differences.FirstOrDefault().StartOffSet.Should().Be(0);
-    //        diffResponse.Differences.FirstOrDefault().Length.Should().Be(2);
+            response.Result.Status.Should().Be(DiffStatus.NotEqual);
+            response.Result.Differences.Should().HaveCount(1);
+            response.Result.DataInfo.Should().HaveCount(2);
+        }
 
-    //        diffResponse.DataInfo.Should().HaveCount(2);
-    //        diffResponse.DataInfo.First().Id.Should().Be($"left_{id}");
-    //        diffResponse.DataInfo.First().Length.Should().Be(3);
-    //    }
+        [Theory, AutoNSubstituteData]
+        public async void GetDiff_WhenNotOfEqualSize_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory)
+        {
+            var dataLeft = DataFactory.Create(new byte[] { 1, 2, 3, 4 }, "abc123", Core.Models.SideEnum.Left);
+            var dataRight = DataFactory.Create(new byte[] { 1, 3, 1 }, "abc123", Core.Models.SideEnum.Right);
 
-    //    //// CASE 3: Data don't have same size
-    //    [Theory, AutoNSubstituteData]
-    //    public async void GetDiff_WhenNotOfEqualSize_ShouldReturnDiffResponseAsExpected(DiffController sut, IMemoryCache memory, string id)
-    //    {
-    //        memory.Set($"left_{id}", new byte[] { 1, 2, 3 });
-    //        memory.Set($"right_{id}", new byte[] { 2, 3, 3, 4 });
+            memory.Set(dataLeft.CorrelationId + dataLeft.Side.ToString(), dataLeft);
+            memory.Set(dataRight.CorrelationId + dataRight.Side.ToString(), dataRight);
 
-    //        var result = await sut.GetDiff(id);
+            var result = await sut.GetDiff("abc123");
 
-    //        var diffResponse = ((OkObjectResult)result).Value as Api.Contracts.DiffInfo;
+            var response = ((OkObjectResult)result).Value as BaseResponse<DiffInfo>;
 
-    //        diffResponse.Code.Should().Be(ApiReturns.NotOfEqualSize.Code);
-    //        diffResponse.Message.Should().Be(ApiReturns.NotOfEqualSize.Message);
-
-    //        diffResponse.Differences.Should().BeNull();
-
-    //        diffResponse.DataInfo.Should().HaveCount(2);
-
-    //        diffResponse.DataInfo.ToList()[0].Id.Should().Be($"left_{id}");
-    //        diffResponse.DataInfo.ToList()[0].Length.Should().Be(3);
-
-    //        diffResponse.DataInfo.ToList()[1].Id.Should().Be($"right_{id}");
-    //        diffResponse.DataInfo.ToList()[1].Length.Should().Be(4);
-    //    }
-
-    //    //// CASE 4: Data equal and in base64
-    //    [Theory, AutoNSubstituteData]
-    //    public async void PostLeftPostRightAndGetDiff_WhenDataIsBase64AndEqual_ShouldReturnDiffResponseAsExpected(DiffController sutLeft, DiffController sutRight, DiffController sutDiff, string id)
-    //    {
-    //        sutLeft.ControllerContext.HttpContext.Request.Body = new MemoryStream(Convert.FromBase64String("dGVzdGUgZGUgZW5jb2RlZA=="));
-    //        await sutLeft.PostLeft(id);
-
-    //        sutRight.ControllerContext.HttpContext.Request.Body = new MemoryStream(Convert.FromBase64String("dGVzdGUgZGUgZW5jb2RlZA=="));
-    //        await sutRight.PostRight(id);
-
-    //        var result = await sutDiff.GetDiff(id);
-
-    //        var diffResponse = ((OkObjectResult)result).Value as Api.Contracts.DiffInfo;
-
-    //        diffResponse.Code.Should().Be(ApiReturns.Equal.Code);
-    //        diffResponse.Message.Should().Be(ApiReturns.Equal.Message);
-
-    //        diffResponse.Differences.Should().BeNull();
-
-    //        diffResponse.DataInfo.Should().HaveCount(2);
-
-    //        diffResponse.DataInfo.ToList()[0].Id.Should().Be($"left_{id}");
-    //        diffResponse.DataInfo.ToList()[0].Length.Should().Be(16);
-
-    //        diffResponse.DataInfo.ToList()[1].Id.Should().Be($"right_{id}");
-    //        diffResponse.DataInfo.ToList()[1].Length.Should().Be(16);
-    //    }
-    //}
+            response.Result.Status.Should().Be(DiffStatus.NotOfEqualSize);
+            response.Result.Differences.Should().BeNull();
+            response.Result.DataInfo.Should().HaveCount(2);
+        }
+    }    
 }

@@ -1,4 +1,5 @@
-﻿using Waes.Diff.Core.Interfaces;
+﻿using Waes.Diff.Core.Factories;
+using Waes.Diff.Core.Interfaces;
 using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Core
@@ -21,7 +22,7 @@ namespace Waes.Diff.Core
         /// <returns>Returns the DiffResult with the StartOffSet and Length of the difference</returns>
         public DiffResult Check(Data leftData, Data rightData)
         {
-            var diffResult = new DiffResult();
+            var diffResult = DiffResultFactory.Create(true);
 
             int diffLength = 0;
             int startOffSet = 0;
@@ -42,22 +43,14 @@ namespace Waes.Diff.Core
 
                     // In case of the bytes were all analyzed, I add the difference to be returned. It means the array was fully analyzed
                     if (i + 1 == leftData.Content.Length)
-                        diffResult.Differences.Add(new Difference
-                        {
-                            Length = diffLength,
-                            StartOffSet = startOffSet
-                        });
+                        diffResult.Differences.Add(DifferenceFactory.Create(startOffSet, diffLength));
                 }
                 // If items of arrays are equal
                 else
                 {
                     // and the length of the difference is bigger than zero, I add a diference on the list
                     if (diffLength > 0)
-                        diffResult.Differences.Add(new Difference
-                        {
-                            Length = diffLength,
-                            StartOffSet = startOffSet
-                        });
+                        diffResult.Differences.Add(DifferenceFactory.Create(startOffSet, diffLength));
 
                     // And then I restart the count of the length
                     diffLength = 0;

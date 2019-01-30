@@ -1,4 +1,5 @@
 ﻿using System;
+using Waes.Diff.Core.Exceptions;
 using Waes.Diff.Core.Interfaces;
 using Waes.Diff.Core.Models;
 
@@ -24,14 +25,9 @@ namespace Waes.Diff.Core
         /// <returns>The result of the diff</returns>
         public DiffResult Check(Data leftData, Data rightData)
         {
-            if (leftData == null)
+            if (leftData == null || rightData == null)
             {
-                throw new ArgumentNullException(nameof(leftData));
-            }
-
-            if (rightData == null)
-            {
-                throw new ArgumentNullException(nameof(rightData));
+                throw new DataNotFoundException();
             }
 
             return DiffChecker.Check(leftData, rightData);

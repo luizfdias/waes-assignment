@@ -1,8 +1,8 @@
 using AutoFixture.Idioms;
 using FluentAssertions;
 using System.Linq;
+using Waes.Diff.Core.Factories;
 using Waes.Diff.Core.UnitTests.AutoData;
-using Waes.Diff.Core.UnitTests.Helpers;
 using Xunit;
 
 namespace Waes.Diff.Core.UnitTests
@@ -18,8 +18,8 @@ namespace Waes.Diff.Core.UnitTests
         [Theory, AutoNSubstituteData]
         public void Check_WhenEqual_DiffsShouldBeEmpty(BytesChecker sut)
         {
-            var leftData = DataHelper.CreateData(new byte[] { 1, 2, 3 }, 3, Models.SideEnum.Left);
-            var rightData = DataHelper.CreateData(new byte[] { 1, 2, 3 }, 3, Models.SideEnum.Right);
+            var leftData = DataFactory.Create(new byte[] { 1, 2, 3 }, "abc123", Models.SideEnum.Left);
+            var rightData = DataFactory.Create(new byte[] { 1, 2, 3 }, "abc123", Models.SideEnum.Right);
 
             var result = sut.Check(leftData, rightData);
 
@@ -29,8 +29,8 @@ namespace Waes.Diff.Core.UnitTests
         [Theory, AutoNSubstituteData]
         public void Check_WhenNotEqual_ShouldReturnTheStartOffSetAndLengthOfIt(BytesChecker sut)
         {
-            var leftData = DataHelper.CreateData(new byte[] { 1, 7, 8 }, 3, Models.SideEnum.Left);
-            var rightData = DataHelper.CreateData(new byte[] { 1, 2, 3 }, 3, Models.SideEnum.Right);
+            var leftData = DataFactory.Create(new byte[] { 1, 7, 8 }, "abc123", Models.SideEnum.Left);
+            var rightData = DataFactory.Create(new byte[] { 1, 2, 3 }, "abc123", Models.SideEnum.Right);
 
             var result = sut.Check(leftData, rightData);
 
@@ -42,8 +42,8 @@ namespace Waes.Diff.Core.UnitTests
         [Theory, AutoNSubstituteData]
         public void Check_WhenNotEqualWithManyDifferences_ShouldReturnResultAsExpected(BytesChecker sut)
         {
-            var leftData = DataHelper.CreateData(new byte[] { 1, 8, 3, 5, 5 }, 5, Models.SideEnum.Left);
-            var rightData = DataHelper.CreateData(new byte[] { 1, 2, 3, 4, 3 }, 5, Models.SideEnum.Right);
+            var leftData = DataFactory.Create(new byte[] { 1, 8, 3, 5, 5 }, "abc123", Models.SideEnum.Left);
+            var rightData = DataFactory.Create(new byte[] { 1, 2, 3, 4, 3 }, "abc123", Models.SideEnum.Right);
 
             var result = sut.Check(leftData, rightData);
 
@@ -58,8 +58,8 @@ namespace Waes.Diff.Core.UnitTests
         [Theory, AutoNSubstituteData]
         public void Check_WhenContentIsEmpty_DiffsShouldBeEmpty(BytesChecker sut)
         {
-            var leftData = DataHelper.CreateData(new byte[] { }, 0, Models.SideEnum.Left);
-            var rightData = DataHelper.CreateData(new byte[] { }, 0, Models.SideEnum.Right);
+            var leftData = DataFactory.Create(new byte[] { }, "abc123", Models.SideEnum.Left);
+            var rightData = DataFactory.Create(new byte[] { }, "abc123", Models.SideEnum.Right);
 
             var result = sut.Check(leftData, rightData);
 

@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Waes.Diff.Api.Contracts;
 using Waes.Diff.Api.Factories;
 using Waes.Diff.Api.Interfaces;
+using Waes.Diff.Core.Factories;
 using Waes.Diff.Core.Interfaces;
+using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Api.Services
 {
@@ -17,11 +20,14 @@ namespace Waes.Diff.Api.Services
 
         public async Task<BaseResponse<SaveDataModel>> Handle(BaseRequest<SaveDataModel> request)
         {
-            var data = DataFactory.Create(request.Request);
+            var data = DataFactory.Create(
+                request.Data.Content, 
+                request.Data.CorrelationId, 
+                Enum.Parse<SideEnum>(request.Data.Side.ToString()));
 
             await DataStorageHandler.Save(data);
 
-            return BaseResponseFactory.Create(request.Request, data);
+            return BaseResponseFactory.Create(request.Data, data);
         }
     }
 }

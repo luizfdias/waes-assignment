@@ -2,6 +2,6 @@
 {
     public class BaseRequest<T>
     {
-        public T Request { get; set; }
+        public T Data { get; set; }
     }
 }
