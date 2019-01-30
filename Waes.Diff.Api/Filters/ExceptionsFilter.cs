@@ -19,8 +19,8 @@ namespace Waes.Diff.Api.Filters
         {
             switch (context.Exception)
             {
-                case DataNotFoundException bdex:
-                    context.Result = new JsonResult(new { bdex.Message })
+                case DataNotFoundException dataNotFoundException:
+                    context.Result = new JsonResult(new { dataNotFoundException.Message })
                     {
                         StatusCode = (int)HttpStatusCode.NotFound
                     };
