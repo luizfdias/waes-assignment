@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
+using Waes.Diff.Api.Contracts.Enums;
 
 namespace Waes.Diff.Api.Contracts
 {
-    public class DiffResponse
+    public class DiffInfo
     {
-        public string Code { get; set; }
-
-        public string Message { get; set; }
+        public DiffStatus Status { get; set; }
 
         public IEnumerable<DataInfo> DataInfo { get; set; }
 

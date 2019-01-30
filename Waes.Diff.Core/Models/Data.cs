@@ -1,13 +1,14 @@
 ﻿using System;
-using Waes.Diff.Api.Contracts.Enums;
 
-namespace Waes.Diff.Api.Contracts
+namespace Waes.Diff.Core.Models
 {
-    public class DataInfo
+    public class Data
     {
         public Guid Id { get; set; }
 
         public string CorrelationId { get; set; }
+
+        public byte[] Content { get; set; }
 
         public int Length { get; set; }
 

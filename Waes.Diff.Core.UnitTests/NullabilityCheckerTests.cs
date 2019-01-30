@@ -22,7 +22,7 @@ namespace Waes.Diff.Core.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenAllDataIsProvided_ShouldReturnDiffResultAsExpected(NullabilityChecker sut, byte[] leftData, byte[] rightData, DiffResult diffResult)
+        public void Check_WhenAllDataIsProvided_ShouldReturnDiffResultAsExpected(NullabilityChecker sut, Data leftData, Data rightData, DiffResult diffResult)
         {
             sut.DiffChecker.Check(leftData, rightData).Returns(diffResult);
 

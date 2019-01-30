@@ -16,10 +16,10 @@ namespace Waes.Diff.Core.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenEquals_DiffsShouldBeEmpty(BytesChecker sut)
+        public void Check_WhenEqual_DiffsShouldBeEmpty(BytesChecker sut)
         {
-            var leftData = BinaryDataWriter.Write("abc123");
-            var rightData = BinaryDataWriter.Write("abc123");
+            var leftData = DataHelper.CreateData(new byte[] { 1, 2, 3 }, 3, Models.SideEnum.Left);
+            var rightData = DataHelper.CreateData(new byte[] { 1, 2, 3 }, 3, Models.SideEnum.Right);
 
             var result = sut.Check(leftData, rightData);
 
@@ -27,39 +27,39 @@ namespace Waes.Diff.Core.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenSameSizeAndDifferents_ShouldReturnTheStartOffSetAndLengthOfIt(BytesChecker sut)
+        public void Check_WhenNotEqual_ShouldReturnTheStartOffSetAndLengthOfIt(BytesChecker sut)
         {
-            var leftData = BinaryDataWriter.Write("abc123");
-            var rightData = BinaryDataWriter.Write("XYZ987");
+            var leftData = DataHelper.CreateData(new byte[] { 1, 7, 8 }, 3, Models.SideEnum.Left);
+            var rightData = DataHelper.CreateData(new byte[] { 1, 2, 3 }, 3, Models.SideEnum.Right);
 
             var result = sut.Check(leftData, rightData);
 
             result.Differences.Should().HaveCount(1);
             result.Differences.FirstOrDefault().StartOffSet.Should().Be(1);
-            result.Differences.FirstOrDefault().Length.Should().Be(6);
+            result.Differences.FirstOrDefault().Length.Should().Be(2);
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenSameSizeAndManyDifferences_ShouldReturnResultAsExpected(BytesChecker sut)
+        public void Check_WhenNotEqualWithManyDifferences_ShouldReturnResultAsExpected(BytesChecker sut)
         {
-            var leftData = BinaryDataWriter.Write("abc123 xyz qwer");
-            var rightData = BinaryDataWriter.Write("abc123 xrz q   ");
+            var leftData = DataHelper.CreateData(new byte[] { 1, 8, 3, 5, 5 }, 5, Models.SideEnum.Left);
+            var rightData = DataHelper.CreateData(new byte[] { 1, 2, 3, 4, 3 }, 5, Models.SideEnum.Right);
 
             var result = sut.Check(leftData, rightData);
 
             result.Differences.Should().HaveCount(2);
-            result.Differences.FirstOrDefault().StartOffSet.Should().Be(9);
+            result.Differences.FirstOrDefault().StartOffSet.Should().Be(1);
             result.Differences.FirstOrDefault().Length.Should().Be(1);
 
-            result.Differences.ToList()[1].StartOffSet.Should().Be(13);
-            result.Differences.ToList()[1].Length.Should().Be(3);
+            result.Differences.ToList()[1].StartOffSet.Should().Be(3);
+            result.Differences.ToList()[1].Length.Should().Be(2);
         }
 
         [Theory, AutoNSubstituteData]
-        public void Check_WhenEmpty_DiffsShouldBeEmpty(BytesChecker sut)
+        public void Check_WhenContentIsEmpty_DiffsShouldBeEmpty(BytesChecker sut)
         {
-            var leftData = BinaryDataWriter.Write("");
-            var rightData = BinaryDataWriter.Write("");
+            var leftData = DataHelper.CreateData(new byte[] { }, 0, Models.SideEnum.Left);
+            var rightData = DataHelper.CreateData(new byte[] { }, 0, Models.SideEnum.Right);
 
             var result = sut.Check(leftData, rightData);
 

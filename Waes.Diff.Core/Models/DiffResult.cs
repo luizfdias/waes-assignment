@@ -8,9 +8,7 @@ namespace Waes.Diff.Core.Models
 
         public bool SameSize { get; set; }
 
-        public DataInfo LeftDataInfo { get; set; }
-
-        public DataInfo RightDataInfo { get; set; }
+        public IEnumerable<Data> Data { get; set; }        
 
         public DiffResult()
         {

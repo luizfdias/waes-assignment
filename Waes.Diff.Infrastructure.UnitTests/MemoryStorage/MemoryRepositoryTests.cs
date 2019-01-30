@@ -3,6 +3,8 @@ using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
 using System;
+using System.Linq;
+using Waes.Diff.Core.Models;
 using Waes.Diff.Infrastructure.MemoryStorage.Repositories;
 using Waes.Diff.Infrastructure.UnitTests.AutoData;
 using Xunit;
@@ -26,29 +28,36 @@ namespace Waes.Diff.Infrastructure.UnitTests.MemoryStorage
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Save_WhenSaveIsCalled_ShouldStoreDataInMemory(string id, byte[] data)
+        public async void Save_WhenSaveIsCalled_ShouldStoreDataInMemory(Data data)
         {
             var memoryCache = new MemoryCache(new MemoryCacheOptions());
 
             var sut = new MemoryRepository(memoryCache, 20);
 
-            await sut.Save(id, data);
+            await sut.Save(data);
 
-            memoryCache.Get<byte[]>(id).Should().BeEquivalentTo(data);
+            var dataFromMemory = memoryCache.Get<Data>(data.CorrelationId + data.Side.ToString());
+
+            dataFromMemory.Should().Be(data);
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Get_WhenGetIsCalled_ShouldReturnDataFromMemory(string id, byte[] data)
+        public async void GetByCorrelationId_WhenGetIsCalled_ShouldReturnDataFromMemory(string id, Data data1, Data data2)
         {
+            data1.Side = SideEnum.Left;
+            data2.Side = SideEnum.Right;
+
             var memoryCache = new MemoryCache(new MemoryCacheOptions());
 
-            memoryCache.Set(id, data);
+            memoryCache.Set(id + data1.Side.ToString(), data1);
+            memoryCache.Set(id + data2.Side.ToString(), data2);
 
-            var sut = new MemoryRepository(memoryCache, 1);
+            var sut = new MemoryRepository(memoryCache, 5);
 
-            var result = await sut.Get(id);
+            var result = await sut.GetByCorrelationId(id);
 
-            result.Should().BeEquivalentTo(data);
+            result.ToList()[0].Should().BeEquivalentTo(data1);
+            result.ToList()[1].Should().BeEquivalentTo(data2);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Waes.Diff.Api.Contracts;
+using Waes.Diff.Api.Contracts.Enums;
 using Waes.Diff.Api.Interfaces;
-using Waes.Diff.Core.Interfaces;
 
 namespace Waes.Diff.Api.Controllers
 {
@@ -10,17 +11,11 @@ namespace Waes.Diff.Api.Controllers
     [ApiController]
     public class DiffController : ControllerBase
     {
-        public IDataStorageHandler DataStorageHandler { get; }
+        public IMediator Mediator { get; }
 
-        public IDiffHandler DiffHandler { get; }
-
-        public IDiffResponseMapper DiffResponseMapper { get; }
-
-        public DiffController(IDataStorageHandler dataStorageHandler, IDiffHandler diffHandler, IDiffResponseMapper diffResponseMapper)
+        public DiffController(IMediator mediator)
         {
-            DataStorageHandler = dataStorageHandler ?? throw new ArgumentNullException(nameof(dataStorageHandler));
-            DiffHandler = diffHandler ?? throw new ArgumentNullException(nameof(diffHandler));
-            DiffResponseMapper = diffResponseMapper ?? throw new ArgumentNullException(nameof(diffResponseMapper));
+            Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         // POST v1/diff/id/left
@@ -28,12 +23,15 @@ namespace Waes.Diff.Api.Controllers
         /// Stores the left data to be analyzed
         /// </summary>
         /// <param name="id">The identification</param>
-        [HttpPost("{id}/left")]
-        public async Task<IActionResult> PostLeft(string id)
-        {            
-            await DataStorageHandler.Save($"left_{id}", Request.Body);
+        [HttpPost("{correlationId}/left")]
+        public async Task<IActionResult> PostLeft(string correlationId, BaseRequest<SaveDataModel> request)
+        {
+            request.Request.CorrelationId = correlationId;
+            request.Request.Side = SideEnum.Left;
 
-            return CreatedAtAction(nameof(GetDiff), new { id }, null);
+            var result = await Mediator.Send<BaseRequest<SaveDataModel>, BaseResponse<SaveDataModel>>(request);
+
+            return CreatedAtAction(nameof(GetDiff), new { correlationId }, result);
         }
 
         // POST v1/diff/id/right
@@ -41,12 +39,15 @@ namespace Waes.Diff.Api.Controllers
         /// Stores the right data to be analyzed
         /// </summary>
         /// <param name="id">The identification</param>
-        [HttpPost("{id}/right")]
-        public async Task<IActionResult> PostRight(string id)
+        [HttpPost("{correlationId}/right")]
+        public async Task<IActionResult> PostRight(string correlationId, BaseRequest<SaveDataModel> request)
         {
-            await DataStorageHandler.Save($"right_{id}", Request.Body);
+            request.Request.CorrelationId = correlationId;
+            request.Request.Side = SideEnum.Right;
 
-            return CreatedAtAction(nameof(GetDiff), new { id }, null);
+            var result = await Mediator.Send<BaseRequest<SaveDataModel>, BaseResponse<SaveDataModel>>(request);
+
+            return CreatedAtAction(nameof(GetDiff), new { correlationId }, result);
         }
 
         // GET v1/diff/id
@@ -55,12 +56,12 @@ namespace Waes.Diff.Api.Controllers
         /// </summary>
         /// <param name="id">The identification</param>
         /// <returns>The DiffResponse</returns>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetDiff(string id)
-        {            
-            var result = await DiffHandler.Diff(id);
+        [HttpGet("{correlationId}")]
+        public async Task<IActionResult> GetDiff(string correlationId)
+        {
+            var result = await Mediator.Send<string, BaseResponse<DiffInfo>>(correlationId);
 
-            return Ok(DiffResponseMapper.Map(result));
+            return Ok(result);
         }
     }
 }

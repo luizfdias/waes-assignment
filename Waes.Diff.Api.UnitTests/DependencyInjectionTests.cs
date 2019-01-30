@@ -2,16 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using Waes.Diff.Api.Interfaces;
-using Waes.Diff.Api.Mappers;
 using Waes.Diff.Api.UnitTests.AutoData;
 using Waes.Diff.Core;
 using Waes.Diff.Core.Handlers;
 using Waes.Diff.Core.Interfaces;
-using Waes.Diff.Infrastructure.AzureBlobStorage.Factories;
-using Waes.Diff.Infrastructure.AzureBlobStorage.Interfaces;
-using Waes.Diff.Infrastructure.AzureBlobStorage.Repositories;
-using Waes.Diff.Infrastructure.AzureBlobStorage.Wrappers;
 using Waes.Diff.Infrastructure.MemoryStorage.Repositories;
 using Xunit;
 
@@ -20,7 +14,6 @@ namespace Waes.Diff.Api.UnitTests
     public class DependencyInjectionTests
     {
         [Theory]
-        [InlineNSubstituteData(typeof(IDiffResponseMapper), typeof(DiffResponseMapper))]
         [InlineNSubstituteData(typeof(IDiffHandler), typeof(DiffHandler))]
         [InlineNSubstituteData(typeof(IDataStorageHandler), typeof(DataStorageHandler))]
         [InlineNSubstituteData(typeof(IDataStorage), typeof(MemoryRepository))]
@@ -51,21 +44,6 @@ namespace Waes.Diff.Api.UnitTests
 
             var sizeChecker = (SizeChecker)nullabilityChecker.DiffChecker;
             sizeChecker.DiffChecker.Should().BeOfType<BytesChecker>();
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void GetService_WhenStorageTypeIsAzureBlob_ShouldResolveRepositoryAsExpected(ServiceCollection serviceCollection,
-            IConfiguration configuration)
-        {
-            configuration["AppSettings:StorageType"] = "AzureBlob";
-
-            new Startup(configuration).ConfigureServices(serviceCollection);
-
-            var container = serviceCollection.BuildServiceProvider();
-
-            container.GetService<IDataStorage>().Should().BeOfType<BlobStorageRepository>();
-            container.GetService<IBlobStorageFactory>().Should().BeOfType<BlobStorageFactory>();
-            container.GetService<ICloudBlobContainerWrapper>().Should().BeOfType<CloudBlobContainerWrapper>();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Waes.Diff.Core
         /// <param name="leftData">The left data</param>
         /// <param name="rightData">The right data</param>
         /// <returns>The result of the diff</returns>
-        public DiffResult Check(byte[] leftData, byte[] rightData)
+        public DiffResult Check(Data leftData, Data rightData)
         {            
             //// I assumed for this assignment, if the data size is different, it is not necessary to compare the data itself.
             if (leftData.Length != rightData.Length)

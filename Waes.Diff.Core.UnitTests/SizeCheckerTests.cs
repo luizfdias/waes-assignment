@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Idioms;
 using FluentAssertions;
 using NSubstitute;
+using System.Text;
 using Waes.Diff.Core.Models;
 using Waes.Diff.Core.UnitTests.AutoData;
 using Waes.Diff.Core.UnitTests.Helpers;
@@ -22,14 +23,14 @@ namespace Waes.Diff.Core.UnitTests
         [InlineNSubstituteData("   ", "   ", true)]
         [InlineNSubstituteData("abc1234", "abc123", false)]
         [InlineNSubstituteData("    ", "  ", false)]
-        public void Check_WhenBytesAreProvided_ShouldReturnSameSizeAsExpected(string leftData, string rightData, bool resultExpected, SizeChecker sut)
-        {
-            var leftBytes = BinaryDataWriter.Write(leftData);
-            var rightBytes = BinaryDataWriter.Write(rightData);
+        public void Check_WhenDataProvided_ShouldReturnResultAsExpected(string leftContent, string rightContent, bool resultExpected, SizeChecker sut)
+        {            
+            var leftData =  DataHelper.CreateData(Encoding.UTF8.GetBytes(leftContent), leftContent.Length, SideEnum.Left);
+            var rightData = DataHelper.CreateData(Encoding.UTF8.GetBytes(rightContent), rightContent.Length, SideEnum.Right);
 
-            sut.DiffChecker.Check(leftBytes, rightBytes).Returns(new DiffResult());
+            sut.DiffChecker.Check(leftData, rightData).Returns(new DiffResult());
 
-            var result = sut.Check(leftBytes, rightBytes);
+            var result = sut.Check(leftData, rightData);
 
             result.SameSize.Should().Be(resultExpected);
         }        

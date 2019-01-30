@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Core.Interfaces
 {
@@ -11,8 +11,7 @@ namespace Waes.Diff.Core.Interfaces
         /// <summary>
         /// Saves the data in a DataStorage
         /// </summary>
-        /// <param name="id">The identification of data</param>
-        /// <param name="stream">The stream to be handled</param>
-        Task Save(string id, Stream stream);
+        /// <param name="data">The data</param>        
+        Task Save(Data data);
     }
 }

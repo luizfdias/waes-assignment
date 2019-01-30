@@ -8,16 +8,10 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Waes.Diff.Api.Filters;
-using Waes.Diff.Api.Interfaces;
-using Waes.Diff.Api.Mappers;
 using Waes.Diff.Api.Modules;
 using Waes.Diff.Core;
 using Waes.Diff.Core.Handlers;
 using Waes.Diff.Core.Interfaces;
-using Waes.Diff.Infrastructure.AzureBlobStorage.Factories;
-using Waes.Diff.Infrastructure.AzureBlobStorage.Interfaces;
-using Waes.Diff.Infrastructure.AzureBlobStorage.Repositories;
-using Waes.Diff.Infrastructure.AzureBlobStorage.Wrappers;
 using Waes.Diff.Infrastructure.MemoryStorage.Repositories;
 
 namespace Waes.Diff.Api
@@ -36,10 +30,12 @@ namespace Waes.Diff.Api
             services.AddSerilogModule();
             services.AddMvc(options => options.Filters.Add<ExceptionsFilter>())
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                    .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
+                    .AddJsonOptions(options => 
+                    {
+                        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    });
 
             //// Api
-            services.AddTransient<IDiffResponseMapper, DiffResponseMapper>();
 
             //// Core
             services.AddTransient<IDiffChecker>(x => new NullabilityChecker(new SizeChecker(new BytesChecker())));
@@ -50,9 +46,7 @@ namespace Waes.Diff.Api
             //// If the StorageType is AzureBlob, I setup the DataStorage with the BlobStorageRepository. If not, I use the MemoryRepository
             if (Configuration["AppSettings:StorageType"].Equals("AzureBlob", StringComparison.InvariantCultureIgnoreCase))
             {
-                services.AddTransient<IDataStorage, BlobStorageRepository>();
-                services.AddTransient<IBlobStorageFactory>(x => new BlobStorageFactory(Configuration["BlobStorage:ConnectionString"]));
-                services.AddTransient<ICloudBlobContainerWrapper>(x => new CloudBlobContainerWrapper(x.GetService<IBlobStorageFactory>(), Configuration["BlobStorage:ContainerName"]));
+                
             }
             else
             {

@@ -22,7 +22,7 @@ namespace Waes.Diff.Core
         /// <param name="leftData">The left data</param>
         /// <param name="rightData">The right data</param>
         /// <returns>The result of the diff</returns>
-        public DiffResult Check(byte[] leftData, byte[] rightData)
+        public DiffResult Check(Data leftData, Data rightData)
         {
             if (leftData == null)
             {

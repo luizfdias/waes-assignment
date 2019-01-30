@@ -11,8 +11,8 @@ namespace Waes.Diff.Core.Interfaces
         /// <summary>
         /// Starts the diff analyzes
         /// </summary>
-        /// <param name="id">The identification</param>
+        /// <param name="correlationId">The correlation identification</param>
         /// <returns>The DiffResult</returns>
-        Task<DiffResult> Diff(string id);
+        Task<DiffResult> Diff(string correlationId);
     }
 }

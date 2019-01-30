@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Waes.Diff.Core.Interfaces;
+using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Infrastructure.MemoryStorage.Repositories
 {
@@ -30,16 +32,20 @@ namespace Waes.Diff.Infrastructure.MemoryStorage.Repositories
             DataExpirationInSeconds = dataExpirationInSeconds;
         }        
 
-        public async Task<byte[]> Get(string id)
-        {
-            return MemoryCache.Get<byte[]>(id);
-        }
-
-        public async Task Save(string id, byte[] data)
+        public async Task Save(Data data)
         {            
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(DataExpirationInSeconds));
 
-            MemoryCache.Set<byte[]>(id, data, cacheEntryOptions);
+            MemoryCache.Set(data.CorrelationId + data.Side.ToString(), data, cacheEntryOptions);
+        }
+
+        public async Task<IEnumerable<Data>> GetByCorrelationId(string correlationId)
+        {            
+            return new List<Data>
+            {
+                MemoryCache.Get<Data>(correlationId + SideEnum.Left),
+                MemoryCache.Get<Data>(correlationId + SideEnum.Right)
+            };            
         }
     }
 }

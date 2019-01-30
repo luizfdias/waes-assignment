@@ -5,7 +5,6 @@ using NSubstitute;
 using Waes.Diff.Api.Contracts;
 using Waes.Diff.Api.Controllers;
 using Waes.Diff.Api.UnitTests.AutoData;
-using Waes.Diff.Core.Models;
 using Xunit;
 
 namespace Waes.Diff.Api.UnitTests.Controllers
@@ -19,36 +18,36 @@ namespace Waes.Diff.Api.UnitTests.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void PostLeft_WhenCalled_ShouldCallSaveAsExpected(DiffController sut, string id)
+        public async void PostLeft_WhenCalled_ShouldCallSaveAsExpected(DiffController sut, string correlationId, BaseRequest<SaveDataModel> request, BaseResponse<SaveDataModel> response)
         {
-            var result = await sut.PostLeft(id);
+            sut.Mediator.Send<BaseRequest<SaveDataModel>, BaseResponse<SaveDataModel>>(request).Returns(response);
 
-            await sut.DataStorageHandler.Received(1).Save($"left_{id}", sut.Request.Body);
+            var result = await sut.PostLeft(correlationId, request);            
 
             result.Should().BeOfType<CreatedAtActionResult>();
+            ((CreatedAtActionResult)result).Value.Should().BeOfType<BaseResponse<SaveDataModel>>();
         }
 
         [Theory, AutoNSubstituteData]
-        public async void PostRight_WhenCalled_ShouldCallSaveAsExpected(DiffController sut, string id)
+        public async void PostRight_WhenCalled_ShouldCallSaveAsExpected(DiffController sut, string correlationId, BaseRequest<SaveDataModel> request, BaseResponse<SaveDataModel> response)
         {
-            var result = await sut.PostRight(id);
+            sut.Mediator.Send<BaseRequest<SaveDataModel>, BaseResponse<SaveDataModel>>(request).Returns(response);
 
-            await sut.DataStorageHandler.Received(1).Save($"right_{id}", sut.Request.Body);
+            var result = await sut.PostRight(correlationId, request);
 
             result.Should().BeOfType<CreatedAtActionResult>();
+            ((CreatedAtActionResult)result).Value.Should().BeOfType<BaseResponse<SaveDataModel>>();
         }
 
         [Theory, AutoNSubstituteData]
-        public async void GetDiff_WhenCalled_ShouldReturnsDiffResponse(DiffController sut, string id, DiffResult diffResult, DiffResponse diffResponse)
+        public async void GetDiff_WhenCalled_ShouldReturnsDiffResponse(DiffController sut, string correlationId, BaseResponse<DiffInfo> response)
         {
-            sut.DiffHandler.Diff(id).Returns(diffResult);
+            sut.Mediator.Send<string, BaseResponse<DiffInfo>>(correlationId).Returns(response);
 
-            sut.DiffResponseMapper.Map(diffResult).Returns(diffResponse);
-
-            var result = await sut.GetDiff(id);
+            var result = await sut.GetDiff(correlationId);
 
             result.Should().BeOfType<OkObjectResult>();
-            ((OkObjectResult)result).Value.Should().BeOfType<DiffResponse>();
+            ((OkObjectResult)result).Value.Should().BeOfType<BaseResponse<DiffInfo>>();
         }
     }
 }

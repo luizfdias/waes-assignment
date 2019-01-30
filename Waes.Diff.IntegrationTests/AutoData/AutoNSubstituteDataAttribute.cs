@@ -10,7 +10,6 @@ using NSubstitute;
 using Waes.Diff.Api;
 using Waes.Diff.Api.Controllers;
 using Waes.Diff.Api.Interfaces;
-using Waes.Diff.Core.Interfaces;
 
 namespace Waes.Diff.IntegrationTests.AutoData
 {
@@ -34,9 +33,7 @@ namespace Waes.Diff.IntegrationTests.AutoData
             var container = serviceCollection.BuildServiceProvider();
 
             var diffController = new DiffController(
-                container.GetService<IDataStorageHandler>(),
-                container.GetService<IDiffHandler>(),
-                container.GetService<IDiffResponseMapper>());
+                container.GetService<IMediator>());
 
             diffController.ControllerContext = new ControllerContext();
             diffController.ControllerContext.HttpContext = new DefaultHttpContext();            

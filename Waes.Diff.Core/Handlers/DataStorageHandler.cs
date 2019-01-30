@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-using Waes.Diff.Core.Extensions;
 using Waes.Diff.Core.Interfaces;
+using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Core.Handlers
 {
@@ -19,16 +17,9 @@ namespace Waes.Diff.Core.Handlers
             DataStorage = dataStorage ?? throw new ArgumentNullException(nameof(dataStorage));
         }
 
-        public async Task Save(string id, Stream stream)
+        public async Task Save(Data data)
         {
-            var result = await stream.ConvertToByteArrayAsync();
-
-            var text = Encoding.UTF8.GetString(result);
-
-            if (text.IsBase64String())
-                await DataStorage.Save(id, Convert.FromBase64String(text));
-            else
-                await DataStorage.Save(id, result);
+            await DataStorage.Save(data);
         }
     }
 }

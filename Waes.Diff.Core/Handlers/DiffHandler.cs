@@ -1,7 +1,5 @@
-﻿using System;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Waes.Diff.Core.Exceptions;
 using Waes.Diff.Core.Interfaces;
 using Waes.Diff.Core.Models;
 
@@ -22,23 +20,15 @@ namespace Waes.Diff.Core.Handlers
             DiffChecker = diffChecker ?? throw new System.ArgumentNullException(nameof(diffChecker));
         }
 
-        public async Task<DiffResult> Diff(string id)
+        public async Task<DiffResult> Diff(string correlationId)
         {
-            var leftId = $"left_{id}";
-            var rightId = $"right_{id}";
-
-            var task1 = DataStorage.Get(leftId);
-            var task2 = DataStorage.Get(rightId);
-
-            await Task.WhenAll(task1, task2);
-
-            var leftData = task1.Result ?? throw new DataNotFoundException(leftId);
-            var rightData = task2.Result ?? throw new DataNotFoundException(rightId);
+            var data = await DataStorage.GetByCorrelationId(correlationId);
                         
-            var result = DiffChecker.Check(leftData, rightData);
+            var result = DiffChecker.Check(
+                data.FirstOrDefault(x => x.Side == SideEnum.Left), 
+                data.FirstOrDefault(x => x.Side == SideEnum.Right));
 
-            result.LeftDataInfo = new DataInfo(leftId, leftData.Length);
-            result.RightDataInfo = new DataInfo(rightId, rightData.Length);
+            result.Data = data;
 
             return result;
         }

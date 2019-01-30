@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Waes.Diff.Core.Models;
 
 namespace Waes.Diff.Core.Interfaces
 {
@@ -14,17 +16,16 @@ namespace Waes.Diff.Core.Interfaces
     {
         /// <summary>
         /// Saves the data in a DataStorage
-        /// </summary>
-        /// <param name="id">The identification of data</param>
-        /// <param name="data">The data to be saved</param>
-        Task Save(string id, byte[] data);
+        /// </summary>        
+        /// <param name="data">The data</param>
+        Task Save(Data data);
 
 
         /// <summary>
         /// Retrieves the data stored
         /// </summary>
-        /// <param name="id">The identification of data</param>
-        /// <returns>The data</returns>
-        Task<byte[]> Get(string id);
+        /// <param name="correlationId">The correlation identification of data</param>
+        /// <returns>An IEnumerable of data</returns>
+        Task<IEnumerable<Data>> GetByCorrelationId(string correlationId);
     }
 }

@@ -1,10 +1,11 @@
 ﻿using AutoFixture.Idioms;
 using FluentAssertions;
 using NSubstitute;
-using Waes.Diff.Core.Exceptions;
+using System.Collections.Generic;
 using Waes.Diff.Core.Handlers;
 using Waes.Diff.Core.Models;
 using Waes.Diff.Core.UnitTests.AutoData;
+using Waes.Diff.Core.UnitTests.Helpers;
 using Xunit;
 
 namespace Waes.Diff.Core.UnitTests.Handlers
@@ -18,42 +19,22 @@ namespace Waes.Diff.Core.UnitTests.Handlers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Diff_WhenDataFound_ShouldReturnDiffResult(DiffHandler sut, string id, byte[] data1, byte[] data2, DiffResult diffResult)
+        public async void Diff_WhenDataFound_ShouldReturnDiffResult(DiffHandler sut, string correlationId, DiffResult diffResult)
         {
-            sut.DataStorage.Get($"left_{id}").Returns(data1);
-            sut.DataStorage.Get($"right_{id}").Returns(data2);
+            var data = new List<Data>
+            {
+                DataHelper.CreateData(new byte[] { 1, 2, 3}, 3, SideEnum.Left),
+                DataHelper.CreateData(new byte[] { 1, 2, 3}, 3, SideEnum.Right)
+            };
 
-            sut.DiffChecker.Check(data1, data2).Returns(diffResult);
+            sut.DataStorage.GetByCorrelationId(correlationId).Returns(data);
 
-            var result = await sut.Diff(id);
+            sut.DiffChecker.Check(data[0], data[1]).Returns(diffResult);
+
+            var result = await sut.Diff(correlationId);
 
             result.Should().Be(diffResult);
-
-            result.LeftDataInfo.Id.Should().Be($"left_{id}");
-            result.LeftDataInfo.Length.Should().Be(data1.Length);
-
-            result.RightDataInfo.Id.Should().Be($"right_{id}");
-            result.RightDataInfo.Length.Should().Be(data2.Length);
-        }
-
-        [Theory, AutoNSubstituteData]
-        public async void Diff_WhenLeftDataNotFound_ShouldThrowDataNotFoundException(DiffHandler sut, string id, byte[] data2)
-        {
-            sut.DataStorage.Get($"left_{id}").Returns((byte[])null);
-            sut.DataStorage.Get($"right_{id}").Returns(data2);
-            
-            var exception = await Assert.ThrowsAsync<DataNotFoundException>(() => sut.Diff(id));
-            exception.Id.Should().Be($"left_{id}");
-        }
-
-        [Theory, AutoNSubstituteData]
-        public async void Diff_WhenRightDataNotFound_ShouldThrowDataNotFoundException(DiffHandler sut, string id, byte[] data1)
-        {
-            sut.DataStorage.Get($"left_{id}").Returns(data1);
-            sut.DataStorage.Get($"right_{id}").Returns((byte[])null);
-
-            var exception = await Assert.ThrowsAsync<DataNotFoundException>(() => sut.Diff(id));
-            exception.Id.Should().Be($"right_{id}");
-        }
+            result.Data.Should().BeEquivalentTo(data);
+        }        
     }
 }

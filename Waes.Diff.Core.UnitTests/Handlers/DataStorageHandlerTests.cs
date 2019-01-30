@@ -1,7 +1,7 @@
 ﻿using AutoFixture.Idioms;
 using NSubstitute;
-using System.IO;
 using Waes.Diff.Core.Handlers;
+using Waes.Diff.Core.Models;
 using Waes.Diff.Core.UnitTests.AutoData;
 using Xunit;
 
@@ -16,11 +16,11 @@ namespace Waes.Diff.Core.UnitTests.Handlers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Save_WhenStreamIsPassedToSave_ShouldCallDataStorageSaveWithByteArrayParameters(DataStorageHandler sut, Stream stream, string id)
+        public async void Save_WhenDataIsPassedToSave_ShouldCallSaveFromDataStorage(DataStorageHandler sut, Data data)
         {
-            await sut.Save(id, stream);
+            await sut.Save(data);
 
-            await sut.DataStorage.Received(1).Save(id, Arg.Any<byte[]>());
+            await sut.DataStorage.Received(1).Save(data);
         }
     }
 }

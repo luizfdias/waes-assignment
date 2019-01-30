@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
 using System.Net;
-using Waes.Diff.Core.Exceptions;
 
 namespace Waes.Diff.Api.Filters
 {
@@ -13,28 +12,15 @@ namespace Waes.Diff.Api.Filters
         public ExceptionsFilter(ILogger logger)
         {
             Logger = logger;
-        }        
+        }
 
         public override void OnException(ExceptionContext context)
-        {            
-            switch (context.Exception)
+        {
+            Logger.Error(context.Exception, "An unexpected error occurred");
+            context.Result = new JsonResult(new { Message = "Unexpected error" })
             {
-                case DataNotFoundException bdex:
-                    context.Result = new JsonResult(new { bdex.Message })
-                    {
-                        StatusCode = (int)HttpStatusCode.NotFound
-                    };
-                    break;                
-                default:
-                    {
-                        Logger.Error(context.Exception, "An unexpected error occurred");
-                        context.Result = new JsonResult(new { Message = "Unexpected error" })
-                        {
-                            StatusCode = (int)HttpStatusCode.InternalServerError
-                        };
-                        break;
-                    }
-            }
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
 }
