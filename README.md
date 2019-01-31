@@ -24,6 +24,10 @@ Here is a sample of that:
   }
 ```
 
+To execute the API and MongoDB with Docker, you must choose the docker-compose as the startup project.
+
+![alt text](https://i.imgur.com/YtPeq4u.png)
+
 ## How to use the Diff Api
 
 The API has 3 entry points as following:
