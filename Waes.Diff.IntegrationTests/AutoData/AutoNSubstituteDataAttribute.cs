@@ -1,15 +1,18 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoNSubstitute;
 using AutoFixture.Xunit2;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using NSubstitute;
 using Waes.Diff.Api;
 using Waes.Diff.Api.Controllers;
 using Waes.Diff.Api.Interfaces;
+using Waes.Diff.Core.Interfaces;
 
 namespace Waes.Diff.IntegrationTests.AutoData
 {
@@ -20,15 +23,22 @@ namespace Waes.Diff.IntegrationTests.AutoData
             var fixture = new Fixture().Customize(new AutoNSubstituteCustomization());
 
             var configuration = Substitute.For<IConfiguration>();
+            var hostingEnvironment = Substitute.For<IHostingEnvironment>();
 
-            configuration["MemoryStorage:DataExpirationInSeconds"].Returns("60");
-            configuration["AppSettings:StorageType"].Returns("Memory");
+            configuration["MongoDB:ConnectionString"].Returns("mongodb://localhost:27017");
+            configuration["MongoDB:Container"].Returns("mongodb://mongo:27017");
+            configuration["MongoDB:Database"].Returns("WaesAssignment");
 
             fixture.Register(() => configuration);
 
             var serviceCollection = Substitute.For<ServiceCollection>();
 
-            new Startup(configuration).ConfigureServices(serviceCollection);
+            new Startup(configuration, hostingEnvironment).ConfigureServices(serviceCollection);
+
+            serviceCollection.Replace(new ServiceDescriptor(
+                typeof(IDataStorage),
+                typeof(FakeDataStorage),
+                ServiceLifetime.Transient));
 
             var container = serviceCollection.BuildServiceProvider();
 

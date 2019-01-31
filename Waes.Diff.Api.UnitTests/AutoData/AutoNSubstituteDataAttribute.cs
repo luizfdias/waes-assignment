@@ -1,8 +1,9 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoNSubstitute;
 using AutoFixture.Xunit2;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using NSubstitute;
+using Waes.Diff.Infrastructure;
 
 namespace Waes.Diff.Api.UnitTests.AutoData
 {
@@ -12,14 +13,17 @@ namespace Waes.Diff.Api.UnitTests.AutoData
         {
             var fixture = new Fixture().Customize(new AutoNSubstituteCustomization());
 
-            var configuration = Substitute.For<IConfiguration>();
-            configuration["BlobStorage:ConnectionString"].Returns("DefaultEndpointsProtocol=https;AccountName=waesdiffstoragefake;AccountKey=saTFakeKey==;EndpointSuffix=core.windows.net");
-            configuration["BlobStorage:ContainerName"].Returns("ContainerFake");
+            var options = Substitute.For<IOptions<StorageSettings>>();
+            options.Value.Returns(new StorageSettings
+            {
+                ConnectionString = "mongodb://localhost:27017",
+                Container = "mongodb://mongo:27017",
+                Development = true,
+                IsContained = false,
+                Database = "WaesAssignment"
+            });
 
-            configuration["MemoryStorage:DataExpirationInSeconds"].Returns("60");
-            configuration["AppSettings:StorageType"].Returns("Memory");
-
-            fixture.Register(() => configuration);
+            fixture.Register(() => options);
 
             return fixture;
         })

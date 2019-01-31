@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
 using System.Net;
 using Waes.Diff.Core.Exceptions;
+using Waes.Diff.Infrastructure.MongoDBStorage.Exceptions;
 
 namespace Waes.Diff.Api.Filters
 {
@@ -23,6 +24,12 @@ namespace Waes.Diff.Api.Filters
                     context.Result = new JsonResult(new { dataNotFoundException.Message })
                     {
                         StatusCode = (int)HttpStatusCode.NotFound
+                    };
+                    break;
+                case CorrelationIdAlreadyUsedForDataException correlationIdAlreadyUsedForDataException:
+                    context.Result = new JsonResult(new { correlationIdAlreadyUsedForDataException.Message })
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
                     };
                     break;
                 default:

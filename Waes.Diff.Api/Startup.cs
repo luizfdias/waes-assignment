@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using Waes.Diff.Api.Contracts;
 using Waes.Diff.Api.Filters;
@@ -16,21 +14,37 @@ using Waes.Diff.Api.Services;
 using Waes.Diff.Core;
 using Waes.Diff.Core.Handlers;
 using Waes.Diff.Core.Interfaces;
-using Waes.Diff.Infrastructure.MemoryStorage.Repositories;
+using Waes.Diff.Infrastructure;
+using Waes.Diff.Infrastructure.MongoDBStorage;
+using Waes.Diff.Infrastructure.MongoDBStorage.Interfaces;
+using Waes.Diff.Infrastructure.MongoDBStorage.Repositories;
 
 namespace Waes.Diff.Api
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
+            HostingEnvironment = hostingEnvironment;
         }        
 
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
+            services.AddOptions();
+            services.Configure<StorageSettings>(
+                options =>
+                {
+                    options.ConnectionString = Configuration["MongoDb:ConnectionString"];
+                    options.Database = Configuration["MongoDb:Database"];
+                    options.Container = Configuration["MongoDb:Container"];
+                    options.IsContained = Configuration["DOTNET_RUNNING_IN_CONTAINER"] != null;
+                    options.Development = HostingEnvironment.IsDevelopment();
+                });
+
             services.AddSerilogModule();
             services.AddMvc(options => options.Filters.Add<ExceptionsFilter>())
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -51,9 +65,8 @@ namespace Waes.Diff.Api
             services.AddTransient<IDiffHandler, DiffHandler>();
 
             //// Infrastructure            
-            services.AddTransient<IDataStorage>(x => new MemoryRepository(x.GetService<IMemoryCache>(), Convert.ToInt32(Configuration["MemoryStorage:DataExpirationInSeconds"])));
-            
-            services.AddMemoryCache();            
+            services.AddTransient<IDataStorage, DataRepository>();
+            services.AddTransient<IMongoDBContext, MongoDBContext>();
         }
 
         [ExcludeFromCodeCoverage]
