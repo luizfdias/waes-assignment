@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
-using Waes.Diff.Infrastructure.UnitTests.AutoData;
+using Waes.Assignment.Infrastructure.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Diff.Infrastructure.UnitTests.MongoStorage
+namespace Waes.Assignment.Infrastructure.UnitTests.MongoStorage
 {
     public class StorageSettingsTests
     {

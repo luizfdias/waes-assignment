@@ -3,9 +3,9 @@ using AutoFixture.AutoNSubstitute;
 using AutoFixture.Xunit2;
 using Microsoft.Extensions.Options;
 using NSubstitute;
-using Waes.Diff.Infrastructure;
+using Waes.Assignment.Infrastructure;
 
-namespace Waes.Diff.Api.UnitTests.AutoData
+namespace Waes.Assignment.Api.UnitTests.AutoData
 {
     public class AutoNSubstituteDataAttribute : AutoDataAttribute
     {

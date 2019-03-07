@@ -2,13 +2,13 @@
 using FluentAssertions;
 using NSubstitute;
 using System;
-using Waes.Diff.Api.Contracts;
-using Waes.Diff.Api.Services;
-using Waes.Diff.Api.UnitTests.AutoData;
-using Waes.Diff.Core.Models;
+using Waes.Assignment.Api.Contracts;
+using Waes.Assignment.Api.Services;
+using Waes.Assignment.Api.UnitTests.AutoData;
+using Waes.Assignment.Domain.Models;
 using Xunit;
 
-namespace Waes.Diff.Api.UnitTests.Services
+namespace Waes.Assignment.Api.UnitTests.Services
 {
     public class DataStoreServiceTests
     {

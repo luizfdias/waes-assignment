@@ -1,11 +1,11 @@
 ﻿using AutoFixture.Idioms;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
-using Waes.Diff.Infrastructure.MongoDBStorage;
-using Waes.Diff.Infrastructure.UnitTests.AutoData;
+using Waes.Assignment.Infrastructure.MongoDBStorage;
+using Waes.Assignment.Infrastructure.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Diff.Infrastructure.UnitTests.MongoStorage
+namespace Waes.Assignment.Infrastructure.UnitTests.MongoStorage
 {
     public class MongoDBContextTests
     {

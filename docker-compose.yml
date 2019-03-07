@@ -1,11 +1,11 @@
 version: '3.4'
 
 services:
-  waes.diff.api:
+  Waes.Assignment.Api:
     image: ${DOCKER_REGISTRY-}waesdiffapi
     build:
       context: .
-      dockerfile: Waes.Diff.Api/Dockerfile
+      dockerfile: Waes.Assignment.Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:

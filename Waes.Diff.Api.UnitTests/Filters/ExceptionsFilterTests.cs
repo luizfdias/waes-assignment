@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Net;
-using Waes.Diff.Api.Filters;
-using Waes.Diff.Api.UnitTests.AutoData;
-using Waes.Diff.Core.Exceptions;
-using Waes.Diff.Infrastructure.MongoDBStorage.Exceptions;
+using Waes.Assignment.Api.Filters;
+using Waes.Assignment.Api.UnitTests.AutoData;
+using Waes.Assignment.Domain.Exceptions;
+using Waes.Assignment.Infrastructure.MongoDBStorage.Exceptions;
 using Xunit;
 
-namespace Waes.Diff.Api.UnitTests.Filters
+namespace Waes.Assignment.Api.UnitTests.Filters
 {
     public class ExceptionsFilterTests
     {        

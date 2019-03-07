@@ -1,7 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using Xunit;
 
-namespace Waes.Diff.Infrastructure.UnitTests.AutoData
+namespace Waes.Assignment.Infrastructure.UnitTests.AutoData
 {
     public class InlineNSubstituteDataAttribute : CompositeDataAttribute
     {

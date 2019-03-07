@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Waes.Diff.Core.Factories;
-using Waes.Diff.Core.Interfaces;
-using Waes.Diff.Core.Models;
-using Waes.Diff.Infrastructure.MongoDBStorage.Exceptions;
+using Waes.Assignment.Domain.Factories;
+using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Domain.Models;
+using Waes.Assignment.Infrastructure.MongoDBStorage.Exceptions;
 
 namespace Waes.Diff.IntegrationTests
 {

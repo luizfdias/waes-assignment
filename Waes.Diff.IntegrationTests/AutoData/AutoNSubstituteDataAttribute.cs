@@ -9,10 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NSubstitute;
-using Waes.Diff.Api;
-using Waes.Diff.Api.Controllers;
-using Waes.Diff.Api.Interfaces;
-using Waes.Diff.Core.Interfaces;
+using Waes.Assignment.Api;
+using Waes.Assignment.Api.Controllers;
+using Waes.Assignment.Api.Interfaces;
+using Waes.Assignment.Domain.Interfaces;
 
 namespace Waes.Diff.IntegrationTests.AutoData
 {

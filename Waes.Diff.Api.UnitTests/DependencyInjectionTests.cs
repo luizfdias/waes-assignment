@@ -5,20 +5,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using System;
-using Waes.Diff.Api.Contracts;
-using Waes.Diff.Api.Interfaces;
-using Waes.Diff.Api.Services;
-using Waes.Diff.Api.UnitTests.AutoData;
-using Waes.Diff.Core;
-using Waes.Diff.Core.Handlers;
-using Waes.Diff.Core.Interfaces;
-using Waes.Diff.Infrastructure;
-using Waes.Diff.Infrastructure.MongoDBStorage;
-using Waes.Diff.Infrastructure.MongoDBStorage.Interfaces;
-using Waes.Diff.Infrastructure.MongoDBStorage.Repositories;
+using Waes.Assignment.Api.Contracts;
+using Waes.Assignment.Api.Interfaces;
+using Waes.Assignment.Api.Services;
+using Waes.Assignment.Api.UnitTests.AutoData;
+using Waes.Assignment.Domain;
+using Waes.Assignment.Domain.Handlers;
+using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Infrastructure;
+using Waes.Assignment.Infrastructure.MongoDBStorage;
+using Waes.Assignment.Infrastructure.MongoDBStorage.Interfaces;
+using Waes.Assignment.Infrastructure.MongoDBStorage.Repositories;
 using Xunit;
 
-namespace Waes.Diff.Api.UnitTests
+namespace Waes.Assignment.Api.UnitTests
 {
     public class DependencyInjectionTests
     {

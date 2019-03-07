@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System;
-using Waes.Diff.Api.Contracts;
-using Waes.Diff.Api.Contracts.Enums;
-using Waes.Diff.Api.Controllers;
-using Waes.Diff.Core.Factories;
+using Waes.Assignment.Api.Contracts;
+using Waes.Assignment.Api.Contracts.Enums;
+using Waes.Assignment.Api.Controllers;
+using Waes.Assignment.Domain.Factories;
 using Waes.Diff.IntegrationTests.AutoData;
 using Xunit;
 

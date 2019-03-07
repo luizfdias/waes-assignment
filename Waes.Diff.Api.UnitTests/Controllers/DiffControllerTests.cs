@@ -2,12 +2,12 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
-using Waes.Diff.Api.Contracts;
-using Waes.Diff.Api.Controllers;
-using Waes.Diff.Api.UnitTests.AutoData;
+using Waes.Assignment.Api.Contracts;
+using Waes.Assignment.Api.Controllers;
+using Waes.Assignment.Api.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Diff.Api.UnitTests.Controllers
+namespace Waes.Assignment.Api.UnitTests.Controllers
 {
     public class DiffControllerTests
     {

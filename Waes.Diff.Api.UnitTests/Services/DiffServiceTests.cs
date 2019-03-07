@@ -4,17 +4,17 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Waes.Diff.Api.Contracts.Enums;
-using Waes.Diff.Api.Controllers;
-using Waes.Diff.Api.Factories;
-using Waes.Diff.Api.Services;
-using Waes.Diff.Api.UnitTests.AutoData;
-using Waes.Diff.Core.Factories;
-using Waes.Diff.Core.Models;
+using Waes.Assignment.Api.Contracts.Enums;
+using Waes.Assignment.Api.Controllers;
+using Waes.Assignment.Api.Factories;
+using Waes.Assignment.Api.Services;
+using Waes.Assignment.Api.UnitTests.AutoData;
+using Waes.Assignment.Domain.Factories;
+using Waes.Assignment.Domain.Models;
 using Xunit;
-using Difference = Waes.Diff.Core.Models.Difference;
+using Difference = Waes.Assignment.Domain.Models.Difference;
 
-namespace Waes.Diff.Api.UnitTests.Services
+namespace Waes.Assignment.Api.UnitTests.Services
 {
     public class DiffServiceTests
     {

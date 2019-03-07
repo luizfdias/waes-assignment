@@ -1,9 +1,9 @@
 ﻿using AutoFixture.Idioms;
-using Waes.Diff.Infrastructure.MongoDBStorage.Repositories;
-using Waes.Diff.Infrastructure.UnitTests.AutoData;
+using Waes.Assignment.Infrastructure.MongoDBStorage.Repositories;
+using Waes.Assignment.Infrastructure.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Diff.Infrastructure.UnitTests.MongoStorage.Repositories
+namespace Waes.Assignment.Infrastructure.UnitTests.MongoStorage.Repositories
 {
     public class DataRepositoryTests
     {

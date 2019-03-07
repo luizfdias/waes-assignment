@@ -2,11 +2,11 @@
 using FluentAssertions;
 using NSubstitute;
 using System;
-using Waes.Diff.Api.Interfaces;
-using Waes.Diff.Api.UnitTests.AutoData;
+using Waes.Assignment.Api.Interfaces;
+using Waes.Assignment.Api.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Diff.Api.UnitTests
+namespace Waes.Assignment.Api.UnitTests
 {
     public class MediatorTests
     {

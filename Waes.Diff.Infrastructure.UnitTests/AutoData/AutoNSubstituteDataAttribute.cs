@@ -2,7 +2,7 @@
 using AutoFixture.AutoNSubstitute;
 using AutoFixture.Xunit2;
 
-namespace Waes.Diff.Infrastructure.UnitTests.AutoData
+namespace Waes.Assignment.Infrastructure.UnitTests.AutoData
 {
     public class AutoNSubstituteDataAttribute : AutoDataAttribute
     {
