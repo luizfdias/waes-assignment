@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Waes.Assignment.Domain.Interfaces
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T : IEntity
     {
         Task<T> Add(T item);
 

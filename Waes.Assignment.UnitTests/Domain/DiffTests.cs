@@ -1,0 +1,97 @@
+﻿using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
+using Waes.Assignment.Domain.Models;
+using Waes.Assignment.Domain.ValueObjects;
+using Xunit;
+
+namespace Waes.Assignment.UnitTests.Domain
+{
+    public class DiffTests
+    {
+        [Fact]
+        public void Test()
+        {
+            var diff = Diff.CreateNotEqual(new List<DiffPosition>
+            {
+                new DiffPosition(1),
+                new DiffPosition(2),
+                new DiffPosition(3),
+                new DiffPosition(5),
+                new DiffPosition(6),
+                new DiffPosition(10),
+                new DiffPosition(13),
+                new DiffPosition(14),
+                new DiffPosition(15),
+                new DiffPosition(19),
+                new DiffPosition(20),
+            });
+
+            var result = diff.GetSequenceOfDifferences().ToArray();
+
+            result[0].StartIndex.Should().Be(0);
+            result[0].Length.Should().Be(3);
+
+            result[1].StartIndex.Should().Be(3);
+            result[1].Length.Should().Be(2);
+
+            result[2].StartIndex.Should().Be(5);
+            result[2].Length.Should().Be(1);
+
+            result[3].StartIndex.Should().Be(6);
+            result[3].Length.Should().Be(3);
+
+            result[4].StartIndex.Should().Be(9);
+            result[4].Length.Should().Be(2);
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            var diff = Diff.CreateNotEqual(new List<DiffPosition>
+            {
+                new DiffPosition(1)
+            });
+
+            var result = diff.GetSequenceOfDifferences().ToArray();
+
+            result[0].StartIndex.Should().Be(0);
+            result[0].Length.Should().Be(1);
+        }
+
+        [Fact]
+        public void Test3()
+        {
+            var diff = Diff.CreateNotEqual(new List<DiffPosition>
+            {
+                new DiffPosition(1),
+                new DiffPosition(2),
+                new DiffPosition(3),
+            });
+
+            var result = diff.GetSequenceOfDifferences().ToArray();
+
+            result[0].StartIndex.Should().Be(0);
+            result[0].Length.Should().Be(3);
+        }
+
+        [Fact]
+        public void Test4()
+        {
+            var diff = Diff.CreateNotEqual(new List<DiffPosition>
+            {
+                new DiffPosition(1),
+                new DiffPosition(2),
+                new DiffPosition(4),
+            });
+
+            var result = diff.GetSequenceOfDifferences().ToArray();
+
+            result[0].StartIndex.Should().Be(0);
+            result[0].Length.Should().Be(2);
+
+            result[1].StartIndex.Should().Be(2);
+            result[1].Length.Should().Be(1);            
+        }
+    }
+}

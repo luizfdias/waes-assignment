@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Waes.Assignment.Application.Interfaces;
@@ -16,19 +17,19 @@ namespace Waes.Assignment.Application.Services
     {
         private readonly IRepository<PayLoad> _payLoadRepository;
 
-        private readonly IDiffEngine _diffEngine;
+        private readonly IDiffDomainService<byte> _diffService;
 
         private IMediator _mediator;
 
         private readonly IMapper _mapper;
 
-        public DiffAnalyzerService(IRepository<PayLoad> payLoadRepository, IDiffEngine diffEngine, IMapper mapper,
+        public DiffAnalyzerService(IRepository<PayLoad> payLoadRepository, IDiffDomainService<byte> diffEngine, IMapper mapper,
             IMediator mediator)
         {
-            _payLoadRepository = payLoadRepository ?? throw new System.ArgumentNullException(nameof(payLoadRepository));
-            _diffEngine = diffEngine ?? throw new System.ArgumentNullException(nameof(diffEngine));
-            _mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
-            _mediator = mediator ?? throw new System.ArgumentNullException(nameof(mediator));
+            _payLoadRepository = payLoadRepository ?? throw new ArgumentNullException(nameof(payLoadRepository));
+            _diffService = diffEngine ?? throw new ArgumentNullException(nameof(diffEngine));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }        
 
         public async Task<DiffResponse> Analyze(string correlationId)
@@ -45,7 +46,9 @@ namespace Waes.Assignment.Application.Services
                 return await Task.FromResult(default(DiffResponse));
             }
 
-            var result = _diffEngine.ProcessDiff(payLoads.First(x => x.Side == SideEnum.Left), payLoads.First(x => x.Side == SideEnum.Right));
+            var result = _diffService.ProcessDiff(
+                payLoads.First(x => x.Side == SideEnum.Left).Content, 
+                payLoads.First(x => x.Side == SideEnum.Right).Content);
 
             return _mapper.Map<DiffResponse>(result);
         }

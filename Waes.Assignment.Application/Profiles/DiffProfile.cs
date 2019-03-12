@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using Waes.Assignment.Api.ViewModels;
 using Waes.Assignment.Application.ViewModels;
 using Waes.Assignment.Domain.Models;
+using Waes.Assignment.Domain.Models.Enums;
+using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Application.Profiles
 {
@@ -10,9 +13,9 @@ namespace Waes.Assignment.Application.Profiles
     {
         public DiffProfile()
         {
-            CreateMap<Diff, DiffResponse>().ConvertUsing(new DiffResponseConverter());
+            CreateMap<Diff, DiffResponse>().ConvertUsing<DiffResponseConverter>();
 
-            CreateMap<DiffInfo, DiffInfoResponse>();            
+            CreateMap<DiffSequence, DiffInfoResponse>();            
         }
     }
 
@@ -20,10 +23,17 @@ namespace Waes.Assignment.Application.Profiles
     {
         public DiffResponse Convert(Diff source, DiffResponse destination, ResolutionContext context)
         {
-            if (!source.HasDiff())
-                return new EqualResponse();
-
-            return new NotEqualResponse(context.Mapper.Map<IEnumerable<DiffInfo>, List<DiffInfoResponse>>(source.Info));
+            switch (source.Status)
+            {                
+                case DiffStatus.Equal:
+                    return new EqualResponse();
+                case DiffStatus.NotEqual:
+                    return new NotEqualResponse(context.Mapper.Map<IEnumerable<DiffInfoResponse>>(source.GetSequenceOfDifferences()));
+                case DiffStatus.NotOfEqualSize:
+                    return new NotOfEqualSizeResponse();
+                default:
+                    throw new InvalidOperationException($"Enum {source.Status} not supported");
+            }
         }
     }
 }

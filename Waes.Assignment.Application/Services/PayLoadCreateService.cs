@@ -38,12 +38,12 @@ namespace Waes.Assignment.Application.Services
                 await _mediator.Publish(
                     new WarningNotification(request.GetType().Name,
                     $"There is already a PayLoad with correlation Id | {correlationId} | and side | {payLoad.Side.ToString()} |",
-                    NotificationType.ResourceDuplicated)).ConfigureAwait(false);
+                    NotificationType.ResourceDuplicated));
 
                 return await Task.FromResult(default(CreatePayLoadResponse));
             }
 
-            var result = await _payLoadRepository.Add(payLoad).ConfigureAwait(false);
+            var result = await _payLoadRepository.Add(payLoad);
 
             return _mapper.Map<CreatePayLoadResponse>(result);
         }

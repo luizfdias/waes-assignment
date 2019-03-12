@@ -31,7 +31,7 @@ namespace Waes.Assignment.Api.Controllers
         [HttpPost("{correlationId}/left")]
         public async Task<IActionResult> Post([FromRoute]string correlationId, [FromBody]CreateLeftPayLoadRequest request)
         {
-            var result = await _payLoadCreateService.CreateNewPayload(correlationId, request).ConfigureAwait(false);
+            var result = await _payLoadCreateService.CreateNewPayload(correlationId, request);
 
             return ResponseCreated("", result);
         }

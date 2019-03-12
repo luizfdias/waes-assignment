@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Services;
 
@@ -8,7 +9,7 @@ namespace Waes.Assignment.Infrastructure.Modules
     {
         public static IServiceCollection AddDomainModule(this IServiceCollection services)
         {
-            services.AddSingleton<IDiffEngine, DiffEngine>();
+            services.AddSingleton<IDiffDomainService<Byte>, DiffDomainService>();
 
             return services;
         }

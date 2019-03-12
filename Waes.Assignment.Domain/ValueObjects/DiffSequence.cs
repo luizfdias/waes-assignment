@@ -1,15 +1,14 @@
-﻿namespace Waes.Assignment.Domain.Models
+﻿namespace Waes.Assignment.Domain.ValueObjects
 {
-    public class DiffInfo
+    public class DiffSequence
     {
         public int StartIndex { get; }
-
         public int Length { get; }
 
-        public DiffInfo(int startIndex, int length)
+        public DiffSequence(int startIndex, int length)
         {
             StartIndex = startIndex;
             Length = length;
-        }
+        }        
     }
 }
