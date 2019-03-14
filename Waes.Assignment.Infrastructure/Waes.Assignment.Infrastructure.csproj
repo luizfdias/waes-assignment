@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Waes.Assignment.Domain\Waes.Assignment.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

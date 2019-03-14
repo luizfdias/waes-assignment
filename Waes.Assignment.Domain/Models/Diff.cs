@@ -7,11 +7,9 @@ using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Domain.Models
 {
-    public class Diff : IEntity
+    public class Diff : Entity
     {
         private IEnumerable<DiffPosition> _info;
-
-        public Guid Id { get; }
 
         public DiffStatus Status { get; }
         
@@ -19,11 +17,6 @@ namespace Waes.Assignment.Domain.Models
         {
             Id = id;
             Status = status;
-        }
-
-        public bool HasDiff()
-        {
-            return _info.Any();
         }
 
         public IEnumerable<DiffSequence> GetSequenceOfDifferences()

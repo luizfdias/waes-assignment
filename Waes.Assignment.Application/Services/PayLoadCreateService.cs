@@ -13,13 +13,13 @@ namespace Waes.Assignment.Application.Services
 {
     public class PayLoadCreateService : IPayLoadCreateService
     {
-        private readonly IRepository<PayLoad> _payLoadRepository;
+        private readonly IPayLoadRepository _payLoadRepository;
 
         private readonly IMapper _mapper;
 
         private readonly IMediator _mediator;
 
-        public PayLoadCreateService(IRepository<PayLoad> payLoadRepository, IMapper mapper,
+        public PayLoadCreateService(IPayLoadRepository payLoadRepository, IMapper mapper,
             IMediator mediator)
         {
             _payLoadRepository = payLoadRepository ?? throw new System.ArgumentNullException(nameof(payLoadRepository));
@@ -31,9 +31,9 @@ namespace Waes.Assignment.Application.Services
         {            
             var payLoad = _mapper.Map<PayLoad>(request, opt => opt.Items["correlationId"] = correlationId);
 
-            var payLoadFromRepository = await _payLoadRepository.Get(x => x.CorrelationId == correlationId && x.Side == payLoad.Side);
+            var payLoadFromRepository = await _payLoadRepository.GetByCorrelationId(correlationId);
 
-            if (payLoadFromRepository.Any())
+            if (payLoadFromRepository.Any(x => x.Side == payLoad.Side))
             {
                 await _mediator.Publish(
                     new WarningNotification(request.GetType().Name,
@@ -43,9 +43,9 @@ namespace Waes.Assignment.Application.Services
                 return await Task.FromResult(default(CreatePayLoadResponse));
             }
 
-            var result = await _payLoadRepository.Add(payLoad);
+            await _payLoadRepository.Add(payLoad);
 
-            return _mapper.Map<CreatePayLoadResponse>(result);
+            return _mapper.Map<CreatePayLoadResponse>(payLoad);
         }
     }
 }

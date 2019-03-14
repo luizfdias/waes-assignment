@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Waes.Assignment.Domain.Interfaces
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<TEntity> where TEntity : Entity
     {
-        Task<T> Add(T item);
+        Task<TEntity> GetById(Guid id);
 
-        Task<IEnumerable<T>> Get(Expression<Func<T, bool>> predicate);
+        Task Add(TEntity item);
+
+        Task Remove(TEntity item);        
+
+        Task Update(TEntity item);
     }
 }

@@ -15,7 +15,7 @@ namespace Waes.Assignment.Application.Services
 {
     public class DiffAnalyzerService : IDiffAnalyzerService
     {
-        private readonly IRepository<PayLoad> _payLoadRepository;
+        private readonly IPayLoadRepository _payLoadRepository;
 
         private readonly IDiffDomainService<byte> _diffService;
 
@@ -23,7 +23,7 @@ namespace Waes.Assignment.Application.Services
 
         private readonly IMapper _mapper;
 
-        public DiffAnalyzerService(IRepository<PayLoad> payLoadRepository, IDiffDomainService<byte> diffEngine, IMapper mapper,
+        public DiffAnalyzerService(IPayLoadRepository payLoadRepository, IDiffDomainService<byte> diffEngine, IMapper mapper,
             IMediator mediator)
         {
             _payLoadRepository = payLoadRepository ?? throw new ArgumentNullException(nameof(payLoadRepository));
@@ -34,7 +34,7 @@ namespace Waes.Assignment.Application.Services
 
         public async Task<DiffResponse> Analyze(string correlationId)
         {
-            var payLoads = await _payLoadRepository.Get(x => x.CorrelationId == correlationId);
+            var payLoads = await _payLoadRepository.GetByCorrelationId(correlationId);
 
             if (!payLoads.Any())
             {

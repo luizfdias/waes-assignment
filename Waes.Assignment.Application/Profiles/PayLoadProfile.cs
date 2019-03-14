@@ -12,24 +12,17 @@ namespace Waes.Assignment.Application.Profiles
         public PayLoadProfile()
         {
             CreateMap<CreatePayLoadRequest, PayLoad>()
+                .ForMember(dest => dest.CorrelationId, opt => opt.MapFrom((src, dest, s, ctx) => ctx.Items["correlationId"]))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.Side, opt => opt.Ignore())
                 .Include<CreateLeftPayLoadRequest, PayLoad>()
-                .Include<CreateRightPayLoadRequest, PayLoad>();                            
+                .Include<CreateRightPayLoadRequest, PayLoad>();
 
             CreateMap<CreateLeftPayLoadRequest, PayLoad>()
-                .ConstructUsing((x, context)
-                => new PayLoad(
-                    Guid.NewGuid(),
-                    context.Items["correlationId"].ToString(),
-                    x.Content,
-                    SideEnum.Left));
-            
+                .ForMember(dest => dest.Side, opt => opt.MapFrom(src => SideEnum.Left));
+
             CreateMap<CreateRightPayLoadRequest, PayLoad>()
-                .ConstructUsing((x, context)
-                => new PayLoad(
-                    Guid.NewGuid(),
-                    context.Items["correlationId"].ToString(),
-                    x.Content,
-                    SideEnum.Right));
+                .ForMember(dest => dest.Side, opt => opt.MapFrom(src => SideEnum.Right));
 
             CreateMap<PayLoad, CreatePayLoadResponse>();
         }
