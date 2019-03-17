@@ -3,8 +3,8 @@ using Waes.Assignment.Application.ViewModels;
 
 namespace Waes.Assignment.Application.Interfaces
 {
-    public interface IDiffAnalyzerService
+    public interface IDiffService
     {
-        Task<DiffResponse> Analyze(string correlationId);
+        Task<DiffResponse> Get(string correlationId);
     }
 }

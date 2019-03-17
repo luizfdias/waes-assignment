@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
@@ -12,9 +11,9 @@ namespace Waes.Assignment.Infrastructure.Repositories.InMemory
         {
         }
 
-        public Task<Diff> GetByCorrelationId(string correlationid)
+        public async Task<Diff> GetByCorrelationId(string correlationId)
         {
-            return Database.Entities.FirstOrDefault(x => x.CorrelationId == correlationid);
+            return Database.Entities.FirstOrDefault(x => x.CorrelationId == correlationId);
         }
     }
 }

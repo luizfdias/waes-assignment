@@ -9,10 +9,10 @@ namespace Waes.Assignment.Domain.Services
 {
     public class DiffDomainService : IDiffDomainService 
     { 
-        public Diff ProcessDiff<TEquatable>(TEquatable[] left, TEquatable[] right) where TEquatable : IEquatable<TEquatable>
+        public DiffInfo ProcessDiff<TEquatable>(TEquatable[] left, TEquatable[] right) where TEquatable : IEquatable<TEquatable>
         {
             if (left.Count() != right.Count())
-                return Diff.CreateNotOfEqualSize();
+                return DiffInfo.CreateNotOfEqualSize();
 
             var diffs = new List<DiffPosition>();
 
@@ -24,7 +24,7 @@ namespace Waes.Assignment.Domain.Services
                 }
             }
 
-            return diffs.Any() ? Diff.CreateNotEqual(diffs) : Diff.CreateEqual();
+            return diffs.Any() ? DiffInfo.CreateNotEqual(diffs) : DiffInfo.CreateEqual();
         }
     }
 }

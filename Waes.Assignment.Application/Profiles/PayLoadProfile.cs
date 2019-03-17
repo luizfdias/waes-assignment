@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Waes.Assignment.Api.ViewModels;
 using Waes.Assignment.Application.ViewModels;
-using Waes.Assignment.Domain.Models;
+using Waes.Assignment.Domain.Commands;
+using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Models.Enums;
 
 namespace Waes.Assignment.Application.Profiles
@@ -10,20 +11,14 @@ namespace Waes.Assignment.Application.Profiles
     {
         public PayLoadProfile()
         {
-            CreateMap<CreatePayLoadRequest, PayLoad>()
-                .ForMember(dest => dest.CorrelationId, opt => opt.MapFrom((src, dest, s, ctx) => ctx.Items["correlationId"]))
-                .ForMember(dest => dest.Side, opt => opt.Ignore())
-                .Include<CreateLeftPayLoadRequest, PayLoad>()
-                .Include<CreateRightPayLoadRequest, PayLoad>()
-                .IgnoreAllPropertiesWithAnInaccessibleSetter();
+            CreateMap<CreateLeftPayLoadRequest, PayLoadCreateCommand>()
+                .ConstructUsing((src, ctx) => new PayLoadCreateCommand(ctx.Items["correlationId"].ToString(), src.Content, SideEnum.Left));
 
-            CreateMap<CreateLeftPayLoadRequest, PayLoad>()
-                .ForMember(dest => dest.Side, opt => opt.MapFrom(src => SideEnum.Left));
+            CreateMap<CreateRightPayLoadRequest, PayLoadCreateCommand>()
+                .ConstructUsing((src, ctx) => new PayLoadCreateCommand(ctx.Items["correlationId"].ToString(), src.Content, SideEnum.Right));
 
-            CreateMap<CreateRightPayLoadRequest, PayLoad>()
-                .ForMember(dest => dest.Side, opt => opt.MapFrom(src => SideEnum.Right));
-
-            CreateMap<PayLoad, CreatePayLoadResponse>();
+            CreateMap<PayLoadCreatedEvent, CreatePayLoadResponse>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AggregateId));            
         }
     }
 }

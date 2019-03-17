@@ -12,7 +12,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenMultipleDifferences_MustReturnStartIndexAndLengthOfIt()
         {
-            var diff = Diff.CreateNotEqual(new List<DiffPosition>
+            var diff = DiffInfo.CreateNotEqual(new List<DiffPosition>
             {
                 new DiffPosition(1),
                 new DiffPosition(2),
@@ -48,7 +48,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenItHasOneDifferenceOfLengthOne_MustReturnStartIndexAndLengthOfIt()
         {
-            var diff = Diff.CreateNotEqual(new List<DiffPosition>
+            var diff = DiffInfo.CreateNotEqual(new List<DiffPosition>
             {
                 new DiffPosition(1)
             });
@@ -62,7 +62,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenItHasOneDifferenceOfLengthBiggerThanOne_MustReturnStartIndexAndLengthOfIt()
         {
-            var diff = Diff.CreateNotEqual(new List<DiffPosition>
+            var diff = DiffInfo.CreateNotEqual(new List<DiffPosition>
             {
                 new DiffPosition(1),
                 new DiffPosition(2),
@@ -78,7 +78,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenNotOfEqualSize_MustReturnAnEmptyList()
         {
-            var diff = Diff.CreateNotOfEqualSize();
+            var diff = DiffInfo.CreateNotOfEqualSize();
 
             var result = diff.GetSequenceOfDifferences().ToArray();
 
@@ -88,7 +88,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenEqual_MustReturnAnEmptyList()
         {
-            var diff = Diff.CreateEqual();
+            var diff = DiffInfo.CreateEqual();
 
             var result = diff.GetSequenceOfDifferences().ToArray();
 

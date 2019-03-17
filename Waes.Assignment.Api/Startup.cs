@@ -8,8 +8,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Diagnostics.CodeAnalysis;
 using Waes.Assignment.Api.Filters;
-using Waes.Assignment.Application.Notifications;
-using Waes.Assignment.Application.Notifications.Interfaces;
 using Waes.Assignment.Infrastructure.Modules;
 
 namespace Waes.Assignment.Api
@@ -44,10 +42,6 @@ namespace Waes.Assignment.Api
             services.AddInfrastructureModule();
             services.AddAutoMapperConfiguration();
             services.AddMediatR(typeof(Startup));
-
-            services.AddScoped<WarningNotificationHandler>();
-            services.AddScoped<INotificationHandler<WarningNotification>>(ctx => ctx.GetService<WarningNotificationHandler>());
-            services.AddScoped<IGetNotifications<WarningNotification>>(ctx => ctx.GetService<WarningNotificationHandler>());
         }
 
         [ExcludeFromCodeCoverage]
