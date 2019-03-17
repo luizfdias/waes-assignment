@@ -9,10 +9,12 @@ namespace Waes.Assignment.Domain.Models
 {
     public class Diff : Entity
     {
-        private IEnumerable<DiffPosition> _info;
+        public IEnumerable<DiffPosition> DiffPositions { get; private set; }
 
         public DiffStatus Status { get; }
-        
+
+        public string CorrelationId { get; set; }
+
         public Diff(Guid id, DiffStatus status)
         {
             Id = id;
@@ -23,7 +25,7 @@ namespace Waes.Assignment.Domain.Models
         {
             var sequences = new List<DiffSequence>();
 
-            var array = _info.ToArray();
+            var array = DiffPositions.ToArray();
 
             int currentLen = 1, currentIdx = 0;
 
@@ -62,7 +64,7 @@ namespace Waes.Assignment.Domain.Models
         {
             return new Diff(Guid.NewGuid(), DiffStatus.NotEqual)
             {
-                _info = diffPositions
+                DiffPositions = diffPositions
             };
         }
         #endregion

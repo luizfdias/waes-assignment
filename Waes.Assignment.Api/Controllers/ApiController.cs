@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using Waes.Assignment.Application.Notifications;
-using Waes.Assignment.Application.Notifications.Enums;
 using Waes.Assignment.Application.Notifications.Interfaces;
 
 namespace Waes.Assignment.Api.Controllers

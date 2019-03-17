@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
-using MediatR;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Waes.Assignment.Application.Interfaces;
-using Waes.Assignment.Application.Notifications;
-using Waes.Assignment.Application.Notifications.Enums;
 using Waes.Assignment.Application.ViewModels;
+using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Interfaces;
-using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
 
 namespace Waes.Assignment.Application.Services
@@ -17,33 +14,32 @@ namespace Waes.Assignment.Application.Services
     {
         private readonly IPayLoadRepository _payLoadRepository;
 
-        private readonly IDiffDomainService<byte> _diffService;
+        private readonly IDiffDomainService _diffService;
 
-        private IMediator _mediator;
+        private IEventRaiser _eventRaiser;
 
         private readonly IMapper _mapper;
 
-        public DiffAnalyzerService(IPayLoadRepository payLoadRepository, IDiffDomainService<byte> diffEngine, IMapper mapper,
-            IMediator mediator)
+        public DiffAnalyzerService(IPayLoadRepository payLoadRepository, IDiffDomainService diffEngine, IMapper mapper,
+            IEventRaiser eventRaiser)
         {
             _payLoadRepository = payLoadRepository ?? throw new ArgumentNullException(nameof(payLoadRepository));
             _diffService = diffEngine ?? throw new ArgumentNullException(nameof(diffEngine));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _eventRaiser = eventRaiser ?? throw new ArgumentNullException(nameof(eventRaiser));
         }        
 
         public async Task<DiffResponse> Analyze(string correlationId)
         {
             var payLoads = await _payLoadRepository.GetByCorrelationId(correlationId);
 
+            //TODO: Verificar se tem lado direito e esquerdo
             if (!payLoads.Any())
             {
-                await _mediator.Publish(
-                    new WarningNotification(correlationId.GetType().Name,
-                    $"The PayLoad with correlation id | {correlationId} | was not found.",
-                    NotificationType.NotFound)).ConfigureAwait(false);
+                await _eventRaiser.RaiseEvent(
+                    new PayLoadNotFoundEvent());
 
-                return await Task.FromResult(default(DiffResponse));
+                return null;
             }
 
             var result = _diffService.ProcessDiff(

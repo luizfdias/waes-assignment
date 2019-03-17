@@ -1,30 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Waes.Assignment.Application.Notifications.Interfaces;
+using Waes.Assignment.Domain.Events;
+using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Domain.Models.Enums;
 
 namespace Waes.Assignment.Application.Notifications
 {
-    public class WarningNotificationHandler : INotificationHandler<WarningNotification>, IGetNotifications<WarningNotification>
+    //TODO Extrair toda lógica para uma outra camada e criar eventos de domínio
+    public class WarningNotificationHandler : INotificationHandler<PayLoadCreatedEvent>
     {
-        private List<WarningNotification> _notifications;
+        private readonly IDiffDomainService _diffDomainService;
 
-        public WarningNotificationHandler()
+        private readonly IPayLoadRepository _payLoadRepository;
+
+        public WarningNotificationHandler(IDiffDomainService diffDomainService, IPayLoadRepository payLoadRepository)
         {
-            _notifications = new List<WarningNotification>();
-        }
+            _diffDomainService = diffDomainService;
+            _payLoadRepository = payLoadRepository;
+        }        
 
-        public IEnumerable<WarningNotification> Get()
+        public async Task Handle(PayLoadCreatedEvent notification, CancellationToken cancellationToken)
         {
-            return _notifications;
-        }
+            var oppositePayLoad = await _payLoadRepository.GetByCorrelationIdAndSide(
+                notification.CorrelationId, 
+                notification.Side == SideEnum.Left ? SideEnum.Right : SideEnum.Left);
 
-        public Task Handle(WarningNotification notification, CancellationToken cancellationToken)
-        {
-            _notifications.Add(notification);
+            if (oppositePayLoad == null)
+                return;
 
-            return Task.CompletedTask;
+            var diffResult = _diffDomainService.ProcessDiff(oppositePayLoad.Content, notification.Content);
         }
     }
 }

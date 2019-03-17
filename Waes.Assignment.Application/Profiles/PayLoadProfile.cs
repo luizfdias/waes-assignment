@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using System;
 using Waes.Assignment.Api.ViewModels;
 using Waes.Assignment.Application.ViewModels;
 using Waes.Assignment.Domain.Models;
@@ -13,10 +12,10 @@ namespace Waes.Assignment.Application.Profiles
         {
             CreateMap<CreatePayLoadRequest, PayLoad>()
                 .ForMember(dest => dest.CorrelationId, opt => opt.MapFrom((src, dest, s, ctx) => ctx.Items["correlationId"]))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.Side, opt => opt.Ignore())
                 .Include<CreateLeftPayLoadRequest, PayLoad>()
-                .Include<CreateRightPayLoadRequest, PayLoad>();
+                .Include<CreateRightPayLoadRequest, PayLoad>()
+                .IgnoreAllPropertiesWithAnInaccessibleSetter();
 
             CreateMap<CreateLeftPayLoadRequest, PayLoad>()
                 .ForMember(dest => dest.Side, opt => opt.MapFrom(src => SideEnum.Left));

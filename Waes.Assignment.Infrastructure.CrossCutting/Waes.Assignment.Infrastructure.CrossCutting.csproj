@@ -8,4 +8,8 @@
     <PackageReference Include="MediatR" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Waes.Assignment.Domain\Waes.Assignment.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

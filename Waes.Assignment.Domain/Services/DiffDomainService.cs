@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
@@ -6,9 +7,9 @@ using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Domain.Services
 {
-    public class DiffDomainService : IDiffDomainService<byte>
+    public class DiffDomainService : IDiffDomainService 
     { 
-        public Diff ProcessDiff(byte[] left, byte[] right)
+        public Diff ProcessDiff<TEquatable>(TEquatable[] left, TEquatable[] right) where TEquatable : IEquatable<TEquatable>
         {
             if (left.Count() != right.Count())
                 return Diff.CreateNotOfEqualSize();

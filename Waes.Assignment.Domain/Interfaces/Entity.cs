@@ -6,6 +6,11 @@ namespace Waes.Assignment.Domain.Interfaces
     {
         public Guid Id { get; protected set; }
 
+        public Entity(Guid id)
+        {
+            Id = id;
+        }
+
         public override bool Equals(object obj)
         {
             var value = obj as Entity;

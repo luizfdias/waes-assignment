@@ -10,7 +10,7 @@ namespace Waes.Assignment.UnitTests.Domain
     public class DiffTests
     {
         [Fact]
-        public void Test()
+        public void GetSequenceOfDifferences_WhenMultipleDifferences_MustReturnStartIndexAndLengthOfIt()
         {
             var diff = Diff.CreateNotEqual(new List<DiffPosition>
             {
@@ -46,7 +46,7 @@ namespace Waes.Assignment.UnitTests.Domain
         }
 
         [Fact]
-        public void Test2()
+        public void GetSequenceOfDifferences_WhenItHasOneDifferenceOfLengthOne_MustReturnStartIndexAndLengthOfIt()
         {
             var diff = Diff.CreateNotEqual(new List<DiffPosition>
             {
@@ -60,7 +60,7 @@ namespace Waes.Assignment.UnitTests.Domain
         }
 
         [Fact]
-        public void Test3()
+        public void GetSequenceOfDifferences_WhenItHasOneDifferenceOfLengthBiggerThanOne_MustReturnStartIndexAndLengthOfIt()
         {
             var diff = Diff.CreateNotEqual(new List<DiffPosition>
             {
@@ -76,22 +76,23 @@ namespace Waes.Assignment.UnitTests.Domain
         }
 
         [Fact]
-        public void Test4()
+        public void GetSequenceOfDifferences_WhenNotOfEqualSize_MustReturnAnEmptyList()
         {
-            var diff = Diff.CreateNotEqual(new List<DiffPosition>
-            {
-                new DiffPosition(1),
-                new DiffPosition(2),
-                new DiffPosition(4),
-            });
+            var diff = Diff.CreateNotOfEqualSize();
 
             var result = diff.GetSequenceOfDifferences().ToArray();
 
-            result[0].StartIndex.Should().Be(0);
-            result[0].Length.Should().Be(2);
+            result.Should().BeEmpty();       
+        }
 
-            result[1].StartIndex.Should().Be(2);
-            result[1].Length.Should().Be(1);            
+        [Fact]
+        public void GetSequenceOfDifferences_WhenEqual_MustReturnAnEmptyList()
+        {
+            var diff = Diff.CreateEqual();
+
+            var result = diff.GetSequenceOfDifferences().ToArray();
+
+            result.Should().BeEmpty();
         }
     }
 }

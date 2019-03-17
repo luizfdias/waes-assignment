@@ -1,4 +1,5 @@
-﻿using Waes.Assignment.Domain.Interfaces;
+﻿using System;
+using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models.Enums;
 
 namespace Waes.Assignment.Domain.Models
@@ -11,9 +12,9 @@ namespace Waes.Assignment.Domain.Models
 
         public SideEnum Side { get; set; }
 
-        public int GetSize()
+        public PayLoad() : base(Guid.NewGuid())
         {
-            return Content.Length;
+
         }
     }
 }
