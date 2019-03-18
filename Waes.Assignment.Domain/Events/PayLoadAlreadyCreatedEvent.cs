@@ -7,7 +7,7 @@ namespace Waes.Assignment.Domain.Events
     {
         public string CorrelationId { get; }
 
-        public SideEnum Side { get; set; }
+        public SideEnum Side { get; }
 
         public PayLoadAlreadyCreatedEvent(Guid id, string correlationId, SideEnum sideEnum)
         {

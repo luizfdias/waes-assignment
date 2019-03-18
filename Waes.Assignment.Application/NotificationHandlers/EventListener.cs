@@ -8,14 +8,15 @@ using Waes.Assignment.Domain.Events;
 
 namespace Waes.Assignment.Application.NotificationHandlers
 {
-    public class Listener : IListener,
+    public class EventListener : IListener,
         INotificationHandler<PayLoadCreatedEvent>,
         INotificationHandler<PayLoadAlreadyCreatedEvent>,
-        INotificationHandler<PayLoadNotFoundEvent>
+        INotificationHandler<DiffNotFoundEvent>,
+        INotificationHandler<DiffAnalyzedEvent>
     {
         private List<Event> _events;
 
-        public Listener()
+        public EventListener()
         {
             _events = new List<Event>();
         }
@@ -32,14 +33,21 @@ namespace Waes.Assignment.Application.NotificationHandlers
             return Task.CompletedTask;
         }
 
-        public Task Handle(PayLoadNotFoundEvent notification, CancellationToken cancellationToken)
+        public Task Handle(PayLoadAlreadyCreatedEvent notification, CancellationToken cancellationToken)
         {
             _events.Add(notification);
 
             return Task.CompletedTask;
         }
 
-        public Task Handle(PayLoadAlreadyCreatedEvent notification, CancellationToken cancellationToken)
+        public Task Handle(DiffNotFoundEvent notification, CancellationToken cancellationToken)
+        {
+            _events.Add(notification);
+
+            return Task.CompletedTask;
+        }
+
+        public Task Handle(DiffAnalyzedEvent notification, CancellationToken cancellationToken)
         {
             _events.Add(notification);
 

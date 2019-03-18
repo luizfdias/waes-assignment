@@ -4,7 +4,7 @@ using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Interfaces;
 
-namespace Waes.Assignment.Infrastructure.CrossCutting.Bus
+namespace Waes.Assignment.Infra.Bus
 {
     public sealed class InMemoryBus : IMediatorHandler
     {

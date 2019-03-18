@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Waes.Assignment.Domain.Interfaces;
 
-namespace Waes.Assignment.Infrastructure.Repositories.InMemory
+namespace Waes.Assignment.Infra.Repositories.InMemory
 {   
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {

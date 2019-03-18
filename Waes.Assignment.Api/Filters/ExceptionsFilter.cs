@@ -17,7 +17,18 @@ namespace Waes.Assignment.Api.Filters
         public override void OnException(ExceptionContext context)
         {
             Logger.Error(context.Exception, "An unexpected error occurred");
-            context.Result = new JsonResult(new { Message = "Unexpected error" })
+            context.Result = new JsonResult(
+                new
+                {
+                    Errors = new[]
+                    {
+                        new
+                        {
+                            Code = "999",
+                            Message = "An error occurred during the operation."
+                        }
+                    }
+                })
             {
                 StatusCode = (int)HttpStatusCode.InternalServerError
             };

@@ -5,7 +5,7 @@ using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
 
-namespace Waes.Assignment.Infrastructure.Repositories.InMemory
+namespace Waes.Assignment.Infra.Repositories.InMemory
 {
     public class PayLoadRepository : Repository<PayLoad>, IPayLoadRepository
     {

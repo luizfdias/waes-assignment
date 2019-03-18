@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Waes.Assignment.Domain.Interfaces;
-using Waes.Assignment.Infrastructure.CrossCutting.Bus;
-using Waes.Assignment.Infrastructure.Repositories.InMemory;
+using Waes.Assignment.Infra.Bus;
+using Waes.Assignment.Infra.Repositories.InMemory;
 
-namespace Waes.Assignment.Infrastructure.Modules
+namespace Waes.Assignment.Infra.IoC.Modules
 {
-    public static class InfrastructureModule
+    public static class InfraModule
     {
-        public static IServiceCollection AddInfrastructureModule(this IServiceCollection services)
+        public static IServiceCollection AddInfraModule(this IServiceCollection services)
         {
             services.AddSingleton(typeof(InMemoryDatabase<>));
 

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Waes.Assignment.Application.Profiles;
 
-namespace Waes.Assignment.Infrastructure.Modules
+namespace Waes.Assignment.Infra.IoC.Modules
 {
     public static class AutoMapperModuleExtensions
     {

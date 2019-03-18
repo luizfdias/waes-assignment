@@ -80,7 +80,7 @@ namespace Waes.Assignment.UnitTests.Domain
         {
             var diff = DiffInfo.CreateNotOfEqualSize();
 
-            var result = diff.GetSequenceOfDifferences().ToArray();
+            var result = diff.GetSequenceOfDifferences();
 
             result.Should().BeEmpty();       
         }
@@ -90,7 +90,7 @@ namespace Waes.Assignment.UnitTests.Domain
         {
             var diff = DiffInfo.CreateEqual();
 
-            var result = diff.GetSequenceOfDifferences().ToArray();
+            var result = diff.GetSequenceOfDifferences();
 
             result.Should().BeEmpty();
         }

@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace Waes.Assignment.Domain.Commands
+﻿namespace Waes.Assignment.Domain.Commands
 {
     public class AnalyzeDiffCommand : Command
     {

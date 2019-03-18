@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Waes.Assignment.Api.Interfaces;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Application.ViewModels;
 
@@ -14,10 +15,14 @@ namespace Waes.Assignment.Api.Controllers
 
         private readonly IDiffService _diffAnalyzerService;
 
-        public DiffController(IPayLoadService payLoadCreateService, IDiffService diffAnalyzerService) 
+        public readonly IResponseHandler _responseHandler;
+
+        public DiffController(IPayLoadService payLoadCreateService, IDiffService diffAnalyzerService,
+            IResponseHandler responseHandler) 
         {
             _payLoadCreateService = payLoadCreateService ?? throw new ArgumentNullException(nameof(payLoadCreateService));
             _diffAnalyzerService = diffAnalyzerService ?? throw new ArgumentNullException(nameof(diffAnalyzerService));
+            _responseHandler = responseHandler ?? throw new ArgumentNullException(nameof(responseHandler));
         }
        
         [HttpPost("{correlationId}/left")]
@@ -25,7 +30,7 @@ namespace Waes.Assignment.Api.Controllers
         {
             var result = await _payLoadCreateService.Create(correlationId, request);
 
-            return Created("", result);
+            return _responseHandler.ResponseCreated(this, result);
         }
 
         [HttpPost("{correlationId}/right")]
@@ -33,7 +38,7 @@ namespace Waes.Assignment.Api.Controllers
         {
             var result = await _payLoadCreateService.Create(correlationId, request);
 
-            return Created("", result);
+            return _responseHandler.ResponseCreated(this, result);
         }
 
         [HttpGet("{correlationId}")]
@@ -41,7 +46,7 @@ namespace Waes.Assignment.Api.Controllers
         {
             var result = await _diffAnalyzerService.Get(correlationId);
 
-            return Ok(result);
+            return _responseHandler.ResponseOK(this, result);
         }
     }
 }

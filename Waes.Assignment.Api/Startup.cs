@@ -8,7 +8,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Diagnostics.CodeAnalysis;
 using Waes.Assignment.Api.Filters;
-using Waes.Assignment.Infrastructure.Modules;
+using Waes.Assignment.Api.Handlers;
+using Waes.Assignment.Api.Interfaces;
+using Waes.Assignment.Infra.IoC;
 
 namespace Waes.Assignment.Api
 {
@@ -28,7 +30,6 @@ namespace Waes.Assignment.Api
         {            
             services.AddOptions();
 
-            services.AddSerilogModule();
             services.AddMvc(options => options.Filters.Add<ExceptionsFilter>())
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                     .AddJsonOptions(options => 
@@ -37,11 +38,10 @@ namespace Waes.Assignment.Api
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
 
-            services.AddApplicationModule();
-            services.AddDomainModule();
-            services.AddInfrastructureModule();
-            services.AddAutoMapperConfiguration();
+            services.AddScoped<IResponseHandler, PayLoadResponseHandler>();
             services.AddMediatR(typeof(Startup));
+
+            DependencyInjector.Initialize(services);
         }
 
         [ExcludeFromCodeCoverage]

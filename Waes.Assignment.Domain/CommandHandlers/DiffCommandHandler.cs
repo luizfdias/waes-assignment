@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Waes.Assignment.Domain.Commands;
+using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
@@ -44,6 +45,8 @@ namespace Waes.Assignment.Domain.CommandHandlers
             var diff = new Diff(request.CorrelationId, diffInfo);
 
             await _diffRepository.Add(diff);
+
+            await _bus.RaiseEvent(new DiffAnalyzedEvent(request.CorrelationId));
 
             return true;
         }

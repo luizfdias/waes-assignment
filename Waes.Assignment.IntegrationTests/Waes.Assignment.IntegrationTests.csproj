@@ -22,7 +22,6 @@
     <ProjectReference Include="..\Waes.Assignment.Api\Waes.Assignment.Api.csproj" />
     <ProjectReference Include="..\Waes.Assignment.Application\Waes.Assignment.Application.csproj" />
     <ProjectReference Include="..\Waes.Assignment.Domain\Waes.Assignment.Domain.csproj" />
-    <ProjectReference Include="..\Waes.Assignment.Infrastructure\Waes.Assignment.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -26,7 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Waes.Assignment.Application\Waes.Assignment.Application.csproj" />
     <ProjectReference Include="..\Waes.Assignment.Domain\Waes.Assignment.Domain.csproj" />
-    <ProjectReference Include="..\Waes.Assignment.Infrastructure\Waes.Assignment.Infrastructure.csproj" />
+    <ProjectReference Include="..\Waes.Assignment.Infra\Waes.Assignment.Infra.csproj" />
   </ItemGroup>
 
 </Project>

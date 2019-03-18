@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Text;
@@ -25,9 +24,6 @@ namespace Waes.Assignment.IntegrationTests
             var response = await _client.PostAsync("v1/diff/abc123/left", CreateContent("YWJjMTIz"));
 
             response.EnsureSuccessStatusCode();
-
-            var result = await response.Content.ReadAsAsync<ResponseWrapper>();
-            result.Success.Should().BeTrue();
         }
 
         [Fact]
@@ -36,9 +32,6 @@ namespace Waes.Assignment.IntegrationTests
             var response = await _client.PostAsync("v1/diff/abc123/right", CreateContent("YWJjMTIz"));
 
             response.EnsureSuccessStatusCode();
-
-            var result = await response.Content.ReadAsAsync<ResponseWrapper>();
-            result.Success.Should().BeTrue();
         }
 
         private static StringContent CreateContent(string content)
