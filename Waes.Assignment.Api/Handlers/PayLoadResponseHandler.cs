@@ -9,11 +9,11 @@ namespace Waes.Assignment.Api.Handlers
 {
     public class PayLoadResponseHandler : IResponseHandler
     {
-        private readonly IListener _listener;
+        private readonly INotificationHandler _notificationHandler;
 
-        public PayLoadResponseHandler(IListener listener)
+        public PayLoadResponseHandler(INotificationHandler notificationHandler)
         {
-            _listener = listener ?? throw new ArgumentNullException(nameof(listener));
+            _notificationHandler = notificationHandler ?? throw new ArgumentNullException(nameof(notificationHandler));
         }
 
         public IActionResult ResponseCreated(ControllerBase controller, object result)
@@ -39,7 +39,7 @@ namespace Waes.Assignment.Api.Handlers
 
         private IActionResult DiffNotFound(ControllerBase controller)
         {
-            var diffNotFoundEvent = _listener.GetEvent<DiffNotFoundEvent>();
+            var diffNotFoundEvent = _notificationHandler.GetEvent<DiffNotFoundEvent>();
 
             if (diffNotFoundEvent != null)
                 return controller.NotFound(new
@@ -59,8 +59,8 @@ namespace Waes.Assignment.Api.Handlers
 
         private IActionResult PayLoadCreated(ControllerBase controller, object result)
         {
-            var payLoadCreatedEvent = _listener.GetEvent<PayLoadCreatedEvent>();
-            var diffAnalyzedEvent = _listener.GetEvent<DiffAnalyzedEvent>();
+            var payLoadCreatedEvent = _notificationHandler.GetEvent<PayLoadCreatedEvent>();
+            var diffAnalyzedEvent = _notificationHandler.GetEvent<DiffAnalyzedEvent>();
 
             if (payLoadCreatedEvent != null)
                 return controller.Created("", new
@@ -82,7 +82,7 @@ namespace Waes.Assignment.Api.Handlers
 
         private IActionResult PayLoadAlreadyExist(ControllerBase controller)
         {
-            var payLoadAlreadyCreatedEvent = _listener.GetEvent<PayLoadAlreadyCreatedEvent>();
+            var payLoadAlreadyCreatedEvent = _notificationHandler.GetEvent<PayLoadAlreadyCreatedEvent>();
 
             if (payLoadAlreadyCreatedEvent != null)
                 return controller.Conflict(new

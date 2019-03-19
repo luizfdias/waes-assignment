@@ -15,13 +15,13 @@ namespace Waes.Assignment.Application.Services
 
         private readonly IMapper _mapper;
 
-        private readonly IListener _listener;
+        private readonly INotificationHandler _notificationHandler;
 
-        public PayLoadService(IMediatorHandler bus, IMapper mapper, IListener listener)
+        public PayLoadService(IMediatorHandler bus, IMapper mapper, INotificationHandler notificationHandler)
         {
             _bus = bus ?? throw new ArgumentNullException(nameof(bus));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _listener = listener ?? throw new ArgumentNullException(nameof(listener));
+            _notificationHandler = notificationHandler ?? throw new ArgumentNullException(nameof(notificationHandler));
         }
 
         public async Task<CreatePayLoadResponse> Create(string correlationId, CreatePayLoadRequest request)
@@ -29,7 +29,7 @@ namespace Waes.Assignment.Application.Services
             var command = _mapper.Map<PayLoadCreateCommand>(request, opt => opt.Items["correlationId"] = correlationId);
             await _bus.SendCommand(command);
 
-            var createdPayLoadEvent = _listener.GetEvent<PayLoadCreatedEvent>();
+            var createdPayLoadEvent = _notificationHandler.GetEvent<PayLoadCreatedEvent>();
 
             return _mapper.Map<CreatePayLoadResponse>(createdPayLoadEvent);
         }

@@ -1,4 +1,4 @@
-﻿using Waes.Assignment.Domain.Events;
+﻿using System;
 
 namespace Waes.Assignment.Domain.Events
 {
@@ -6,8 +6,9 @@ namespace Waes.Assignment.Domain.Events
     {
         public string CorrelationId { get; }
 
-        public DiffAnalyzedEvent(string correlationId)
+        public DiffAnalyzedEvent(Guid id, string correlationId)
         {
+            AggregateId = id;
             CorrelationId = correlationId;
         }
     }

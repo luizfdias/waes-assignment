@@ -46,7 +46,7 @@ namespace Waes.Assignment.Domain.CommandHandlers
 
             await _diffRepository.Add(diff);
 
-            await _bus.RaiseEvent(new DiffAnalyzedEvent(request.CorrelationId));
+            await _bus.RaiseEvent(new DiffAnalyzedEvent(diff.Id, diff.CorrelationId));
 
             return true;
         }

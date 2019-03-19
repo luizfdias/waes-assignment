@@ -8,7 +8,7 @@ using Waes.Assignment.Domain.Events;
 
 namespace Waes.Assignment.Application.NotificationHandlers
 {
-    public class EventListener : IListener,
+    public class NotificationHandler : INotificationHandler,
         INotificationHandler<PayLoadCreatedEvent>,
         INotificationHandler<PayLoadAlreadyCreatedEvent>,
         INotificationHandler<DiffNotFoundEvent>,
@@ -16,7 +16,7 @@ namespace Waes.Assignment.Application.NotificationHandlers
     {
         private List<Event> _events;
 
-        public EventListener()
+        public NotificationHandler()
         {
             _events = new List<Event>();
         }

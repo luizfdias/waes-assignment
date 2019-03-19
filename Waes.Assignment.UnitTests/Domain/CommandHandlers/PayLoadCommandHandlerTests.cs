@@ -19,7 +19,7 @@ namespace Waes.Assignment.UnitTests.Domain.CommandHandlers
         {
             var sut = new PayLoadCommandHandler(mediatorHandler, payLoadRepository);
 
-            sut.Handle()
+            //sut.Handle()
         }
     }
 }

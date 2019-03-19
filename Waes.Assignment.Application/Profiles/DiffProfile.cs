@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Waes.Assignment.Api.ViewModels;
 using Waes.Assignment.Application.ViewModels;
-using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
 using Waes.Assignment.Domain.ValueObjects;
@@ -16,9 +15,6 @@ namespace Waes.Assignment.Application.Profiles
         {
             CreateMap<Diff, DiffResponse>().ConvertUsing<DiffResponseConverter>();
             CreateMap<DiffSequence, DiffInfoResponse>();
-
-            CreateMap<string, AnalyzeDiffCommand>()
-                .ConstructUsing(src => new AnalyzeDiffCommand(src));
         }
     }
 

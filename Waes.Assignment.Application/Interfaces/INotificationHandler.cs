@@ -2,7 +2,7 @@
 
 namespace Waes.Assignment.Application.Interfaces
 {
-    public interface IListener
+    public interface INotificationHandler
     {
         TEvent GetEvent<TEvent>() where TEvent : Event;
     }
