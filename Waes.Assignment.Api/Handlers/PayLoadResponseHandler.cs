@@ -23,7 +23,7 @@ namespace Waes.Assignment.Api.Handlers
 
         public IActionResult ResponseOK(ControllerBase controller, object result)
         {
-            return DiffFound(controller, result) ?? DiffNotFound(controller) ?? Error(controller);
+            return DiffFound(controller, result) ?? DiffNotFound(controller);
         }
 
         private IActionResult DiffFound(ControllerBase controller, object result)
@@ -39,22 +39,17 @@ namespace Waes.Assignment.Api.Handlers
 
         private IActionResult DiffNotFound(ControllerBase controller)
         {
-            var diffNotFoundEvent = _notificationHandler.GetEvent<DiffNotFoundEvent>();
-
-            if (diffNotFoundEvent != null)
-                return controller.NotFound(new
+            return controller.NotFound(new
+            {
+                Errors = new[]
                 {
-                    Errors = new[]
+                    new
                     {
-                            new
-                            {
-                                Code = "900",
-                                Message = $"Diff result with correlation id: {diffNotFoundEvent.CorrelationId} was not found."
-                            }
-                        }
-                });
-
-            return null;
+                        Code = "900",
+                        Message = $"Diff result was not found."
+                    }
+                }
+            });
         }
 
         private IActionResult PayLoadCreated(ControllerBase controller, object result)

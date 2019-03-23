@@ -14,6 +14,6 @@ namespace Waes.Assignment.Domain.Events
             AggregateId = id;
             CorrelationId = correlationId;
             Side = sideEnum;
-        } 
+        }
     }
 }

@@ -9,7 +9,7 @@ using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
 
-namespace Waes.Assignment.Domain.CommandHandlers
+namespace Waes.Assignment.Application.CommandHandlers
 {
     public class DiffCommandHandler : IRequestHandler<AnalyzeDiffCommand, bool>
     {

@@ -1,10 +1,10 @@
 ﻿using AutoFixture.Idioms;
-using Waes.Assignment.Domain.CommandHandlers;
+using Waes.Assignment.Application.CommandHandlers;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Assignment.UnitTests.Domain.CommandHandlers
+namespace Waes.Assignment.UnitTests.Application.CommandHandlers
 {
     public class PayLoadCommandHandlerTests
     {

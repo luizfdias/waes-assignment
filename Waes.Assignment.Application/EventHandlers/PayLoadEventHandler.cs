@@ -6,7 +6,7 @@ using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Interfaces;
 
-namespace Waes.Assignment.Domain.EventHandlers
+namespace Waes.Assignment.Application.EventHandlers
 {
     public class PayLoadEventHandler : INotificationHandler<PayLoadCreatedEvent>
     {

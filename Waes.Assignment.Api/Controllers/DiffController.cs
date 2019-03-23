@@ -42,7 +42,7 @@ namespace Waes.Assignment.Api.Controllers
         }
 
         [HttpGet("{correlationId}")]
-        public async Task<IActionResult> GetDiff([FromRoute]string correlationId)
+        public async Task<IActionResult> GetDiff([FromRoute]string correlationId)//TODO: Criar wrapper pro request
         {
             var result = await _diffAnalyzerService.Get(correlationId);
 

@@ -11,7 +11,6 @@ namespace Waes.Assignment.Application.NotificationHandlers
     public class NotificationHandler : INotificationHandler,
         INotificationHandler<PayLoadCreatedEvent>,
         INotificationHandler<PayLoadAlreadyCreatedEvent>,
-        INotificationHandler<DiffNotFoundEvent>,
         INotificationHandler<DiffAnalyzedEvent>
     {
         private List<Event> _events;
@@ -34,13 +33,6 @@ namespace Waes.Assignment.Application.NotificationHandlers
         }
 
         public Task Handle(PayLoadAlreadyCreatedEvent notification, CancellationToken cancellationToken)
-        {
-            _events.Add(notification);
-
-            return Task.CompletedTask;
-        }
-
-        public Task Handle(DiffNotFoundEvent notification, CancellationToken cancellationToken)
         {
             _events.Add(notification);
 

@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Waes.Assignment.Application.EventHandlers;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Application.NotificationHandlers;
 using Waes.Assignment.Application.Services;
-using Waes.Assignment.Domain.EventHandlers;
 using Waes.Assignment.Domain.Events;
 
 namespace Waes.Assignment.Infra.IoC.Modules
@@ -20,7 +20,6 @@ namespace Waes.Assignment.Infra.IoC.Modules
             services.AddScoped<INotificationHandler<PayLoadCreatedEvent>, PayLoadEventHandler>();
             services.AddScoped<INotificationHandler<PayLoadCreatedEvent>>(ctx => ctx.GetService<NotificationHandler>());
             services.AddScoped<INotificationHandler<PayLoadAlreadyCreatedEvent>>(ctx => ctx.GetService<NotificationHandler>());
-            services.AddScoped<INotificationHandler<DiffNotFoundEvent>>(ctx => ctx.GetService<NotificationHandler>());
             services.AddScoped<INotificationHandler<DiffAnalyzedEvent>>(ctx => ctx.GetService<NotificationHandler>());
 
             return services;

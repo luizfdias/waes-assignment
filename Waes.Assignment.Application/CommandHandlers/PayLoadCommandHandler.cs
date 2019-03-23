@@ -7,7 +7,7 @@ using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
 
-namespace Waes.Assignment.Domain.CommandHandlers
+namespace Waes.Assignment.Application.CommandHandlers
 {
     public class PayLoadCommandHandler : IRequestHandler<PayLoadCreateCommand, bool>
     {

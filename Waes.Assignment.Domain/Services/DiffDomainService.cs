@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Waes.Assignment.Domain.Interfaces;
-using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Domain.Services

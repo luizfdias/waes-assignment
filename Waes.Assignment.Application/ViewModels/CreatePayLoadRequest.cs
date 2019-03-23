@@ -2,7 +2,6 @@
 {
     public abstract class CreatePayLoadRequest
     {
-        //TODO: Adicionar validações
         public byte[] Content { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Waes.Assignment.Domain.CommandHandlers;
+using Waes.Assignment.Application.CommandHandlers;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Services;
