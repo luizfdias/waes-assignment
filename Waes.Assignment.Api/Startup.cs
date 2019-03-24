@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Waes.Assignment.Api.Common;
 using Waes.Assignment.Api.Filters;
 using Waes.Assignment.Api.Handlers;
 using Waes.Assignment.Api.Interfaces;
@@ -30,12 +32,22 @@ namespace Waes.Assignment.Api
         {            
             services.AddOptions();
 
-            services.AddMvc(options => options.Filters.Add<ExceptionsFilter>())
+            services.AddMvc(opt => opt.Filters.Add<ExceptionsFilter>())
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                    .AddJsonOptions(options => 
+                    .AddJsonOptions(opt =>
                     {
-                        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                        opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                        opt.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    })
+                    .ConfigureApiBehaviorOptions(opt =>
+                    {
+                        opt.InvalidModelStateResponseFactory = ctx =>
+                        {
+                            return new BadRequestObjectResult(new ErrorResponse
+                            {
+                                Errors = ctx.ModelState.Values.Where(v => v.Errors.Count > 0).SelectMany(entry => entry.Errors).Select(error => new Error(ApiCodes.InvalidRequest, error.ErrorMessage))
+                            });
+                        };
                     });
 
             services.AddScoped<IResponseHandler, PayLoadResponseHandler>();
