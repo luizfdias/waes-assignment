@@ -1,14 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph DataVirtualized="True" Layout="Sugiyama" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="(@9)" Category="CodeSchema_Assembly" Bounds="-115.355340371448,187.504382737079,220.01,25" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="NotFetched" FilePath="$(936eb0a3-a416-483a-8756-03b424b40658.OutputPath)" Group="Collapsed" Label="Waes.Assignment.Common.dll">
-      <Category Ref="FileSystem.Category.FileOfType.dll" />
-    </Node>
     <Node Id="1 - API{1FF5CC0D-92F2-447F-9A5A-6B5F1E3C0779}" Category="CodeMap_SolutionFolder" Bounds="258.269218813888,-58.7900146824644,228.756666666667,85" Group="Expanded" Label="1 - API" UseManualLocation="True" />
     <Node Id="2 - Application Services{091BF8C8-E0EC-4F3E-9231-67B136D4942D}" Category="CodeMap_SolutionFolder" Bounds="238.099622694234,119.483955555631,271.16,85" Group="Expanded" Label="2 - Application Services" UseManualLocation="True" />
     <Node Id="3 - Domain{17456211-1CC2-4A94-BA29-ED721FF1C0CC}" Category="CodeMap_SolutionFolder" Bounds="246.460692580527,308.904004232222,252.64,85.0000000000001" Group="Expanded" Label="3 - Domain" UseManualLocation="True" />
     <Node Id="4 - Infrastructure{B01902B2-03E3-4D8B-8E8A-61B0F3066B72}" Category="CodeMap_SolutionFolder" Bounds="718.068775670375,310.991856472186,235.076666666666,85.0000000000001" Group="Expanded" Label="4 - Infrastructure" UseManualLocation="True" />
-    <Node Id="5 - Common{3D1B7534-CE7C-44DA-961A-7FF5480289CB}" Category="CodeMap_SolutionFolder" Bounds="-135.355340371448,147.504282737079,260.01,85" Group="Expanded" Label="5 - Common" UseManualLocation="True" />
     <Node Id="@11" Category="CodeSchema_Assembly" Bounds="705.375878311781,13.544044147021,256.17,25" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="NotFetched" FilePath="$(3821491f-9c07-4ed2-88fe-c06cbed5f8e3.OutputPath)" Group="Collapsed" Label="Waes.Assignment.IntegrationTests.dll">
       <Category Ref="CodeMap_TestAsset" />
       <Category Ref="CodeMap_TestProject" />
@@ -38,7 +34,6 @@
     <Link Source="2 - Application Services{091BF8C8-E0EC-4F3E-9231-67B136D4942D}" Target="@8" Category="Contains" FetchingParent="2 - Application Services{091BF8C8-E0EC-4F3E-9231-67B136D4942D}" />
     <Link Source="3 - Domain{17456211-1CC2-4A94-BA29-ED721FF1C0CC}" Target="@6" Category="Contains" FetchingParent="3 - Domain{17456211-1CC2-4A94-BA29-ED721FF1C0CC}" />
     <Link Source="4 - Infrastructure{B01902B2-03E3-4D8B-8E8A-61B0F3066B72}" Target="@2" Category="Contains" FetchingParent="4 - Infrastructure{B01902B2-03E3-4D8B-8E8A-61B0F3066B72}" />
-    <Link Source="5 - Common{3D1B7534-CE7C-44DA-961A-7FF5480289CB}" Target="(@9)" Category="Contains" FetchingParent="5 - Common{3D1B7534-CE7C-44DA-961A-7FF5480289CB}" />
     <Link Source="@11" Target="@2" Category="CodeMap_ExternalReference" />
     <Link Source="@11" Target="@4" Category="CodeMap_ProjectReference" />
     <Link Source="@11" Target="@6" Category="CodeMap_ProjectReference" />
@@ -77,7 +72,7 @@
     <Property Id="FilePath" Label="File Path" Description="File Path" DataType="System.String" />
     <Property Id="Group" Label="Group" Description="Display the node as a group" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
     <Property Id="GroupLabel" DataType="System.String" />
-    <Property Id="Icon" DataType="System.String" />
+    <Property Id="Icon" Label="Icon" Description="Icon" DataType="System.String" />
     <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
     <Property Id="IsContainment" DataType="System.Boolean" />
     <Property Id="IsEnabled" DataType="System.Boolean" />
@@ -105,7 +100,6 @@
     <Alias n="6" Id="(@5)" />
     <Alias n="7" Uri="Assembly=$(fc8e179c-ed72-481c-a386-e624518c1d6a.OutputPathUri)" />
     <Alias n="8" Id="(@7)" />
-    <Alias n="9" Uri="Assembly=$(936eb0a3-a416-483a-8756-03b424b40658.OutputPathUri)" />
     <Alias n="10" Uri="Assembly=$(3821491f-9c07-4ed2-88fe-c06cbed5f8e3.OutputPathUri)" />
     <Alias n="11" Id="(@10)" />
     <Alias n="12" Uri="Assembly=$(51cee777-b31a-4603-ba4e-ffa7dcd8e8a2.OutputPathUri)" />
@@ -340,7 +334,6 @@
     <Path Id="7cf8903d-e0dc-4280-a169-8eee0a0b7f9f.OutputPath" Value="D:\git\personal\waes-assign\Waes.Assignment.Infra\bin\Debug\netcoreapp2.2\Waes.Assignment.Infra.dll" />
     <Path Id="7cf8903d-e0dc-4280-a169-8eee0a0b7f9f.OutputPathUri" Value="file:///D:/git/personal/waes-assign/Waes.Assignment.Infra/bin/Debug/netcoreapp2.2/Waes.Assignment.Infra.dll" />
     <Path Id="936eb0a3-a416-483a-8756-03b424b40658.OutputPath" Value="D:\git\personal\waes-assign\Waes.Assignment.Common\bin\Debug\netcoreapp2.2\Waes.Assignment.Common.dll" />
-    <Path Id="936eb0a3-a416-483a-8756-03b424b40658.OutputPathUri" Value="file:///D:/git/personal/waes-assign/Waes.Assignment.Common/bin/Debug/netcoreapp2.2/Waes.Assignment.Common.dll" />
     <Path Id="fc8e179c-ed72-481c-a386-e624518c1d6a.OutputPath" Value="D:\git\personal\waes-assign\Waes.Assignment.Application\bin\Debug\netcoreapp2.2\Waes.Assignment.Application.dll" />
     <Path Id="fc8e179c-ed72-481c-a386-e624518c1d6a.OutputPathUri" Value="file:///D:/git/personal/waes-assign/Waes.Assignment.Application/bin/Debug/netcoreapp2.2/Waes.Assignment.Application.dll" />
   </Paths>

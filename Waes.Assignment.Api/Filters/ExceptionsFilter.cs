@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
-using System.Net;
 
 namespace Waes.Assignment.Api.Filters
 {
@@ -30,7 +30,7 @@ namespace Waes.Assignment.Api.Filters
                     }
                 })
             {
-                StatusCode = (int)HttpStatusCode.InternalServerError
+                StatusCode = StatusCodes.Status500InternalServerError
             };
         }
     }

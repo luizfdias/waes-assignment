@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Net;
 using Waes.Assignment.Api.Interfaces;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Events;
@@ -97,7 +97,7 @@ namespace Waes.Assignment.Api.Handlers
 
         private IActionResult Error(ControllerBase controller)
         {
-            return controller.StatusCode((int)HttpStatusCode.InternalServerError, new
+            return controller.StatusCode(StatusCodes.Status500InternalServerError, new
             {
                 Errors = new[]
                 {

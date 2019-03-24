@@ -13,7 +13,7 @@ namespace Waes.Assignment.Application.Services
 
         private readonly IMapper _mapper;
 
-        public DiffService(IDiffRepository diffRepository, IMapper mapper, IMediatorHandler eventRaiser)
+        public DiffService(IDiffRepository diffRepository, IMapper mapper)
         {
             _diffRepository = diffRepository ?? throw new ArgumentNullException(nameof(diffRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

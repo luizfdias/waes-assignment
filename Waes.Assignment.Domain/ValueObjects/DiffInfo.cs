@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Waes.Assignment.Domain.Models.Enums;
-using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Domain.ValueObjects
 {
@@ -14,7 +13,7 @@ namespace Waes.Assignment.Domain.ValueObjects
         public DiffInfo(DiffStatus status, IEnumerable<DiffPosition> diffPositions)
         {
             Status = status;
-            DiffPositions = diffPositions;
+            DiffPositions = diffPositions; //TODO: Ver essa lista aqui
         }
 
         public IEnumerable<DiffSequence> GetSequenceOfDifferences()

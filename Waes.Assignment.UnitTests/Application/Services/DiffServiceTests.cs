@@ -18,17 +18,14 @@ namespace Waes.Assignment.UnitTests.Application.Services
 
         private readonly IMapper _mapper;
 
-        private readonly IMediatorHandler _mediatorHandler;
-
-        private readonly DiffService _diffService;
+        private readonly DiffService _sut;
 
         public DiffServiceTests()
         {
             _diffRepository = Substitute.For<IDiffRepository>();
             _mapper = Substitute.For<IMapper>();
-            _mediatorHandler = Substitute.For<IMediatorHandler>();
 
-            _diffService = new DiffService(_diffRepository, _mapper, _mediatorHandler);
+            _sut = new DiffService(_diffRepository, _mapper);
         }
 
         [Theory, AutoNSubstituteData]
@@ -41,8 +38,9 @@ namespace Waes.Assignment.UnitTests.Application.Services
         public async void Get_WhenDiffIsNotFound_ShouldReturnNull(string correlationId)
         {
             _diffRepository.GetByCorrelationId(Arg.Any<string>()).ReturnsNull();
-            
-            var result = await _diffService.Get(correlationId);
+            _mapper.Map<DiffResponse>(Arg.Any<Diff>()).ReturnsNull();
+
+            var result = await _sut.Get(correlationId);
 
             result.Should().BeNull();
         }
@@ -54,7 +52,7 @@ namespace Waes.Assignment.UnitTests.Application.Services
 
             _mapper.Map<DiffResponse>(diff).Returns(diffResponse);
 
-            var result = await _diffService.Get(correlationId);
+            var result = await _sut.Get(correlationId);
 
             result.Should().Be(diffResponse);            
         }

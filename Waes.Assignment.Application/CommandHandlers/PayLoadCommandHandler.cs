@@ -27,6 +27,7 @@ namespace Waes.Assignment.Application.CommandHandlers
 
             if (payLoadFromRepository != null)
             {
+                //TODO: Substituir por exception
                 await _bus.RaiseEvent(
                     new PayLoadAlreadyCreatedEvent(payLoadFromRepository.Id, payLoadFromRepository.CorrelationId, payLoadFromRepository.Side));
 
