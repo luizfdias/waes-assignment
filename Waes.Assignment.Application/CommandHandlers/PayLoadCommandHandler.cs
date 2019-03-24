@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Waes.Assignment.Application.Exceptions;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Interfaces;
@@ -27,11 +28,7 @@ namespace Waes.Assignment.Application.CommandHandlers
 
             if (payLoadFromRepository != null)
             {
-                //TODO: Substituir por exception
-                await _bus.RaiseEvent(
-                    new PayLoadAlreadyCreatedEvent(payLoadFromRepository.Id, payLoadFromRepository.CorrelationId, payLoadFromRepository.Side));
-
-                return false;
+                throw new EntityAlreadyExistsException($"Payload of correlation id {request.CorrelationId} is already taken.");
             }
 
             var payLoad = new PayLoad(request.CorrelationId, request.Content, request.Side);

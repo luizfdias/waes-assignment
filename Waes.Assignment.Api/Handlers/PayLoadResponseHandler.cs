@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using Waes.Assignment.Api.Common;
 using Waes.Assignment.Api.Interfaces;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Events;
@@ -18,7 +20,7 @@ namespace Waes.Assignment.Api.Handlers
 
         public IActionResult ResponseCreated(ControllerBase controller, object result)
         {
-            return PayLoadCreated(controller, result) ?? PayLoadAlreadyExist(controller) ?? Error(controller);
+            return PayLoadCreated(controller, result) ?? Error(controller);
         }
 
         public IActionResult ResponseOK(ControllerBase controller, object result)
@@ -39,16 +41,12 @@ namespace Waes.Assignment.Api.Handlers
 
         private IActionResult DiffNotFound(ControllerBase controller)
         {
-            return controller.NotFound(new
-            {
-                Errors = new[]
+            return controller.NotFound(new ErrorResponse
+            {                
+                Errors = new List<Error>
                 {
-                    new
-                    {
-                        Code = "900",
-                        Message = $"Diff result was not found."
-                    }
-                }
+                    new Error(ApiCodes.EntityNotFound, "Diff result was not found.")
+                }                
             });
         }
 
@@ -75,37 +73,13 @@ namespace Waes.Assignment.Api.Handlers
             return null;
         }
 
-        private IActionResult PayLoadAlreadyExist(ControllerBase controller)
-        {
-            var payLoadAlreadyCreatedEvent = _notificationHandler.GetEvent<PayLoadAlreadyCreatedEvent>();
-
-            if (payLoadAlreadyCreatedEvent != null)
-                return controller.Conflict(new
-                {
-                    Errors = new[]
-                    {
-                            new
-                            {
-                                Code = "901",
-                                Message = $"Payload with correlation id: {payLoadAlreadyCreatedEvent.CorrelationId} and side: {payLoadAlreadyCreatedEvent.Side} already exist."
-                            }
-                        }
-                });
-
-            return null;
-        }
-
         private IActionResult Error(ControllerBase controller)
         {
-            return controller.StatusCode(StatusCodes.Status500InternalServerError, new
+            return controller.StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse
             {
-                Errors = new[]
+                Errors = new List<Error>
                 {
-                    new
-                    {
-                        Code = "999",
-                        Message = $"An error occurred during the operation."
-                    }
+                    new Error(ApiCodes.OperationFailure, "An error occurred during the operation.")
                 }
             });
         }
