@@ -6,15 +6,15 @@ using MediatR;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Events;
 
-namespace Waes.Assignment.Application.NotificationHandlers
+namespace Waes.Assignment.Application.EventHandlers
 {
-    public class NotificationHandler : INotificationHandler,
+    public class NotificationEventHandler : INotificationHandler,
         INotificationHandler<PayLoadCreatedEvent>,
         INotificationHandler<DiffAnalyzedEvent>
     {
         private List<Event> _events;
 
-        public NotificationHandler()
+        public NotificationEventHandler()
         {
             _events = new List<Event>();
         }

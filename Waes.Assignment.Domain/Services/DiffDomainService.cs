@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Domain.Models.Enums;
 using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Domain.Services
@@ -11,7 +12,7 @@ namespace Waes.Assignment.Domain.Services
         public DiffInfo ProcessDiff<TEquatable>(TEquatable[] left, TEquatable[] right) where TEquatable : IEquatable<TEquatable>
         {
             if (left.Count() != right.Count())
-                return DiffInfo.CreateNotOfEqualSize();
+                return new DiffInfo(DiffStatus.NotOfEqualSize);
 
             var diffs = new List<DiffPosition>();
 
@@ -23,7 +24,7 @@ namespace Waes.Assignment.Domain.Services
                 }
             }
 
-            return diffs.Any() ? DiffInfo.CreateNotEqual(diffs) : DiffInfo.CreateEqual();
+            return diffs.Any() ? new DiffInfo(DiffStatus.NotEqual, diffs.ToArray()) : new DiffInfo(DiffStatus.Equal);
         }
     }
 }

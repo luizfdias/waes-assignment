@@ -6,29 +6,35 @@ namespace Waes.Assignment.Domain.ValueObjects
 {
     public class DiffInfo 
     {
-        public IEnumerable<DiffPosition> DiffPositions { get; }
+        public DiffPosition[] DiffPositions { get; }
 
         public DiffStatus Status { get; }
 
-        public DiffInfo(DiffStatus status, IEnumerable<DiffPosition> diffPositions)
+        public DiffInfo(DiffStatus status)
         {
             Status = status;
-            DiffPositions = diffPositions; //TODO: Ver essa lista aqui
+        }
+
+        public DiffInfo(DiffStatus status, DiffPosition[] diffPositions)
+        {
+            Status = status;
+            DiffPositions = diffPositions;
         }
 
         public IEnumerable<DiffSequence> GetSequenceOfDifferences()
         {
-            var sequences = new List<DiffSequence>();
+            if (DiffPositions == null || !DiffPositions.Any())
+                return new List<DiffSequence>();
 
-            var array = DiffPositions.ToArray();
+            var sequences = new List<DiffSequence>();
 
             int currentLen = 1, currentIdx = 0;
 
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < DiffPositions.Length; i++)
             {
                 int nextIndex = i + 1;
 
-                if (nextIndex < array.Length && array[i].Position + 1 == array[nextIndex].Position)
+                if (nextIndex < DiffPositions.Length && DiffPositions[i].Position + 1 == DiffPositions[nextIndex].Position)
                 {
                     currentLen++;                                       
                 }
@@ -43,22 +49,5 @@ namespace Waes.Assignment.Domain.ValueObjects
 
             return sequences;
         }
-
-        #region Factory methods
-        public static DiffInfo CreateEqual()
-        {
-            return new DiffInfo(DiffStatus.Equal, null);
-        }
-
-        public static DiffInfo CreateNotOfEqualSize()
-        {
-            return new DiffInfo(DiffStatus.NotOfEqualSize, null);
-        }
-
-        public static DiffInfo CreateNotEqual(IEnumerable<DiffPosition> diffPositions)
-        {
-            return new DiffInfo(DiffStatus.NotEqual, diffPositions);
-        }
-        #endregion
     }
 }

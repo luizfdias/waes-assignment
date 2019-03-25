@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System;
 using System.Threading.Tasks;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
@@ -12,7 +13,7 @@ namespace Waes.Assignment.Infra.Bus
 
         public InMemoryBus(IMediator mediator)
         {
-            _mediator = mediator;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public Task RaiseEvent<T>(T @event) where T : Event

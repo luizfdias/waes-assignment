@@ -30,11 +30,11 @@ namespace Waes.Assignment.UnitTests.Application.EventHandlers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Handle_WhenPayLoadCreated_ShouldSendAnalyzeDiffCommand(PayLoadCreatedEvent payLoadCreatedEvent)
+        public void Handle_WhenPayLoadCreated_ShouldSendAnalyzeDiffCommand(PayLoadCreatedEvent payLoadCreatedEvent)
         {
-            await _sut.Handle(payLoadCreatedEvent, new CancellationToken());
+            _sut.Handle(payLoadCreatedEvent, new CancellationToken());
 
-            await _bus.Received(1).SendCommand(Arg.Is<AnalyzeDiffCommand>(a => a.CorrelationId == payLoadCreatedEvent.CorrelationId));
+            _bus.Received(1).SendCommand(Arg.Is<AnalyzeDiffCommand>(a => a.CorrelationId == payLoadCreatedEvent.CorrelationId));
         }
     }
 }

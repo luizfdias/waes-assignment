@@ -16,10 +16,5 @@ namespace Waes.Assignment.Domain.Commands
             Content = content;
             Side = side;
         }
-
-        public override bool IsValid()
-        {
-            return true;
-        }
     }
 }

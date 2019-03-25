@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
-using System.Collections.Generic;
 using System.Linq;
-using Waes.Assignment.Domain.Models;
+using Waes.Assignment.Domain.Models.Enums;
 using Waes.Assignment.Domain.ValueObjects;
 using Xunit;
 
@@ -12,7 +11,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenMultipleDifferences_MustReturnStartIndexAndLengthOfIt()
         {
-            var diff = DiffInfo.CreateNotEqual(new List<DiffPosition>
+            var diff = new DiffInfo(DiffStatus.NotEqual, new DiffPosition[]
             {
                 new DiffPosition(1),
                 new DiffPosition(2),
@@ -48,7 +47,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenItHasOneDifferenceOfLengthOne_MustReturnStartIndexAndLengthOfIt()
         {
-            var diff = DiffInfo.CreateNotEqual(new List<DiffPosition>
+            var diff = new DiffInfo(DiffStatus.NotEqual, new DiffPosition[]
             {
                 new DiffPosition(1)
             });
@@ -62,7 +61,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenItHasOneDifferenceOfLengthBiggerThanOne_MustReturnStartIndexAndLengthOfIt()
         {
-            var diff = DiffInfo.CreateNotEqual(new List<DiffPosition>
+            var diff = new DiffInfo(DiffStatus.NotEqual, new DiffPosition[]
             {
                 new DiffPosition(1),
                 new DiffPosition(2),
@@ -78,7 +77,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenNotOfEqualSize_MustReturnAnEmptyList()
         {
-            var diff = DiffInfo.CreateNotOfEqualSize();
+            var diff = new DiffInfo(DiffStatus.NotOfEqualSize);
 
             var result = diff.GetSequenceOfDifferences();
 
@@ -88,7 +87,7 @@ namespace Waes.Assignment.UnitTests.Domain
         [Fact]
         public void GetSequenceOfDifferences_WhenEqual_MustReturnAnEmptyList()
         {
-            var diff = DiffInfo.CreateEqual();
+            var diff = new DiffInfo(DiffStatus.Equal);
 
             var result = diff.GetSequenceOfDifferences();
 

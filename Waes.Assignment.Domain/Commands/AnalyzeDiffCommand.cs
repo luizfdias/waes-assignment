@@ -8,10 +8,5 @@
         {
             CorrelationId = correlationId;
         }
-
-        public override bool IsValid()
-        {
-            return true;
-        }
     }
 }
