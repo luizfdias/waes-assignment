@@ -19,7 +19,6 @@ namespace Waes.Assignment.Infra.IoC.Modules
             services.AddScoped<INotificationHandler>(ctx => ctx.GetService<NotificationHandler>());
             services.AddScoped<INotificationHandler<PayLoadCreatedEvent>, PayLoadEventHandler>();
             services.AddScoped<INotificationHandler<PayLoadCreatedEvent>>(ctx => ctx.GetService<NotificationHandler>());
-            services.AddScoped<INotificationHandler<PayLoadAlreadyCreatedEvent>>(ctx => ctx.GetService<NotificationHandler>());
             services.AddScoped<INotificationHandler<DiffAnalyzedEvent>>(ctx => ctx.GetService<NotificationHandler>());
 
             return services;

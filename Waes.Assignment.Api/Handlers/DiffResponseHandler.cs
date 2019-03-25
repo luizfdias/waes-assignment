@@ -9,11 +9,11 @@ using Waes.Assignment.Domain.Events;
 
 namespace Waes.Assignment.Api.Handlers
 {
-    public class PayLoadResponseHandler : IResponseHandler
+    public class DiffResponseHandler : IResponseHandler
     {
         private readonly INotificationHandler _notificationHandler;
 
-        public PayLoadResponseHandler(INotificationHandler notificationHandler)
+        public DiffResponseHandler(INotificationHandler notificationHandler)
         {
             _notificationHandler = notificationHandler ?? throw new ArgumentNullException(nameof(notificationHandler));
         }

@@ -50,7 +50,7 @@ namespace Waes.Assignment.Api
                         };
                     });
 
-            services.AddScoped<IResponseHandler, PayLoadResponseHandler>();
+            services.AddScoped<IResponseHandler, DiffResponseHandler>();
             services.AddMediatR(typeof(Startup));
 
             DependencyInjector.Initialize(services);

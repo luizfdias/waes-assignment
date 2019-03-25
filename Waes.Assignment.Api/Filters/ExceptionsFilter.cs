@@ -23,17 +23,19 @@ namespace Waes.Assignment.Api.Filters
 
             if (context.Exception is EntityAlreadyExistsException entityEx)
             {
-                context.Result = GetErrorResult(ApiCodes.EntityAlreadyExists, entityEx.Message, StatusCodes.Status409Conflict);
+                context.Result = GetErrorResult(ApiCodes.EntityAlreadyExists, entityEx.Message);
+                context.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
             }
             else
             {
-                context.Result = GetErrorResult(ApiCodes.OperationFailure, "An error occurred during the operation.", StatusCodes.Status500InternalServerError);
+                context.Result = GetErrorResult(ApiCodes.OperationFailure, "An error occurred during the operation.");
+                context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             }            
 
             context.ExceptionHandled = true;
         }
 
-        private static JsonResult GetErrorResult(string code, string message, int statusCode)
+        private static JsonResult GetErrorResult(string code, string message)
         {
             return new JsonResult(
                 new ErrorResponse
@@ -42,10 +44,7 @@ namespace Waes.Assignment.Api.Filters
                     {
                         new Error(code, message)
                     }
-                })
-            {
-                StatusCode = statusCode
-            };
+                });
         }
     }
 }
