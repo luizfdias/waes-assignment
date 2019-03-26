@@ -2,8 +2,8 @@
 {
     public class DiffInfoResponse
     {
-        public string StartIndex { get; set; }
+        public int StartIndex { get; set; }
 
-        public string Length { get; set; }
+        public int Length { get; set; }
     }
 }

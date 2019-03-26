@@ -18,6 +18,7 @@ namespace Waes.Assignment.Application.Profiles
         }
     }
 
+    //TODO: nao sei se gostei disso aqui.
     public class DiffResponseConverter : ITypeConverter<Diff, DiffResponse>
     {        
         public DiffResponse Convert(Diff source, DiffResponse destination, ResolutionContext context)
