@@ -1,7 +1,15 @@
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using Waes.Assignment.Api;
+using Waes.Assignment.Domain.Models;
+using Waes.Assignment.Domain.Models.Enums;
+using Waes.Assignment.Infra.Repositories.InMemory;
+using Waes.Assignment.IntegrationTests.Helpers;
 using Xunit;
 
 namespace Waes.Assignment.IntegrationTests
@@ -10,28 +18,71 @@ namespace Waes.Assignment.IntegrationTests
     {        
         private readonly HttpClient _client;
 
-        private readonly WebApplicationFactory<Startup> _factory;
+        private readonly InMemoryDatabase<Diff> _diffDatabase;
 
         public CreatePayLoadTests(WebApplicationFactory<Startup> factory)
         {
-            _factory = factory;
-            _client = factory.CreateClient();
+            _diffDatabase = DatabaseHelper.CreateDiffs();
+
+            _client = factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    services.AddSingleton(typeof(InMemoryDatabase<PayLoad>), DatabaseHelper.CreatePayloads());
+                    services.AddSingleton(typeof(InMemoryDatabase<Diff>), _diffDatabase);
+                });
+            }).CreateClient();
         }
 
         [Fact]
-        public async void PostLeft_OnSuccess_ShouldReturnResultAsExpected()
+        public async void PostLeft_WhenCreatingNewPayload_ShouldReturnResultAsExpected()
         {
-            var response = await _client.PostAsync("v1/diff/abc123/left", CreateContent("YWJjMTIz"));
+            var response = await _client.PostAsync("v1/diff/new_payload/left", CreateContent("YWJjMTIz"));
 
-            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(StatusCodes.Status201Created);
         }
 
         [Fact]
-        public async void PostRight_OnSuccess_ShouldReturnResultAsExpected()
+        public async void PostRight_WhenCreatingNewPayload_ShouldReturnResultAsExpected()
         {
-            var response = await _client.PostAsync("v1/diff/abc123/right", CreateContent("YWJjMTIz"));
+            var response = await _client.PostAsync("v1/diff/new_payload/right", CreateContent("YWJjMTIz"));
 
-            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(StatusCodes.Status201Created);
+        }
+
+        [Fact]
+        public async void PostLeft_WhenPayloadAlreadyExists_ShouldReturnConflict()
+        {
+            var response = await _client.PostAsync("v1/diff/123456789/left", CreateContent("YWJjMTIz"));
+
+            response.StatusCode.Should().Be(StatusCodes.Status409Conflict);            
+        }
+
+        [Fact]
+        public async void PostRight_WhenPayloadProcessedIsEqual_DiffCreatedShouldBeEqual()
+        {
+            var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMTIz"));
+
+            response.StatusCode.Should().Be(StatusCodes.Status201Created);
+            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Info.Status.Should().Be(DiffStatus.Equal);
+        }
+
+        [Fact]
+        public async void PostRight_WhenPayloadProcessedIsNotEqual_DiffCreatedShouldBeNotEqual()
+        {
+            var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMzIx"));
+
+            response.StatusCode.Should().Be(StatusCodes.Status201Created);
+            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Info.Status.Should().Be(DiffStatus.NotEqual);
+        }
+
+        [Fact]
+        public async void PostRight_WhenPayloadProcessedIsNotOfEqualSize_DiffCreatedShouldBeNotOfEqualSize()
+        {
+            var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMzIxMzI="));
+
+            response.StatusCode.Should().Be(StatusCodes.Status201Created);
+            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Info.Status.Should().Be(DiffStatus.NotOfEqualSize);
         }
 
         private static StringContent CreateContent(string content)
