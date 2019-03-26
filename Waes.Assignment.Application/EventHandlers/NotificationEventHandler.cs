@@ -12,7 +12,7 @@ namespace Waes.Assignment.Application.EventHandlers
         INotificationHandler<PayLoadCreatedEvent>,
         INotificationHandler<DiffAnalyzedEvent>
     {
-        private List<Event> _events;
+        private readonly List<Event> _events;
 
         public NotificationEventHandler()
         {

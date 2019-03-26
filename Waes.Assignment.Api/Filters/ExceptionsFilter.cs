@@ -10,16 +10,16 @@ namespace Waes.Assignment.Api.Filters
 {
     public class ExceptionsFilter : ExceptionFilterAttribute
     {
-        public ILogger Logger { get; }
+        private readonly ILogger _logger;
 
         public ExceptionsFilter(ILogger logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
         public override void OnException(ExceptionContext context)
         {
-            Logger.Error(context.Exception, "An unexpected error occurred");
+            _logger.Error(context.Exception, "An unexpected error occurred");
 
             if (context.Exception is EntityAlreadyExistsException entityEx)
             {

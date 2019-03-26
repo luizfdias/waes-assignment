@@ -15,7 +15,7 @@ namespace Waes.Assignment.Api.Controllers
 
         private readonly IDiffService _diffAnalyzerService;
 
-        public readonly IResponseHandler _responseHandler;
+        private readonly IResponseHandler _responseHandler;
 
         public DiffController(IPayLoadService payLoadCreateService, IDiffService diffAnalyzerService,
             IResponseHandler responseHandler) 
