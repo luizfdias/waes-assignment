@@ -46,7 +46,7 @@ namespace Waes.Assignment.UnitTests.Application.Services
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Get_WhenDiffIsFound_ShouldReturnDiffResponse(string correlationId, Diff diff, DiffResponse diffResponse)
+        public async void Get_WhenDiffIsFound_ShouldReturnDiffResponse(string correlationId, EqualDiff diff, DiffResponse diffResponse)
         {
             _diffRepository.GetByCorrelationId(correlationId).Returns(diff);
 

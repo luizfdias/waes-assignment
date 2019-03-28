@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
-using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.IntegrationTests.Helpers
 {
@@ -19,7 +18,7 @@ namespace Waes.Assignment.IntegrationTests.Helpers
         {
             var entities = new List<Diff>();
 
-            var diff = new Diff("789456123", new DiffInfo(DiffStatus.Equal));
+            var diff = new EqualDiff("789456123");
 
             entities.Add(diff);
 

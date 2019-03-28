@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
 using Waes.Assignment.Api.ViewModels;
 using Waes.Assignment.Application.ViewModels;
 using Waes.Assignment.Domain.Models;
-using Waes.Assignment.Domain.Models.Enums;
 using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Application.Profiles
@@ -13,27 +10,17 @@ namespace Waes.Assignment.Application.Profiles
     {
         public DiffProfile()
         {
-            CreateMap<Diff, DiffResponse>().ConvertUsing<DiffResponseConverter>();
-            CreateMap<DiffSequence, DiffInfoResponse>();
-        }
-    }
+            CreateMap<Differences, DiffInfoResponse>();
 
-    //TODO: nao sei se gostei disso aqui.
-    public class DiffResponseConverter : ITypeConverter<Diff, DiffResponse>
-    {        
-        public DiffResponse Convert(Diff source, DiffResponse destination, ResolutionContext context)
-        {
-            switch (source.Info.Status)
-            {
-                case DiffStatus.Equal:
-                    return new EqualResponse();
-                case DiffStatus.NotEqual:
-                    return new NotEqualResponse(context.Mapper.Map<IEnumerable<DiffInfoResponse>>(source.Info.GetSequenceOfDifferences())); // TODO: Remover lógica do get
-                case DiffStatus.NotOfEqualSize:
-                    return new NotOfEqualSizeResponse();
-                default:
-                    throw new InvalidOperationException($"Enum {source.Info.Status} not supported");
-            }
+            CreateMap<EqualDiff, EqualResponse>();
+            CreateMap<NotOfEqualSizeDiff, NotOfEqualSizeResponse>();
+            CreateMap<NotEqualDiff, NotEqualResponse>()
+                .ForMember(dest => dest.Info, opt => opt.MapFrom(src => src.Differences));
+
+            CreateMap<Diff, DiffResponse>()
+                .Include<EqualDiff, EqualResponse>()
+                .Include<NotOfEqualSizeDiff, NotOfEqualSizeResponse>()
+                .Include<NotEqualDiff, NotEqualResponse>();
         }
-    }
+    }    
 }

@@ -1,11 +1,11 @@
 ﻿namespace Waes.Assignment.Domain.ValueObjects
 {
-    public class DiffSequence
+    public class Differences
     {
         public int StartIndex { get; }
         public int Length { get; }
 
-        public DiffSequence(int startIndex, int length)
+        public Differences(int startIndex, int length)
         {
             StartIndex = startIndex;
             Length = length;

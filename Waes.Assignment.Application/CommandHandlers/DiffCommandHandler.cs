@@ -6,7 +6,6 @@ using MediatR;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Interfaces;
-using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
 
 namespace Waes.Assignment.Application.CommandHandlers
@@ -15,20 +14,20 @@ namespace Waes.Assignment.Application.CommandHandlers
     {
         private readonly IMediatorHandler _bus;
 
-        private readonly IDiffDomainService _diffDomainService;
+        private readonly IDiffEngine _diffEngine;
 
         private readonly IPayLoadRepository _payLoadRepository;
 
         private readonly IDiffRepository _diffRepository;
 
-        public DiffCommandHandler(IMediatorHandler bus, IDiffDomainService diffDomainService, IPayLoadRepository payLoadRepository,
+        public DiffCommandHandler(IMediatorHandler bus, IDiffEngine diffEngine, IPayLoadRepository payLoadRepository,
             IDiffRepository diffRepository)
         {
             _bus = bus ?? throw new ArgumentNullException(nameof(bus));
-            _diffDomainService = diffDomainService ?? throw new ArgumentNullException(nameof(diffDomainService));
+            _diffEngine = diffEngine ?? throw new ArgumentNullException(nameof(diffEngine));
             _payLoadRepository = payLoadRepository ?? throw new ArgumentNullException(nameof(payLoadRepository));
             _diffRepository = diffRepository ?? throw new ArgumentNullException(nameof(diffRepository));
-        }       
+        }
 
         public async Task<bool> Handle(AnalyzeDiffCommand request, CancellationToken cancellationToken)
         {
@@ -40,9 +39,7 @@ namespace Waes.Assignment.Application.CommandHandlers
             if (left == null || right == null)
                 return false;
 
-            var diffInfo = _diffDomainService.ProcessDiff(left.Content, right.Content);
-
-            var diff = new Diff(request.CorrelationId, diffInfo);
+            var diff = _diffEngine.ProcessDiff(request.CorrelationId, left.Content, right.Content);
 
             await _diffRepository.Add(diff);
 

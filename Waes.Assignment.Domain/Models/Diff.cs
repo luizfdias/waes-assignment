@@ -1,19 +1,15 @@
 ﻿using System;
 using Waes.Assignment.Domain.Interfaces;
-using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Domain.Models
 {
-    public class Diff : Entity
-    {
-        public string CorrelationId { get; private set; }
+    public abstract class Diff : Entity
+    {        
+        public string CorrelationId { get; set; }
 
-        public DiffInfo Info { get; private set; }
-
-        public Diff(string correlationId, DiffInfo info) : base(Guid.NewGuid())
+        public Diff(string correlationId) : base(Guid.NewGuid())
         {
             CorrelationId = correlationId;
-            Info = info;
         }
     }
 }

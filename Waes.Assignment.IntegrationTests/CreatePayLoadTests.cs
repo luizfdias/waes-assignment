@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Text;
 using Waes.Assignment.Api;
 using Waes.Assignment.Domain.Models;
-using Waes.Assignment.Domain.Models.Enums;
 using Waes.Assignment.Infra.Interfaces;
 using Waes.Assignment.IntegrationTests.Database;
 using Waes.Assignment.IntegrationTests.Helpers;
@@ -66,7 +65,7 @@ namespace Waes.Assignment.IntegrationTests
             var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMTIz"));
 
             response.StatusCode.Should().Be(StatusCodes.Status201Created);
-            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Info.Status.Should().Be(DiffStatus.Equal);
+            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Should().BeOfType<EqualDiff>();
         }
 
         [Fact]
@@ -75,7 +74,7 @@ namespace Waes.Assignment.IntegrationTests
             var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMzIx"));
 
             response.StatusCode.Should().Be(StatusCodes.Status201Created);
-            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Info.Status.Should().Be(DiffStatus.NotEqual);
+            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Should().BeOfType<NotEqualDiff>();
         }
 
         [Fact]
@@ -84,7 +83,7 @@ namespace Waes.Assignment.IntegrationTests
             var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMzIxMzI="));
 
             response.StatusCode.Should().Be(StatusCodes.Status201Created);
-            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Info.Status.Should().Be(DiffStatus.NotOfEqualSize);
+            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Should().BeOfType<NotOfEqualSizeDiff>();
         }
 
         private static StringContent CreateContent(string content)

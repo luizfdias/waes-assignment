@@ -11,12 +11,12 @@ namespace Waes.Assignment.UnitTests.Application.Profiles
     public class DiffProfileTests
     {
         [Theory, AutoNSubstituteData]
-        public void Map_WhenMappingFromDiffSequenceToDiffResponse_ResultShouldBeAsExpected(DiffSequence diffSequence)
+        public void Map_WhenMappingFromDiffSequenceToDiffResponse_ResultShouldBeAsExpected(Differences differences)
         {
-            var result = Mapper.Map<DiffInfoResponse>(diffSequence);
+            var result = Mapper.Map<DiffInfoResponse>(differences);
 
-            result.Length.Should().Be(diffSequence.Length);
-            result.StartIndex.Should().Be(diffSequence.StartIndex);
+            result.Length.Should().Be(differences.Length);
+            result.StartIndex.Should().Be(differences.StartIndex);
         }
     }
 }

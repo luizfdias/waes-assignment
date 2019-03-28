@@ -19,7 +19,7 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
 
         private readonly IPayLoadRepository _payLoadRepository;
 
-        private readonly IDiffDomainService _diffDomainService;
+        private readonly IDiffEngine _diffEngine;
 
         private readonly IDiffRepository _diffRepository;
 
@@ -29,10 +29,10 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
         {
             _bus = Substitute.For<IMediatorHandler>();
             _payLoadRepository = Substitute.For<IPayLoadRepository>();
-            _diffDomainService = Substitute.For<IDiffDomainService>();
+            _diffEngine = Substitute.For<IDiffEngine>();
             _diffRepository = Substitute.For<IDiffRepository>();
 
-            _sut = new DiffCommandHandler(_bus, _diffDomainService, _payLoadRepository, _diffRepository);
+            _sut = new DiffCommandHandler(_bus, _diffEngine, _payLoadRepository, _diffRepository);
         }
 
         [Theory, AutoNSubstituteData]
@@ -72,19 +72,39 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Handle_WhenPayLoadIsFound_ShouldReturnTrue(AnalyzeDiffCommand command, byte[] content)
-        {
+        public async void Handle_WhenPayLoadIsFound_ShouldReturnTrue(AnalyzeDiffCommand command, byte[] leftContent, byte[] rightContent,
+            NotOfEqualSizeDiff diff)
+        {            
             var payLoads = new List<PayLoad>
             {
-                new PayLoad(command.CorrelationId, content, SideEnum.Left),
-                new PayLoad(command.CorrelationId, content, SideEnum.Right)
+                new PayLoad(command.CorrelationId, leftContent, SideEnum.Left),
+                new PayLoad(command.CorrelationId, rightContent, SideEnum.Right)
             };
 
             _payLoadRepository.GetByCorrelationId(command.CorrelationId).Returns(payLoads);
+            _diffEngine.ProcessDiff(command.CorrelationId, leftContent, rightContent).Returns(diff);
 
             var result = await _sut.Handle(command, new CancellationToken());
 
             result.Should().BeTrue();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async void Handle_WhenPayLoadIsFound_ShouldProcessDiffAndSaveIt(AnalyzeDiffCommand command, byte[] leftContent, byte[] rightContent,
+            NotOfEqualSizeDiff diff)
+        {            
+            var payLoads = new List<PayLoad>
+            {
+                new PayLoad(command.CorrelationId, leftContent, SideEnum.Left),
+                new PayLoad(command.CorrelationId, rightContent, SideEnum.Right)
+            };
+
+            _payLoadRepository.GetByCorrelationId(command.CorrelationId).Returns(payLoads);
+            _diffEngine.ProcessDiff(command.CorrelationId, leftContent, rightContent).Returns(diff);
+
+            var result = await _sut.Handle(command, new CancellationToken());
+
+            await _diffRepository.Received(1).Add(diff);
         }
     }
 }

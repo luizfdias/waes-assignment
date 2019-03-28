@@ -7,11 +7,6 @@ namespace Waes.Assignment.Api.ViewModels
     {
         public override string Result => "NotEqual";
 
-        public IEnumerable<DiffInfoResponse> Info { get; }
-
-        public NotEqualResponse(IEnumerable<DiffInfoResponse> info)
-        {
-            Info = info;
-        }        
+        public IEnumerable<DiffInfoResponse> Info { get; set; }     
     }
 }
