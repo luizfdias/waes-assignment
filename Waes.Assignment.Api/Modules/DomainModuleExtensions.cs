@@ -5,7 +5,7 @@ using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Services;
 
-namespace Waes.Assignment.Infra.IoC.Modules
+namespace Waes.Assignment.Api.Modules
 {
     public static class DomainModuleExtensions
     {

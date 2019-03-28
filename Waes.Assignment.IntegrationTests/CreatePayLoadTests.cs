@@ -8,7 +8,8 @@ using System.Text;
 using Waes.Assignment.Api;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
-using Waes.Assignment.Infra.Repositories.InMemory;
+using Waes.Assignment.Infra.Interfaces;
+using Waes.Assignment.IntegrationTests.Database;
 using Waes.Assignment.IntegrationTests.Helpers;
 using Xunit;
 
@@ -18,18 +19,19 @@ namespace Waes.Assignment.IntegrationTests
     {        
         private readonly HttpClient _client;
 
-        private readonly InMemoryDatabase<Diff> _diffDatabase;
+        private readonly IDatabase<Diff> _diffDatabase;
 
         public CreatePayLoadTests(WebApplicationFactory<Startup> factory)
         {
-            _diffDatabase = DatabaseHelper.CreateDiffs();
+            _diffDatabase = new InMemoryDatabaseTest<Diff>();
+            var payloadDatabase = new InMemoryDatabaseTest<PayLoad>(DatabaseHelper.CreatePayloads());
 
             _client = factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
                 {
-                    services.AddSingleton(typeof(InMemoryDatabase<PayLoad>), DatabaseHelper.CreatePayloads());
-                    services.AddSingleton(typeof(InMemoryDatabase<Diff>), _diffDatabase);
+                    services.AddSingleton(typeof(IDatabase<PayLoad>), payloadDatabase);
+                    services.AddSingleton(typeof(IDatabase<Diff>), _diffDatabase);
                 });
             }).CreateClient();
         }

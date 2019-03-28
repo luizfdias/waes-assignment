@@ -1,15 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Infra.Bus;
-using Waes.Assignment.Infra.Repositories.InMemory;
+using Waes.Assignment.Infra.Interfaces;
+using Waes.Assignment.Infra.Repositories;
+using Waes.Assignment.Infra.Repositories.Databases.InMemory;
 
-namespace Waes.Assignment.Infra.IoC.Modules
+namespace Waes.Assignment.Api.Modules
 {
     public static class InfraModule
     {
         public static IServiceCollection AddInfraModule(this IServiceCollection services)
         {
-            services.AddSingleton(typeof(InMemoryDatabase<>));
+            services.AddSingleton(typeof(IDatabase<>), typeof(InMemoryDatabase<>));
 
             services.AddScoped<IPayLoadRepository, PayLoadRepository>();
             services.AddScoped<IDiffRepository, DiffRepository>();

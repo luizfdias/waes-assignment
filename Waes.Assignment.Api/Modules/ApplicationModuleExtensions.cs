@@ -5,7 +5,7 @@ using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Application.Services;
 using Waes.Assignment.Domain.Events;
 
-namespace Waes.Assignment.Infra.IoC.Modules
+namespace Waes.Assignment.Api.Modules
 {
     public static class ApplicationModuleExtensions
     {

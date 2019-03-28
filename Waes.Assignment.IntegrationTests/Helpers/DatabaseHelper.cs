@@ -1,30 +1,29 @@
-﻿using Waes.Assignment.Domain.Models;
+﻿using System.Collections.Generic;
+using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
 using Waes.Assignment.Domain.ValueObjects;
-using Waes.Assignment.Infra.Repositories.InMemory;
 
 namespace Waes.Assignment.IntegrationTests.Helpers
 {
     public static class DatabaseHelper
     {
-        public static InMemoryDatabase<PayLoad> CreatePayloads()
+        public static List<PayLoad> CreatePayloads()
         {
-            var payloadDatabase = new InMemoryDatabase<PayLoad>();
+            var entities = new List<PayLoad>();
+            entities.Add(new PayLoad("123456789", new byte[] { 97, 98, 99, 49, 50, 51 }, SideEnum.Left));
 
-            payloadDatabase.Entities.Add(new PayLoad("123456789", new byte[] { 97, 98, 99, 49, 50, 51 }, SideEnum.Left));
-
-            return payloadDatabase;
+            return entities;
         }
 
-        public static InMemoryDatabase<Diff> CreateDiffs()
+        public static List<Diff> CreateDiffs()
         {
-            var diffDatabase = new InMemoryDatabase<Diff>();
+            var entities = new List<Diff>();
 
             var diff = new Diff("789456123", new DiffInfo(DiffStatus.Equal));
 
-            diffDatabase.Entities.Add(diff);
+            entities.Add(diff);
 
-            return diffDatabase;
+            return entities;
         }
     }
 }

@@ -2,14 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Infra.Interfaces;
 
-namespace Waes.Assignment.Infra.Repositories.InMemory
+namespace Waes.Assignment.Infra.Repositories
 {   
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
-        protected InMemoryDatabase<TEntity> Database { get; }
+        protected IDatabase<TEntity> Database { get; }
 
-        public Repository(InMemoryDatabase<TEntity> database)
+        public Repository(IDatabase<TEntity> database)
         {
             Database = database ?? throw new ArgumentNullException(nameof(database));
         }

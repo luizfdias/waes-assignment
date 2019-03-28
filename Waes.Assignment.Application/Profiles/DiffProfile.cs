@@ -28,7 +28,7 @@ namespace Waes.Assignment.Application.Profiles
                 case DiffStatus.Equal:
                     return new EqualResponse();
                 case DiffStatus.NotEqual:
-                    return new NotEqualResponse(context.Mapper.Map<IEnumerable<DiffInfoResponse>>(source.Info.GetSequenceOfDifferences()));
+                    return new NotEqualResponse(context.Mapper.Map<IEnumerable<DiffInfoResponse>>(source.Info.GetSequenceOfDifferences())); // TODO: Remover lógica do get
                 case DiffStatus.NotOfEqualSize:
                     return new NotOfEqualSizeResponse();
                 default:

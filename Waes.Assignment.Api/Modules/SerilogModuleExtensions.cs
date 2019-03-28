@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace Waes.Assignment.Infra.IoC.Modules
+namespace Waes.Assignment.Api.Modules
 {
     public static class SerilogModuleExtensions
     {

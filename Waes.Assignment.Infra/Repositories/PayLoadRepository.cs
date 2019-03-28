@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
+using Waes.Assignment.Infra.Interfaces;
 
-namespace Waes.Assignment.Infra.Repositories.InMemory
+namespace Waes.Assignment.Infra.Repositories
 {
     public class PayLoadRepository : Repository<PayLoad>, IPayLoadRepository
     {
-        public PayLoadRepository(InMemoryDatabase<PayLoad> database) : base(database)
+        public PayLoadRepository(IDatabase<PayLoad> database) : base(database)
         {
         }
 

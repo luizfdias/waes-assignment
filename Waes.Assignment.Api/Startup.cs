@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -10,9 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Waes.Assignment.Api.Common;
 using Waes.Assignment.Api.Filters;
-using Waes.Assignment.Api.Handlers;
-using Waes.Assignment.Api.Interfaces;
-using Waes.Assignment.Infra.IoC;
+using Waes.Assignment.Api.Modules;
 
 namespace Waes.Assignment.Api
 {
@@ -48,12 +45,9 @@ namespace Waes.Assignment.Api
                                 Errors = ctx.ModelState.Values.Where(v => v.Errors.Count > 0).SelectMany(entry => entry.Errors).Select(error => new Error(ApiCodes.InvalidRequest, error.ErrorMessage))
                             });
                         };
-                    });
+                    });            
 
-            services.AddScoped<IResponseHandler, DiffResponseHandler>();
-            services.AddMediatR(typeof(Startup));
-
-            DependencyInjector.Initialize(services);
+            ModulesInitializer.Initialize(services);
         }
 
         [ExcludeFromCodeCoverage]

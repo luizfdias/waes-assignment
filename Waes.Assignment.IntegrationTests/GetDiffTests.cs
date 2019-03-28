@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Waes.Assignment.Api;
 using Waes.Assignment.Domain.Models;
-using Waes.Assignment.Infra.Repositories.InMemory;
 using Waes.Assignment.IntegrationTests.Helpers;
 using Xunit;
+using Waes.Assignment.Infra.Interfaces;
+using Waes.Assignment.IntegrationTests.Database;
 
 namespace Waes.Assignment.IntegrationTests
 {
@@ -17,11 +18,13 @@ namespace Waes.Assignment.IntegrationTests
 
         public GetDiffTests(WebApplicationFactory<Startup> factory)
         {
+            var diffDatabase = new InMemoryDatabaseTest<Diff>(DatabaseHelper.CreateDiffs());
+
             _client = factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
                 {
-                    services.AddSingleton(typeof(InMemoryDatabase<Diff>), DatabaseHelper.CreateDiffs());
+                    services.AddSingleton(typeof(IDatabase<Diff>), diffDatabase);
                 });
             }).CreateClient();
         }

@@ -15,14 +15,14 @@ namespace Waes.Assignment.Api.Controllers
 
         private readonly IDiffService _diffAnalyzerService;
 
-        private readonly IResponseHandler _responseHandler;
+        private readonly IResponseCreator _responseCreator;
 
         public DiffController(IPayLoadService payLoadCreateService, IDiffService diffAnalyzerService,
-            IResponseHandler responseHandler) 
+            IResponseCreator responseHandler) 
         {
             _payLoadCreateService = payLoadCreateService ?? throw new ArgumentNullException(nameof(payLoadCreateService));
             _diffAnalyzerService = diffAnalyzerService ?? throw new ArgumentNullException(nameof(diffAnalyzerService));
-            _responseHandler = responseHandler ?? throw new ArgumentNullException(nameof(responseHandler));
+            _responseCreator = responseHandler ?? throw new ArgumentNullException(nameof(responseHandler));
         }
        
         [HttpPost("{correlationId}/left")]
@@ -30,7 +30,7 @@ namespace Waes.Assignment.Api.Controllers
         {
             var result = await _payLoadCreateService.Create(correlationId, request);
 
-            return _responseHandler.ResponseCreated(this, result);
+            return _responseCreator.ResponseCreated(result) ?? _responseCreator.ResponseError();
         }
 
         [HttpPost("{correlationId}/right")]
@@ -38,7 +38,7 @@ namespace Waes.Assignment.Api.Controllers
         {
             var result = await _payLoadCreateService.Create(correlationId, request);
 
-            return _responseHandler.ResponseCreated(this, result);
+            return _responseCreator.ResponseCreated(result) ?? _responseCreator.ResponseError();
         }
 
         [HttpGet("{correlationId}")]
@@ -46,7 +46,7 @@ namespace Waes.Assignment.Api.Controllers
         {
             var result = await _diffAnalyzerService.Get(correlationId);
 
-            return _responseHandler.ResponseOK(this, result);
+            return _responseCreator.ResponseOK(result) ?? _responseCreator.ResponseNotFound();
         }
     }
 }

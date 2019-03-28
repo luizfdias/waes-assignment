@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using Waes.Assignment.Api.Controllers;
 using Waes.Assignment.Api.Interfaces;
 using Waes.Assignment.Api.ViewModels;
@@ -20,15 +21,15 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
 
         private readonly IDiffService _diffService;
 
-        private readonly IResponseHandler _responseHandler;
+        private readonly IResponseCreator _responseCreator;
 
         public DiffControllerTests()
         {
             _payLoadService = Substitute.For<IPayLoadService>();
             _diffService = Substitute.For<IDiffService>();
-            _responseHandler = Substitute.For<IResponseHandler>();
+            _responseCreator = Substitute.For<IResponseCreator>();
 
-            _sut = new DiffController(_payLoadService, _diffService, _responseHandler);
+            _sut = new DiffController(_payLoadService, _diffService, _responseCreator);
         }
 
         [Theory, AutoNSubstituteData]
@@ -42,11 +43,24 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
             CreatePayLoadResponse response, IActionResult actionResult)
         {
             _payLoadService.Create(correlationId, request).Returns(response);
-            _responseHandler.ResponseCreated(_sut, response).Returns(actionResult);
+            _responseCreator.ResponseCreated(response).Returns(actionResult);
 
             var result = await _sut.Post(correlationId, request);
 
             result.Should().Be(actionResult);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async void PostLeft_WhenResponseCreatedReturnsNull_ShouldReturnErrorResponse(string correlationId, CreateLeftPayLoadRequest request,
+            IActionResult errorResponse)
+        {
+            _payLoadService.Create(correlationId, request).ReturnsNull();
+            _responseCreator.ResponseCreated(null).ReturnsNull();
+            _responseCreator.ResponseError().Returns(errorResponse);
+
+            var result = await _sut.Post(correlationId, request);
+
+            result.Should().Be(errorResponse);
         }
 
         [Theory, AutoNSubstituteData]
@@ -54,7 +68,7 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
             CreatePayLoadResponse response, IActionResult actionResult)
         {
             _payLoadService.Create(correlationId, request).Returns(response);
-            _responseHandler.ResponseCreated(_sut, response).Returns(actionResult);
+            _responseCreator.ResponseCreated(response).Returns(actionResult);
 
             var result = await _sut.Post(correlationId, request);
 
@@ -62,15 +76,41 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
+        public async void PostRight_WhenResponseCreatedReturnsNull_ShouldReturnErrorResponse(string correlationId, CreateRightPayLoadRequest request,
+            IActionResult errorResponse)
+        {
+            _payLoadService.Create(correlationId, request).ReturnsNull();
+            _responseCreator.ResponseCreated(null).ReturnsNull();
+            _responseCreator.ResponseError().Returns(errorResponse);
+
+            var result = await _sut.Post(correlationId, request);
+
+            result.Should().Be(errorResponse);
+        }
+
+        [Theory, AutoNSubstituteData]
         public async void GetDiff_WhenCorrelationIdIsGiven_ShouldReturnResultAsExpected(string correlationId, DiffResponse response,
             IActionResult actionResult)
         {
             _diffService.Get(correlationId).Returns(response);
-            _responseHandler.ResponseOK(_sut, response).Returns(actionResult);
+            _responseCreator.ResponseOK(response).Returns(actionResult);
 
             var result = await _sut.GetDiff(correlationId);
 
             result.Should().Be(actionResult);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public async void GetDiff_WhenResponseOkReturnsNull_ShouldReturnNotFoundResponse(string correlationId, 
+            IActionResult notFoundResponse)
+        {
+            _diffService.Get(correlationId).ReturnsNull();
+            _responseCreator.ResponseOK(null).ReturnsNull();
+            _responseCreator.ResponseNotFound().Returns(notFoundResponse);
+
+            var result = await _sut.GetDiff(correlationId);
+
+            result.Should().Be(notFoundResponse);
         }
     }
 }

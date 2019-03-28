@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
+using Waes.Assignment.Infra.Interfaces;
 
-namespace Waes.Assignment.Infra.Repositories.InMemory
+namespace Waes.Assignment.Infra.Repositories
 {
     public class DiffRepository : Repository<Diff>, IDiffRepository
     {
-        public DiffRepository(InMemoryDatabase<Diff> database) : base(database)
+        public DiffRepository(IDatabase<Diff> database) : base(database)
         {
         }
 
