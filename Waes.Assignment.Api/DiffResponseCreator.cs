@@ -8,7 +8,7 @@ using Waes.Assignment.Api.Interfaces;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Events;
 
-namespace Waes.Assignment.Api.Handlers
+namespace Waes.Assignment.Api
 {
     public class DiffResponseCreator : IResponseCreator
     {
@@ -86,7 +86,10 @@ namespace Waes.Assignment.Api.Handlers
                 }
             };
 
-            return new ObjectResult(errorResponse);
+            return new ObjectResult(errorResponse)
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
         }
     }
 }

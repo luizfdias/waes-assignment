@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Waes.Assignment.Api.Handlers;
 using Waes.Assignment.Api.Interfaces;
 
 namespace Waes.Assignment.Api.Modules

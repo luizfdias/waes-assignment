@@ -39,7 +39,7 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Post_WhenCreateLeftPayLoadRequestIsGiven_ShouldReturnResultAsExpected(string correlationId, CreateLeftPayLoadRequest request, 
+        public async void PostLeft_OnSuccess_ShouldReturnResponseFromResponseCreated(string correlationId, CreateLeftPayLoadRequest request, 
             CreatePayLoadResponse response, IActionResult actionResult)
         {
             _payLoadService.Create(correlationId, request).Returns(response);
@@ -64,7 +64,7 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Post_WhenCreateRightPayLoadRequestIsGiven_ShouldReturnResultAsExpected(string correlationId, CreateRightPayLoadRequest request, 
+        public async void PostRight_OnSuccess_ShouldReturnResponseFromResponseCreated(string correlationId, CreateRightPayLoadRequest request, 
             CreatePayLoadResponse response, IActionResult actionResult)
         {
             _payLoadService.Create(correlationId, request).Returns(response);
@@ -89,7 +89,7 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void GetDiff_WhenCorrelationIdIsGiven_ShouldReturnResultAsExpected(string correlationId, DiffResponse response,
+        public async void GetDiff_OnSuccess_ShouldReturnResponseFromResponseOK(string correlationId, DiffResponse response,
             IActionResult actionResult)
         {
             _diffService.Get(correlationId).Returns(response);
