@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
-using Waes.Assignment.Application.Profiles;
+using Waes.Assignment.Infra.AutoMapperConfiguration;
 
 namespace Waes.Assignment.Api.Modules
 {
@@ -10,15 +10,7 @@ namespace Waes.Assignment.Api.Modules
         {                       
             services.AddScoped<IMapper>(ctx => 
             {
-                var mappingConfig = new MapperConfiguration(mc =>
-                {
-                    mc.AddProfile(new PayLoadProfile());
-                    mc.AddProfile(new DiffProfile());
-                });
-
-                mappingConfig.AssertConfigurationIsValid();
-
-                return mappingConfig.CreateMapper();                
+                return MapperCreator.Create();
             });
         }
     }

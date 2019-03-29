@@ -3,6 +3,8 @@ using AutoMapper;
 using NSubstitute;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Application.Services;
+using Waes.Assignment.Application.ViewModels;
+using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
@@ -13,19 +15,19 @@ namespace Waes.Assignment.UnitTests.Application.Services
     {
         private readonly IMapper _mapper;
 
-        private readonly IMediatorHandler _mediatorHandler;
+        private readonly IMediatorHandler _bus;
 
         private readonly INotificationHandler _notificationHandler;
 
-        private readonly PayLoadService _payLoadService;
+        private readonly PayLoadService _sut;
 
         public PayLoadServiceTests()
         {
             _mapper = Substitute.For<IMapper>();
-            _mediatorHandler = Substitute.For<IMediatorHandler>();
+            _bus = Substitute.For<IMediatorHandler>();
             _notificationHandler = Substitute.For<INotificationHandler>();
 
-            _payLoadService = new PayLoadService(_mediatorHandler, _mapper, _notificationHandler);
+            _sut = new PayLoadService(_bus, _mapper, _notificationHandler);
         }
 
         [Theory, AutoNSubstituteData]
@@ -35,9 +37,11 @@ namespace Waes.Assignment.UnitTests.Application.Services
         }
 
         [Theory, AutoNSubstituteData]
-        public void Create_GuardTests(string correlationId)
+        public async void Create_GuardTests(string correlationId, CreateLeftPayLoadRequest request, PayLoadCreateCommand payLoadCreateCommand)
         {
-            //_payLoadService.Create(correlationId, )
+            _mapper.Map<PayLoadCreateCommand>(request, opt => opt.Items["correlationId"] = correlationId).Returns(payLoadCreateCommand);
+
+            var result = await _sut.Create(correlationId, request);
         }
     }
 }

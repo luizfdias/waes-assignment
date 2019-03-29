@@ -1,22 +1,45 @@
 ﻿using AutoMapper;
 using FluentAssertions;
+using Waes.Assignment.Api.ViewModels;
 using Waes.Assignment.Application.ViewModels;
-using Waes.Assignment.Domain.ValueObjects;
+using Waes.Assignment.Domain.Models;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 
 namespace Waes.Assignment.UnitTests.Application.Profiles
 {
-    [Collection("Automapper collection")]
     public class DiffProfileTests
     {
-        [Theory, AutoNSubstituteData]
-        public void Map_WhenMappingFromDiffSequenceToDiffResponse_ResultShouldBeAsExpected(Differences differences)
+        [Theory, AutoNSubstituteDataAutoMapper]
+        public void Map_WhenMappingFromEqualDiffToDiffResponse_ShouldMapAsExpected(IMapper sut, EqualDiff equalDiff)
         {
-            var result = Mapper.Map<DiffInfoResponse>(differences);
+            Diff diff = equalDiff;
 
-            result.Length.Should().Be(differences.Length);
-            result.StartIndex.Should().Be(differences.StartIndex);
+            var result = sut.Map<DiffResponse>(diff);
+
+            result.Should().BeOfType<EqualResponse>();
+        }
+
+        [Theory, AutoNSubstituteDataAutoMapper]
+        public void Map_WhenMappingFromNotOfEqualSizeDiffToDiffResponse_ShouldMapAsExpected(IMapper sut, NotOfEqualSizeDiff notOfEqualSizeDiff)
+        {
+            Diff diff = notOfEqualSizeDiff;
+
+            var result = sut.Map<DiffResponse>(diff);
+
+            result.Should().BeOfType<NotOfEqualSizeResponse>();
+        }
+
+        [Theory, AutoNSubstituteDataAutoMapper]
+        public void Map_WhenMappingFromNotEqualDiffToDiffResponse_ShouldMapAsExpected(IMapper sut, NotEqualDiff notEqualDiff)
+        {
+            Diff diff = notEqualDiff;
+
+            var result = sut.Map<DiffResponse>(diff);
+
+            result.Should().BeOfType<NotEqualResponse>();
+            var notEqualResponse = (NotEqualResponse)result;
+            notEqualResponse.Info.Should().BeEquivalentTo(notEqualDiff.Differences);
         }
     }
 }
