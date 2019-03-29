@@ -5,7 +5,7 @@ using Waes.Assignment.Domain.Services;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Assignment.UnitTests.Domain.Models
+namespace Waes.Assignment.UnitTests.Domain.Services
 {
     public class DiffEngineTests
     {
