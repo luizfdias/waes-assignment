@@ -7,7 +7,7 @@ using Waes.Assignment.Infra.Bus;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Assignment.UnitTests.Infrastructure
+namespace Waes.Assignment.UnitTests.Infrastructure.Bus
 {
     public class InMemoryBusTests
     {

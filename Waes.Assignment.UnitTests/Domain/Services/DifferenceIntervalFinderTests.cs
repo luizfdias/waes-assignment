@@ -1,97 +1,72 @@
-﻿//using FluentAssertions;
-//using System.Linq;
-//using Waes.Assignment.Domain.Models.Enums;
-//using Waes.Assignment.Domain.ValueObjects;
-//using Xunit;
+﻿using FluentAssertions;
+using System.Linq;
+using Waes.Assignment.Domain.Services;
+using Xunit;
 
-//namespace Waes.Assignment.UnitTests.Domain
-//{
-//    public class DiffTests
-//    {
-//        [Fact]
-//        public void GetSequenceOfDifferences_WhenMultipleDifferences_MustReturnStartIndexAndLengthOfIt()
-//        {
-//            var diff = new DiffInfo(DiffStatus.NotEqual, new DiffPosition[]
-//            {
-//                new DiffPosition(1),
-//                new DiffPosition(2),
-//                new DiffPosition(3),
-//                new DiffPosition(5),
-//                new DiffPosition(6),
-//                new DiffPosition(10),
-//                new DiffPosition(13),
-//                new DiffPosition(14),
-//                new DiffPosition(15),
-//                new DiffPosition(19),
-//                new DiffPosition(20),
-//            });
+namespace Waes.Assignment.UnitTests.Domain
+{
+    public class DifferenceIntervalFinderTests
+    {
+        private readonly DifferenceIntervalFinder _sut;
 
-//            var result = diff.GetSequenceOfDifferences().ToArray();
+        public DifferenceIntervalFinderTests()
+        {
+            _sut = new DifferenceIntervalFinder();
+        }
 
-//            result[0].StartIndex.Should().Be(0);
-//            result[0].Length.Should().Be(3);
+        [Fact]
+        public void Find_WhenMultipleDifferences_ShouldReturnStartIndexAndLengthOfIt()
+        {
+            var indexOfDifferences = new int[] { 1, 2, 3, 5, 6, 10, 13, 14, 15, 19, 20 };
 
-//            result[1].StartIndex.Should().Be(3);
-//            result[1].Length.Should().Be(2);
+            var result = _sut.Find(indexOfDifferences).ToArray();
 
-//            result[2].StartIndex.Should().Be(5);
-//            result[2].Length.Should().Be(1);
+            result[0].StartIndex.Should().Be(0);
+            result[0].Length.Should().Be(3);
 
-//            result[3].StartIndex.Should().Be(6);
-//            result[3].Length.Should().Be(3);
+            result[1].StartIndex.Should().Be(3);
+            result[1].Length.Should().Be(2);
 
-//            result[4].StartIndex.Should().Be(9);
-//            result[4].Length.Should().Be(2);
-//        }
+            result[2].StartIndex.Should().Be(5);
+            result[2].Length.Should().Be(1);
 
-//        [Fact]
-//        public void GetSequenceOfDifferences_WhenItHasOneDifferenceOfLengthOne_MustReturnStartIndexAndLengthOfIt()
-//        {
-//            var diff = new DiffInfo(DiffStatus.NotEqual, new DiffPosition[]
-//            {
-//                new DiffPosition(1)
-//            });
+            result[3].StartIndex.Should().Be(6);
+            result[3].Length.Should().Be(3);
 
-//            var result = diff.GetSequenceOfDifferences().ToArray();
+            result[4].StartIndex.Should().Be(9);
+            result[4].Length.Should().Be(2);
+        }
 
-//            result[0].StartIndex.Should().Be(0);
-//            result[0].Length.Should().Be(1);
-//        }
+        [Fact]
+        public void Find_WhenItHasOneDifferenceOfLengthOne_ShouldReturnStartIndexAndLengthOfIt()
+        {
+            var indexOfDifferences = new int[] { 1 };
 
-//        [Fact]
-//        public void GetSequenceOfDifferences_WhenItHasOneDifferenceOfLengthBiggerThanOne_MustReturnStartIndexAndLengthOfIt()
-//        {
-//            var diff = new DiffInfo(DiffStatus.NotEqual, new DiffPosition[]
-//            {
-//                new DiffPosition(1),
-//                new DiffPosition(2),
-//                new DiffPosition(3),
-//            });
+            var result = _sut.Find(indexOfDifferences).ToArray();
 
-//            var result = diff.GetSequenceOfDifferences().ToArray();
+            result[0].StartIndex.Should().Be(0);
+            result[0].Length.Should().Be(1);
+        }
 
-//            result[0].StartIndex.Should().Be(0);
-//            result[0].Length.Should().Be(3);
-//        }
+        [Fact]
+        public void Find_WhenItHasOneDifferenceOfLengthBiggerThanOne_ShouldReturnStartIndexAndLengthOfIt()
+        {
+            var indexOfDifferences = new int[] {1, 2, 3 };
 
-//        [Fact]
-//        public void GetSequenceOfDifferences_WhenNotOfEqualSize_MustReturnAnEmptyList()
-//        {
-//            var diff = new DiffInfo(DiffStatus.NotOfEqualSize);
+            var result = _sut.Find(indexOfDifferences).ToArray();
 
-//            var result = diff.GetSequenceOfDifferences();
+            result[0].StartIndex.Should().Be(0);
+            result[0].Length.Should().Be(3);
+        }
 
-//            result.Should().BeEmpty();       
-//        }
+        [Fact]
+        public void Find_WhenThereIsNoDifferences_ShouldReturnAnEmptyList()
+        {
+            var indexOfDifferences = new int[] { };
 
-//        [Fact]
-//        public void GetSequenceOfDifferences_WhenEqual_MustReturnAnEmptyList()
-//        {
-//            var diff = new DiffInfo(DiffStatus.Equal);
+            var result = _sut.Find(indexOfDifferences).ToArray();
 
-//            var result = diff.GetSequenceOfDifferences();
-
-//            result.Should().BeEmpty();
-//        }
-//    }
-//}
+            result.Should().BeEmpty();
+        }
+    }
+}
