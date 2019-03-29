@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using System.Text;
 using Waes.Assignment.Domain.Models;
+using Waes.Assignment.Domain.Services;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 

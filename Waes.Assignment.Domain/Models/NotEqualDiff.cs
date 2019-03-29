@@ -5,9 +5,9 @@ namespace Waes.Assignment.Domain.Models
 {
     public class NotEqualDiff : Diff
     {
-        public IEnumerable<Differences> Differences { get; }
+        public IEnumerable<DifferenceInterval> Differences { get; }
 
-        public NotEqualDiff(string correlationId, IEnumerable<Differences> differences) : base(correlationId)
+        public NotEqualDiff(string correlationId, IEnumerable<DifferenceInterval> differences) : base(correlationId)
         {
             Differences = differences;
         }

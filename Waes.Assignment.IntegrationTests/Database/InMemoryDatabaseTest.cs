@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Infra.Interfaces;
 
 namespace Waes.Assignment.IntegrationTests.Database

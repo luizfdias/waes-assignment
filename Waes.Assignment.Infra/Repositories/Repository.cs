@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Infra.Interfaces;
 
 namespace Waes.Assignment.Infra.Repositories

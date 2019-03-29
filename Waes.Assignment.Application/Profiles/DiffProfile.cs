@@ -10,7 +10,7 @@ namespace Waes.Assignment.Application.Profiles
     {
         public DiffProfile()
         {
-            CreateMap<Differences, DiffInfoResponse>();
+            CreateMap<DifferenceInterval, DiffInfoResponse>();
 
             CreateMap<EqualDiff, EqualResponse>();
             CreateMap<NotOfEqualSizeDiff, NotOfEqualSizeResponse>();

@@ -1,5 +1,4 @@
 ﻿using System;
-using Waes.Assignment.Domain.Interfaces;
 
 namespace Waes.Assignment.Domain.Models
 {

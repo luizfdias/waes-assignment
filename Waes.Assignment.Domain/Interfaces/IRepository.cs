@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Waes.Assignment.Domain.Models;
 
 namespace Waes.Assignment.Domain.Interfaces
 {
