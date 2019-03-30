@@ -23,6 +23,7 @@
              <returns>A newly created payload</returns>
              <response code="201">Returns the newly created payload</response>
              <response code="400">If the content is null</response> 
+             <response code="409">If the payload already exists</response> 
         </member>
         <member name="M:Waes.Assignment.Api.Controllers.DiffController.Post(System.String,Waes.Assignment.Api.Common.BaseRequest{Waes.Assignment.Application.ApiModels.CreateRightPayLoadRequest})">
              <summary>
@@ -43,6 +44,7 @@
              <returns>A newly created payload</returns>
              <response code="201">Returns the newly created payload</response>
              <response code="400">If the content is null</response> 
+             <response code="409">If the payload already exists</response> 
         </member>
         <member name="M:Waes.Assignment.Api.Controllers.DiffController.GetDiff(System.String)">
             <summary>
