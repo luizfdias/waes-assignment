@@ -2,13 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Waes.Assignment.Api.Common;
+using Waes.Assignment.Api.Controllers;
 using Waes.Assignment.Api.Interfaces;
 using Waes.Assignment.Application.ApiModels;
 
 namespace Waes.Assignment.Api
 {
+    /// <summary>
+    /// DiffResponseCreator handles the result and creates a response for the API <see cref="DiffController"/>
+    /// </summary>
     public class DiffResponseCreator : IResponseCreator
-    {        
+    {
+        /// <summary>
+        /// Creates a created response
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns>If result is not null returns CreatedResult else returns null</returns>
         public IActionResult ResponseCreated(object result)
         {
             if (result == null)
@@ -22,6 +31,11 @@ namespace Waes.Assignment.Api
             return new CreatedResult(string.Empty, successResponse);
         }
 
+        /// <summary>
+        /// Creates an ok response
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns>If result is not null returns OkObjectResult else returns null</returns>
         public IActionResult ResponseOK(object result)
         {
             if (result == null)
@@ -33,6 +47,10 @@ namespace Waes.Assignment.Api
             });
         }
 
+        /// <summary>
+        /// Creates a not found response
+        /// </summary>
+        /// <returns>NotFoundObjectResult</returns>
         public IActionResult ResponseNotFound()
         {
             var notFoundResponse = new ErrorResponse
@@ -46,6 +64,10 @@ namespace Waes.Assignment.Api
             return new NotFoundObjectResult(notFoundResponse);
         }
 
+        /// <summary>
+        /// Creates an error response
+        /// </summary>
+        /// <returns>ObjectResult with status code 500</returns>
         public IActionResult ResponseError()
         {
             var errorResponse = new ErrorResponse

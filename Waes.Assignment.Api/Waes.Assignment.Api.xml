@@ -4,6 +4,98 @@
         <name>Waes.Assignment.Api</name>
     </assembly>
     <members>
+        <member name="T:Waes.Assignment.Api.Common.ApiCodes">
+            <summary>
+            It contains all API codes
+            </summary>
+        </member>
+        <member name="F:Waes.Assignment.Api.Common.ApiCodes.EntityAlreadyExists">
+            <summary>
+            Used when an entity already exists
+            </summary>
+        </member>
+        <member name="F:Waes.Assignment.Api.Common.ApiCodes.EntityNotFound">
+            <summary>
+            Used when an entity was not found
+            </summary>
+        </member>
+        <member name="F:Waes.Assignment.Api.Common.ApiCodes.InvalidRequest">
+            <summary>
+            Used for invalid requests
+            </summary>
+        </member>
+        <member name="F:Waes.Assignment.Api.Common.ApiCodes.OperationFailure">
+            <summary>
+            Used for unhandled failures
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Api.Common.BaseRequest`1">
+            <summary>
+            API base request object
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Waes.Assignment.Api.Common.BaseRequest`1.Data">
+            <summary>
+            The data to be handled
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Api.Common.ErrorResponse">
+            <summary>
+            API error response
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Api.Common.ErrorResponse.Errors">
+            <summary>
+            The collection of errors
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Api.Common.Error">
+            <summary>
+            Error representation
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Api.Common.Error.Code">
+            <summary>
+            The API Code
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Api.Common.Error.Message">
+            <summary>
+            The message
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Common.Error.#ctor(System.String,System.String)">
+            <summary>
+            The constructor of Error
+            </summary>
+            <param name="code"></param>
+            <param name="message"></param>
+        </member>
+        <member name="T:Waes.Assignment.Api.Common.SuccessResponse`1">
+            <summary>
+            API success response
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Waes.Assignment.Api.Common.SuccessResponse`1.Data">
+            <summary>
+            The data to be responsed
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Api.Controllers.DiffController">
+            <summary>
+            Diffcontroller manages the creation of payloads and diff processing
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Controllers.DiffController.#ctor(Waes.Assignment.Application.Interfaces.IPayLoadService,Waes.Assignment.Application.Interfaces.IDiffService,Waes.Assignment.Api.Interfaces.IResponseCreator)">
+            <summary>
+            The constructor of DiffController
+            </summary>
+            <param name="payLoadCreateService"></param>
+            <param name="diffAnalyzerService"></param>
+            <param name="responseHandler"></param>
+        </member>
         <member name="M:Waes.Assignment.Api.Controllers.DiffController.Post(System.String,Waes.Assignment.Api.Common.BaseRequest{Waes.Assignment.Application.ApiModels.CreateLeftPayLoadRequest})">
              <summary>
              Creates a left payload.
@@ -59,6 +151,171 @@
             <returns>A diff result between two payloads</returns>
             <response code="200">Returns the diff result</response>
             <response code="404">If the diff result is not found</response> 
+        </member>
+        <member name="T:Waes.Assignment.Api.DiffResponseCreator">
+            <summary>
+            DiffResponseCreator handles the result and creates a response for the API DiffController <see cref="T:Waes.Assignment.Api.Controllers.DiffController"/>
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.DiffResponseCreator.ResponseCreated(System.Object)">
+            <summary>
+            Creates a created response
+            </summary>
+            <param name="result"></param>
+            <returns>If result is not null returns CreatedResult else returns null</returns>
+        </member>
+        <member name="M:Waes.Assignment.Api.DiffResponseCreator.ResponseOK(System.Object)">
+            <summary>
+            Creates an ok response
+            </summary>
+            <param name="result"></param>
+            <returns>If result is not null returns OkObjectResult else returns null</returns>
+        </member>
+        <member name="M:Waes.Assignment.Api.DiffResponseCreator.ResponseNotFound">
+            <summary>
+            Creates a not found response
+            </summary>
+            <returns>NotFoundObjectResult</returns>
+        </member>
+        <member name="M:Waes.Assignment.Api.DiffResponseCreator.ResponseError">
+            <summary>
+            Creates an error response
+            </summary>
+            <returns>ObjectResult with status code 500</returns>
+        </member>
+        <member name="T:Waes.Assignment.Api.Filters.ExceptionsFilter">
+            <summary>
+            An exception filter that handles a generic exception and EntityAlreadyExistsException
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Filters.ExceptionsFilter.#ctor(Serilog.ILogger)">
+            <summary>
+            The constructor of Exceptionsfilter
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Waes.Assignment.Api.Filters.ExceptionsFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            It handles the exceptions throwed by the application.
+            If EntityAlreadyExistsException <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/> is throwed, it will respond with 409 (conflict)
+            else another exception is throwed, it will respond with 500 (internal server error)
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Waes.Assignment.Api.Interfaces.IResponseCreator">
+            <summary>
+            IResponseCreator interface is used to handle the response
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Interfaces.IResponseCreator.ResponseCreated(System.Object)">
+            <summary>
+            Creates a created response
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Api.Interfaces.IResponseCreator.ResponseOK(System.Object)">
+            <summary>
+            Creates an ok response
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Api.Interfaces.IResponseCreator.ResponseNotFound">
+            <summary>
+            Creates a not found response
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Api.Interfaces.IResponseCreator.ResponseError">
+            <summary>
+            Creates an error response
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Api.Modules.ApiModuleExtensions">
+            <summary>
+            Extension of IServiceCollection
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Modules.ApiModuleExtensions.AddApiModule(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            It adds the API dependencies to the container
+            </summary>
+            <param name="services"></param>
+            <param name="env"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Api.Modules.ApplicationModuleExtensions">
+            <summary>
+            Extension of IServiceCollection
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Modules.ApplicationModuleExtensions.AddApplicationModule(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            It adds the Application dependencies to the container
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Api.Modules.AutoMapperModuleExtensions">
+            <summary>
+            Extension of IServiceCollection
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Modules.AutoMapperModuleExtensions.AddAutoMapperConfiguration(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            It adds the AutoMapper dependencies to the container
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="T:Waes.Assignment.Api.Modules.DomainModuleExtensions">
+            <summary>
+            Extension of IServiceCollection
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Modules.DomainModuleExtensions.AddDomainModule(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            It adds the Domain dependencies to the container
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Api.Modules.InfraModule">
+            <summary>
+            Extension of IServiceCollection
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Modules.InfraModule.AddInfraModule(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            It adds the Infra dependencies to the container
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Api.Modules.ModulesInitializer">
+            <summary>
+            It manages the container setup
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Modules.ModulesInitializer.Initialize(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            It initializes all modules of the container
+            </summary>
+            <param name="services"></param>
+            <param name="env"></param>
+        </member>
+        <member name="T:Waes.Assignment.Api.Modules.SerilogModuleExtensions">
+            <summary>
+            Extension of IServiceCollection
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Api.Modules.SerilogModuleExtensions.AddSerilogModule(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            It adds the Serilog dependencies to the container
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

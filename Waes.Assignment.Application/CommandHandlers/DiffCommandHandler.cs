@@ -11,6 +11,9 @@ using Waes.Assignment.Domain.Models.Enums;
 
 namespace Waes.Assignment.Application.CommandHandlers
 {
+    /// <summary>
+    /// DiffCommandHandler handles the <see cref="AnalyzeDiffCommand"/>
+    /// </summary>
     public class DiffCommandHandler : IRequestHandler<AnalyzeDiffCommand, bool>
     {
         private readonly IMediatorHandler _bus;
@@ -21,6 +24,13 @@ namespace Waes.Assignment.Application.CommandHandlers
 
         private readonly IDiffRepository _diffRepository;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DiffCommandHandler"/>
+        /// </summary>
+        /// <param name="bus"></param>
+        /// <param name="diffEngine"></param>
+        /// <param name="payLoadRepository"></param>
+        /// <param name="diffRepository"></param>
         public DiffCommandHandler(IMediatorHandler bus, IDiffEngine diffEngine, IPayLoadRepository payLoadRepository,
             IDiffRepository diffRepository)
         {
@@ -30,6 +40,13 @@ namespace Waes.Assignment.Application.CommandHandlers
             _diffRepository = diffRepository ?? throw new ArgumentNullException(nameof(diffRepository));
         }
 
+        /// <summary>
+        /// It analyzes the diff and raises a <see cref="DiffAnalyzedEvent"/> if it goes right.                
+        /// The diff will be analyze only if both payloads (left and right) exists.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<bool> Handle(AnalyzeDiffCommand request, CancellationToken cancellationToken)
         {
             var payLoads = await _payLoadRepository.GetByCorrelationId(request.CorrelationId);

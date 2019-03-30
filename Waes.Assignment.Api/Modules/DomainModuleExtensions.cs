@@ -7,8 +7,16 @@ using Waes.Assignment.Domain.Services;
 
 namespace Waes.Assignment.Api.Modules
 {
+    /// <summary>
+    /// Extension of IServiceCollection
+    /// </summary>
     public static class DomainModuleExtensions
     {
+        /// <summary>
+        /// It adds the Domain dependencies to the container
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddDomainModule(this IServiceCollection services)
         {
             services.AddSingleton<IDiffEngine, DiffEngine>();

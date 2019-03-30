@@ -5,7 +5,6 @@ using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
-using Waes.Assignment.Domain.Interfaces;
 
 namespace Waes.Assignment.Application.Services
 {
@@ -17,6 +16,12 @@ namespace Waes.Assignment.Application.Services
 
         private readonly INotificationHandler _notificationHandler;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="PayLoadService"/>
+        /// </summary>
+        /// <param name="bus"></param>
+        /// <param name="mapper"></param>
+        /// <param name="notificationHandler"></param>
         public PayLoadService(IMediatorHandler bus, IMapper mapper, INotificationHandler notificationHandler)
         {
             _bus = bus ?? throw new ArgumentNullException(nameof(bus));

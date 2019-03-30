@@ -7,8 +7,16 @@ using Waes.Assignment.Domain.Events;
 
 namespace Waes.Assignment.Api.Modules
 {
+    /// <summary>
+    /// Extension of IServiceCollection
+    /// </summary>
     public static class ApplicationModuleExtensions
     {
+        /// <summary>
+        /// It adds the Application dependencies to the container
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddApplicationModule(this IServiceCollection services)
         {
             services.AddScoped<IDiffService, DiffService>();

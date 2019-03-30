@@ -3,7 +3,6 @@ using System;
 using System.Threading.Tasks;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Application.ApiModels;
-using Waes.Assignment.Domain.Interfaces;
 
 namespace Waes.Assignment.Application.Services
 {
@@ -13,6 +12,11 @@ namespace Waes.Assignment.Application.Services
 
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DiffService"/>
+        /// </summary>
+        /// <param name="diffRepository"></param>
+        /// <param name="mapper"></param>
         public DiffService(IDiffRepository diffRepository, IMapper mapper)
         {
             _diffRepository = diffRepository ?? throw new ArgumentNullException(nameof(diffRepository));

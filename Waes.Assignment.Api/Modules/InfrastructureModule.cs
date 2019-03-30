@@ -7,8 +7,16 @@ using Waes.Assignment.Infra.Repositories.Databases.InMemory;
 
 namespace Waes.Assignment.Api.Modules
 {
+    /// <summary>
+    /// Extension of IServiceCollection
+    /// </summary>
     public static class InfraModule
     {
+        /// <summary>
+        /// It adds the Infra dependencies to the container
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddInfraModule(this IServiceCollection services)
         {
             services.AddSingleton(typeof(IDatabase<>), typeof(InMemoryDatabase<>));

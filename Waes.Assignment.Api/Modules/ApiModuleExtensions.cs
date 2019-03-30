@@ -14,8 +14,17 @@ using Waes.Assignment.Api.Interfaces;
 
 namespace Waes.Assignment.Api.Modules
 {
+    /// <summary>
+    /// Extension of IServiceCollection
+    /// </summary>
     public static class ApiModuleExtensions
     {
+        /// <summary>
+        /// It adds the API dependencies to the container
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="env"></param>
+        /// <returns></returns>
         public static IServiceCollection AddApiModule(this IServiceCollection services, IHostingEnvironment env)
         {
             services.AddOptions();

@@ -3,8 +3,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Waes.Assignment.Api.Modules
 {
-    public class ModulesInitializer
+    /// <summary>
+    /// It manages the container setup
+    /// </summary>
+    public static class ModulesInitializer
     {
+        /// <summary>
+        /// It initializes all modules of the container
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="env"></param>
         public static void Initialize(IServiceCollection services, IHostingEnvironment env)
         {
             services.AddApiModule(env);

@@ -9,6 +9,9 @@ using Waes.Assignment.Application.Interfaces;
 
 namespace Waes.Assignment.Api.Controllers
 {
+    /// <summary>
+    /// Diffcontroller manages the creation of payloads and diff processing
+    /// </summary>
     [Route("v1/[controller]")]
     [ApiController]
     public class DiffController : ControllerBase
@@ -19,6 +22,12 @@ namespace Waes.Assignment.Api.Controllers
 
         private readonly IResponseCreator _responseCreator;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DiffController"/>
+        /// </summary>
+        /// <param name="payLoadCreateService"></param>
+        /// <param name="diffAnalyzerService"></param>
+        /// <param name="responseHandler"></param>
         public DiffController(IPayLoadService payLoadCreateService, IDiffService diffAnalyzerService,
             IResponseCreator responseHandler) 
         {

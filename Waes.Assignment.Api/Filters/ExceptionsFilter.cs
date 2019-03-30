@@ -8,18 +8,31 @@ using Waes.Assignment.Application.Exceptions;
 
 namespace Waes.Assignment.Api.Filters
 {
+    /// <summary>
+    /// An exception filter that handles a generic exception and EntityAlreadyExistsException
+    /// </summary>
     public class ExceptionsFilter : ExceptionFilterAttribute
     {
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ExceptionsFilter"/>
+        /// </summary>
+        /// <param name="logger"></param>
         public ExceptionsFilter(ILogger logger)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// It handles the exceptions throwed by the application.
+        /// If <see cref="EntityAlreadyExistsException"/> is thrown, it will respond with 409 (conflict)
+        /// else another exception is thrown, it will respond with 500 (internal server error)
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnException(ExceptionContext context)
         {
-            _logger.Error(context.Exception, "An unexpected error occurred");
+            _logger.Error(context.Exception, "An error occurred");
 
             if (context.Exception is EntityAlreadyExistsException entityEx)
             {

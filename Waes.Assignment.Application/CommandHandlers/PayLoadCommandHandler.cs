@@ -6,23 +6,37 @@ using Waes.Assignment.Application.Exceptions;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
-using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
 
 namespace Waes.Assignment.Application.CommandHandlers
 {
+    /// <summary>
+    /// PayLoadCommandHandler handles the <see cref="PayLoadCreateCommand"/>
+    /// </summary>
     public class PayLoadCommandHandler : IRequestHandler<PayLoadCreateCommand, bool>
     {
         private readonly IMediatorHandler _bus;
 
         private readonly IPayLoadRepository _payLoadRepository;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="PayLoadCommandHandler"/>
+        /// </summary>
+        /// <param name="bus"></param>
+        /// <param name="payLoadRepository"></param>
         public PayLoadCommandHandler(IMediatorHandler bus, IPayLoadRepository payLoadRepository)
         {
             _bus = bus ?? throw new ArgumentNullException(nameof(bus));
             _payLoadRepository = payLoadRepository ?? throw new ArgumentNullException(nameof(payLoadRepository));
         }
 
+        /// <summary>
+        /// It handles the creation of new payload and raises a <see cref="PayLoadCreatedEvent"/> if it goes right        
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="EntityAlreadyExistsException">Thrown when payload already exists</exception>
         public async Task<bool> Handle(PayLoadCreateCommand request, CancellationToken cancellationToken)
         {
             var payLoadFromRepository = await _payLoadRepository.GetByCorrelationIdAndSide(request.CorrelationId, request.Side);
