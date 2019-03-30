@@ -6,6 +6,7 @@ using System.Linq;
 using Waes.Assignment.Api.Common;
 using Waes.Assignment.Api.Interfaces;
 using Waes.Assignment.Application.Interfaces;
+using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Domain.Events;
 
 namespace Waes.Assignment.Api
@@ -29,9 +30,9 @@ namespace Waes.Assignment.Api
 
             var diffAnalyzedEvent = _notificationHandler.GetEvent<DiffAnalyzedEvent>();
             
-            var successResponse = new SuccessResponse
+            var successResponse = new SuccessResponse<CreatePayLoadResponse>
             {
-                Data = result
+                Data = (CreatePayLoadResponse)result
             };
 
             if (diffAnalyzedEvent != null)
@@ -57,9 +58,9 @@ namespace Waes.Assignment.Api
             if (result == null)
                 return null;
 
-            return new OkObjectResult(new SuccessResponse
+            return new OkObjectResult(new SuccessResponse<DiffResponse>
             {
-                Data = result
+                Data = (DiffResponse)result
             });
         }
 

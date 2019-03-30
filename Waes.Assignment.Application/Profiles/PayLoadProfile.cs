@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Waes.Assignment.Api.ViewModels;
-using Waes.Assignment.Application.ViewModels;
+using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
 using Waes.Assignment.Domain.Models.Enums;

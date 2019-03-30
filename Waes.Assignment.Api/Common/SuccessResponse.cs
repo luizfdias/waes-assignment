@@ -2,9 +2,9 @@
 
 namespace Waes.Assignment.Api.Common
 {
-    public class SuccessResponse
+    public class SuccessResponse<T>
     {
-        public object Data { get; set; }
+        public T Data { get; set; }
 
         public IEnumerable<Link> Links { get; set; }
     }

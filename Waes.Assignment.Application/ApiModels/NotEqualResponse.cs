@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Waes.Assignment.Application.ViewModels;
 
-namespace Waes.Assignment.Api.ViewModels
+namespace Waes.Assignment.Application.ApiModels
 {
     public class NotEqualResponse : DiffResponse
     {

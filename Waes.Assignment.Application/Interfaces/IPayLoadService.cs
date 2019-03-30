@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Waes.Assignment.Api.ViewModels;
+using Waes.Assignment.Application.ApiModels;
 
 namespace Waes.Assignment.Application.Interfaces
 {

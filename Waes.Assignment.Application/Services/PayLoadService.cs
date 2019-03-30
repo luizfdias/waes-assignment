@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Threading.Tasks;
-using Waes.Assignment.Api.ViewModels;
+using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;

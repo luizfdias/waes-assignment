@@ -88,7 +88,7 @@ namespace Waes.Assignment.IntegrationTests
 
         private static StringContent CreateContent(string content)
         {           
-            return new StringContent($"{{ \"content\":\"{content}\" }}", Encoding.UTF8, "application/json");
+            return new StringContent($"{{ \"data\": {{ \"content\":\"{content}\" }}}}", Encoding.UTF8, "application/json");
         }
     }
 }

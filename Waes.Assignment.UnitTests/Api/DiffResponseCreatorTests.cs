@@ -6,6 +6,7 @@ using NSubstitute;
 using System.Linq;
 using Waes.Assignment.Api;
 using Waes.Assignment.Api.Common;
+using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Events;
 using Waes.Assignment.UnitTests.AutoData;
@@ -55,32 +56,32 @@ namespace Waes.Assignment.UnitTests.Api
         }
 
         [Theory, AutoNSubstituteData]
-        public void ResponseOK_WhenResultIsNotNull_ShouldReturnSuccessResponseOfIt(string value)
+        public void ResponseOK_WhenResultIsNotNull_ShouldReturnSuccessResponseOfIt(EqualResponse value)
         {
             var response = _sut.ResponseOK(value);
 
             response.Should().BeOfType<OkObjectResult>();
             var objectResult = (OkObjectResult)response;
 
-            objectResult.Value.Should().BeOfType<SuccessResponse>();
-            ((SuccessResponse)objectResult.Value).Data.Should().Be(value);
+            objectResult.Value.Should().BeOfType<SuccessResponse<DiffResponse>>();
+            ((SuccessResponse<DiffResponse>)objectResult.Value).Data.Should().Be(value);
         }
 
         [Theory, AutoNSubstituteData]
-        public void ResponseCreated_WhenResultIsNotNullAndDiffWasNotAnalyzed_ShouldReturnSuccessResponseAsExpected(string value)
+        public void ResponseCreated_WhenResultIsNotNullAndDiffWasNotAnalyzed_ShouldReturnSuccessResponseAsExpected(CreatePayLoadResponse value)
         {
             var response = _sut.ResponseCreated(value);
 
             response.Should().BeOfType<CreatedResult>();
             var objectResult = (CreatedResult)response;
 
-            objectResult.Value.Should().BeOfType<SuccessResponse>();
-            ((SuccessResponse)objectResult.Value).Data.Should().Be(value);
-            ((SuccessResponse)objectResult.Value).Links.Should().BeNull();
+            objectResult.Value.Should().BeOfType<SuccessResponse<CreatePayLoadResponse>>();
+            ((SuccessResponse<CreatePayLoadResponse>)objectResult.Value).Data.Should().Be(value);
+            ((SuccessResponse<CreatePayLoadResponse>)objectResult.Value).Links.Should().BeNull();
         }
 
         [Theory, AutoNSubstituteData]
-        public void ResponseCreated_WhenResultIsNotNullAndDiffWasAnalyzed_ShouldReturnSuccessResponseAsExpected(string value,
+        public void ResponseCreated_WhenResultIsNotNullAndDiffWasAnalyzed_ShouldReturnSuccessResponseAsExpected(CreatePayLoadResponse value,
             DiffAnalyzedEvent @event)
         {
             _notificationHandler.GetEvent<DiffAnalyzedEvent>().Returns(@event);
@@ -90,9 +91,9 @@ namespace Waes.Assignment.UnitTests.Api
             response.Should().BeOfType<CreatedResult>();
             var objectResult = (CreatedResult)response;
 
-            objectResult.Value.Should().BeOfType<SuccessResponse>();
-            ((SuccessResponse)objectResult.Value).Data.Should().Be(value);
-            var link = ((SuccessResponse)objectResult.Value).Links.FirstOrDefault();
+            objectResult.Value.Should().BeOfType<SuccessResponse<CreatePayLoadResponse>>();
+            ((SuccessResponse<CreatePayLoadResponse>)objectResult.Value).Data.Should().Be(value);
+            var link = ((SuccessResponse<CreatePayLoadResponse>)objectResult.Value).Links.FirstOrDefault();
 
             link.Method.Should().Be("GET");
             link.Rel.Should().Be("self");

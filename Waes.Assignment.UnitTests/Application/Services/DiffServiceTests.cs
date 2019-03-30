@@ -4,7 +4,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using Waes.Assignment.Application.Services;
-using Waes.Assignment.Application.ViewModels;
+using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.UnitTests.AutoData;

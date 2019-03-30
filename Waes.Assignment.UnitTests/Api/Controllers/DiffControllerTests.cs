@@ -3,11 +3,11 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using Waes.Assignment.Api.Common;
 using Waes.Assignment.Api.Controllers;
 using Waes.Assignment.Api.Interfaces;
-using Waes.Assignment.Api.ViewModels;
+using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Application.Interfaces;
-using Waes.Assignment.Application.ViewModels;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 
@@ -39,10 +39,10 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void PostLeft_OnSuccess_ShouldReturnResponseFromResponseCreated(string correlationId, CreateLeftPayLoadRequest request, 
+        public async void PostLeft_OnSuccess_ShouldReturnResponseFromResponseCreated(string correlationId, BaseRequest<CreateLeftPayLoadRequest> request, 
             CreatePayLoadResponse response, IActionResult actionResult)
         {
-            _payLoadService.Create(correlationId, request).Returns(response);
+            _payLoadService.Create(correlationId, request.Data).Returns(response);
             _responseCreator.ResponseCreated(response).Returns(actionResult);
 
             var result = await _sut.Post(correlationId, request);
@@ -51,10 +51,10 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void PostLeft_WhenResponseCreatedReturnsNull_ShouldReturnErrorResponse(string correlationId, CreateLeftPayLoadRequest request,
+        public async void PostLeft_WhenResponseCreatedReturnsNull_ShouldReturnErrorResponse(string correlationId, BaseRequest<CreateLeftPayLoadRequest> request,
             IActionResult errorResponse)
         {
-            _payLoadService.Create(correlationId, request).ReturnsNull();
+            _payLoadService.Create(correlationId, request.Data).ReturnsNull();
             _responseCreator.ResponseCreated(null).ReturnsNull();
             _responseCreator.ResponseError().Returns(errorResponse);
 
@@ -64,10 +64,10 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void PostRight_OnSuccess_ShouldReturnResponseFromResponseCreated(string correlationId, CreateRightPayLoadRequest request, 
+        public async void PostRight_OnSuccess_ShouldReturnResponseFromResponseCreated(string correlationId, BaseRequest<CreateRightPayLoadRequest> request, 
             CreatePayLoadResponse response, IActionResult actionResult)
         {
-            _payLoadService.Create(correlationId, request).Returns(response);
+            _payLoadService.Create(correlationId, request.Data).Returns(response);
             _responseCreator.ResponseCreated(response).Returns(actionResult);
 
             var result = await _sut.Post(correlationId, request);
@@ -76,10 +76,10 @@ namespace Waes.Assignment.UnitTests.Api.Controllers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void PostRight_WhenResponseCreatedReturnsNull_ShouldReturnErrorResponse(string correlationId, CreateRightPayLoadRequest request,
+        public async void PostRight_WhenResponseCreatedReturnsNull_ShouldReturnErrorResponse(string correlationId, BaseRequest<CreateRightPayLoadRequest> request,
             IActionResult errorResponse)
         {
-            _payLoadService.Create(correlationId, request).ReturnsNull();
+            _payLoadService.Create(correlationId, request.Data).ReturnsNull();
             _responseCreator.ResponseCreated(null).ReturnsNull();
             _responseCreator.ResponseError().Returns(errorResponse);
 

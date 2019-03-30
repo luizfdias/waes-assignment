@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Waes.Assignment.Api.ViewModels
+namespace Waes.Assignment.Application.ApiModels
 {
     public class CreatePayLoadResponse
     {

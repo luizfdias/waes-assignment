@@ -1,4 +1,4 @@
-﻿namespace Waes.Assignment.Application.ViewModels
+﻿namespace Waes.Assignment.Application.ApiModels
 {
     public class DiffInfoResponse
     {

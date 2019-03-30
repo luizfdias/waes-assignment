@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Waes.Assignment.Application.Interfaces;
-using Waes.Assignment.Application.ViewModels;
+using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Domain.Interfaces;
 
 namespace Waes.Assignment.Application.Services

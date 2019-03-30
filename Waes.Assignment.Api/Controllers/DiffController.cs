@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Waes.Assignment.Api.Common;
 using Waes.Assignment.Api.Interfaces;
+using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Application.Interfaces;
-using Waes.Assignment.Application.ViewModels;
 
 namespace Waes.Assignment.Api.Controllers
 {
@@ -26,22 +27,30 @@ namespace Waes.Assignment.Api.Controllers
         }
        
         [HttpPost("{correlationId}/left")]
-        public async Task<IActionResult> Post([FromRoute]string correlationId, [FromBody]CreateLeftPayLoadRequest request)
+        [ProducesResponseType(typeof(SuccessResponse<CreatePayLoadResponse>), 201)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        public async Task<IActionResult> Post([FromRoute]string correlationId, [FromBody]BaseRequest<CreateLeftPayLoadRequest> request)
         {
-            var result = await _payLoadCreateService.Create(correlationId, request);
+            var result = await _payLoadCreateService.Create(correlationId, request.Data);
 
             return _responseCreator.ResponseCreated(result) ?? _responseCreator.ResponseError();
         }
 
         [HttpPost("{correlationId}/right")]
-        public async Task<IActionResult> Post([FromRoute]string correlationId, [FromBody]CreateRightPayLoadRequest request)
+        [ProducesResponseType(typeof(SuccessResponse<CreatePayLoadResponse>), 201)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        public async Task<IActionResult> Post([FromRoute]string correlationId, [FromBody]BaseRequest<CreateRightPayLoadRequest> request)
         {
-            var result = await _payLoadCreateService.Create(correlationId, request);
+            var result = await _payLoadCreateService.Create(correlationId, request.Data);
 
             return _responseCreator.ResponseCreated(result) ?? _responseCreator.ResponseError();
         }
 
         [HttpGet("{correlationId}")]
+        [ProducesResponseType(typeof(SuccessResponse<EqualResponse>), 200)]
+        [ProducesResponseType(typeof(SuccessResponse<NotEqualResponse>), 200)]
+        [ProducesResponseType(typeof(SuccessResponse<NotOfEqualSizeResponse>), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
         public async Task<IActionResult> GetDiff([FromRoute]string correlationId)
         {
             var result = await _diffAnalyzerService.Get(correlationId);
