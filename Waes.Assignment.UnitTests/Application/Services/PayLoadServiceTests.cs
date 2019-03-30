@@ -5,7 +5,6 @@ using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Application.Services;
 using Waes.Assignment.Application.ApiModels;
 using Waes.Assignment.Domain.Commands;
-using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 

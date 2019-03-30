@@ -3,9 +3,9 @@ using Waes.Assignment.Application.Profiles;
 
 namespace Waes.Assignment.Infra.AutoMapperConfiguration
 {
-    public static class MapperCreator
+    public static class AutoMapperConfiguration
     {
-        public static IMapper Create()
+        public static IConfigurationProvider Create()
         {            
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -15,7 +15,7 @@ namespace Waes.Assignment.Infra.AutoMapperConfiguration
 
             mappingConfig.AssertConfigurationIsValid();
 
-            return mappingConfig.CreateMapper();        
+            return mappingConfig;        
         }
     }
 }

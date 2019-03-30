@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
 using Waes.Assignment.Infra.Interfaces;

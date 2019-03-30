@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Domain.Models.Enums;
 
-namespace Waes.Assignment.Domain.Interfaces
+namespace Waes.Assignment.Application.Interfaces
 {
     public interface IPayLoadRepository : IRepository<PayLoad>
     {

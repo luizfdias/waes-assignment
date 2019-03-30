@@ -2,9 +2,9 @@
 using NSubstitute;
 using System.Threading;
 using Waes.Assignment.Application.EventHandlers;
+using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
-using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 

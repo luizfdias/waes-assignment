@@ -1,56 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Waes.Assignment.Api.Common;
 using Waes.Assignment.Api.Interfaces;
-using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Application.ApiModels;
-using Waes.Assignment.Domain.Events;
 
 namespace Waes.Assignment.Api
 {
     public class DiffResponseCreator : IResponseCreator
-    {
-        private readonly INotificationHandler _notificationHandler;
-
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public DiffResponseCreator(INotificationHandler notificationHandler, IHttpContextAccessor httpContextAccessor)
-        {            
-            _notificationHandler = notificationHandler ?? throw new ArgumentNullException(nameof(notificationHandler));
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-        }
-
+    {        
         public IActionResult ResponseCreated(object result)
         {
             if (result == null)
                 return null;
-
-            var diffAnalyzedEvent = _notificationHandler.GetEvent<DiffAnalyzedEvent>();
             
             var successResponse = new SuccessResponse<CreatePayLoadResponse>
             {
                 Data = (CreatePayLoadResponse)result
             };
 
-            if (diffAnalyzedEvent != null)
-            {
-                var request = _httpContextAccessor.HttpContext.Request;
-
-                successResponse.Links = new List<Link>
-                {
-                    new Link
-                    {
-                        Method = "GET",
-                        HRef = $"{request.Scheme}://{request.Host}{request.PathBase}/v1/diff/{diffAnalyzedEvent.CorrelationId}",
-                        Rel = "self"
-                    }
-                };
-            }
-
-            return new CreatedResult(successResponse.Links?.FirstOrDefault()?.HRef ?? string.Empty, successResponse);            
+            return new CreatedResult(string.Empty, successResponse);
         }
 
         public IActionResult ResponseOK(object result)

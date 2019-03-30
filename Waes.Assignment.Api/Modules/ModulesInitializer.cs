@@ -1,12 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Waes.Assignment.Api.Modules
 {
     public class ModulesInitializer
     {
-        public static void Initialize(IServiceCollection services)
+        public static void Initialize(IServiceCollection services, IHostingEnvironment env)
         {
-            services.AddApiModule();
+            services.AddApiModule(env);
             services.AddSerilogModule();
             services.AddApplicationModule();
             services.AddDomainModule();

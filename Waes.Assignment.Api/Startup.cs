@@ -21,7 +21,7 @@ namespace Waes.Assignment.Api
 
         public void ConfigureServices(IServiceCollection services)
         {                        
-            ModulesInitializer.Initialize(services);
+            ModulesInitializer.Initialize(services, HostingEnvironment);
         }
 
         [ExcludeFromCodeCoverage]

@@ -4,6 +4,7 @@ using NSubstitute;
 using System.Collections.Generic;
 using System.Threading;
 using Waes.Assignment.Application.CommandHandlers;
+using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Interfaces;
 using Waes.Assignment.Domain.Models;

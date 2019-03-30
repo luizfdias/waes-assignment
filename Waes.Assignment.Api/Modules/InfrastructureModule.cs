@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Waes.Assignment.Domain.Interfaces;
+using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Infra.Bus;
 using Waes.Assignment.Infra.Interfaces;
 using Waes.Assignment.Infra.Repositories;

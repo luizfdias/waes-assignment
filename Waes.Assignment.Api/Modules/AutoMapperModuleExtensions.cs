@@ -10,7 +10,7 @@ namespace Waes.Assignment.Api.Modules
         {                       
             services.AddScoped<IMapper>(ctx => 
             {
-                return MapperCreator.Create();
+                return AutoMapperConfiguration.Create().CreateMapper();
             });
         }
     }

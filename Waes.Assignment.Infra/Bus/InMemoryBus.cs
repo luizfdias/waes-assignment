@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using System;
 using System.Threading.Tasks;
+using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;
-using Waes.Assignment.Domain.Interfaces;
 
 namespace Waes.Assignment.Infra.Bus
 {

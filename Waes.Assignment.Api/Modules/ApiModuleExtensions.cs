@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 using System.Linq;
 using Waes.Assignment.Api.Common;
 using Waes.Assignment.Api.Filters;
@@ -14,7 +16,7 @@ namespace Waes.Assignment.Api.Modules
 {
     public static class ApiModuleExtensions
     {
-        public static IServiceCollection AddApiModule(this IServiceCollection services)
+        public static IServiceCollection AddApiModule(this IServiceCollection services, IHostingEnvironment env)
         {
             services.AddOptions();
 
@@ -36,9 +38,12 @@ namespace Waes.Assignment.Api.Modules
                         };
                     });
 
+            var basePath = env.ContentRootPath;
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Diff API", Version = "v1" });
+                c.IncludeXmlComments(Path.Combine(basePath, "Waes.Assignment.Api.xml"));
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

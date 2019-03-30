@@ -12,7 +12,7 @@ namespace Waes.Assignment.UnitTests.AutoData
         {
             var fixture = new Fixture().Customize(new AutoNSubstituteCustomization());
 
-            fixture.Register<IMapper>(() => MapperCreator.Create());
+            fixture.Register<IMapper>(() => AutoMapperConfiguration.Create().CreateMapper());
 
             return fixture;
         })

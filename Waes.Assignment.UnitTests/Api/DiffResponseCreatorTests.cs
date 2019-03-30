@@ -1,14 +1,10 @@
-﻿using AutoFixture.Idioms;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
 using System.Linq;
 using Waes.Assignment.Api;
 using Waes.Assignment.Api.Common;
 using Waes.Assignment.Application.ApiModels;
-using Waes.Assignment.Application.Interfaces;
-using Waes.Assignment.Domain.Events;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 
@@ -17,30 +13,10 @@ namespace Waes.Assignment.UnitTests.Api
     public class DiffResponseCreatorTests
     {
         private readonly DiffResponseCreator _sut;
-
-        private readonly INotificationHandler _notificationHandler;
-
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
+        
         public DiffResponseCreatorTests()
-        {
-            var httpContext = new DefaultHttpContext();
-            httpContext.Request.Scheme = "http";
-            httpContext.Request.Host = new HostString("apiteste.com.br");
-            httpContext.Request.PathBase = new PathString("");
-
-            _notificationHandler = Substitute.For<INotificationHandler>();
-            _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
-
-            _httpContextAccessor.HttpContext.Returns(httpContext);
-
-            _sut = new DiffResponseCreator(_notificationHandler, _httpContextAccessor);
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void Constructor_GuardTests(GuardClauseAssertion guard)
-        {
-            guard.Verify(typeof(DiffResponseCreator).GetConstructors());
+        {            
+            _sut = new DiffResponseCreator();
         }
 
         [Fact]
@@ -68,7 +44,7 @@ namespace Waes.Assignment.UnitTests.Api
         }
 
         [Theory, AutoNSubstituteData]
-        public void ResponseCreated_WhenResultIsNotNullAndDiffWasNotAnalyzed_ShouldReturnSuccessResponseAsExpected(CreatePayLoadResponse value)
+        public void ResponseCreated_WhenResultIsNotNull_ShouldReturnSuccessResponseAsExpected(CreatePayLoadResponse value)
         {
             var response = _sut.ResponseCreated(value);
 
@@ -77,27 +53,6 @@ namespace Waes.Assignment.UnitTests.Api
 
             objectResult.Value.Should().BeOfType<SuccessResponse<CreatePayLoadResponse>>();
             ((SuccessResponse<CreatePayLoadResponse>)objectResult.Value).Data.Should().Be(value);
-            ((SuccessResponse<CreatePayLoadResponse>)objectResult.Value).Links.Should().BeNull();
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void ResponseCreated_WhenResultIsNotNullAndDiffWasAnalyzed_ShouldReturnSuccessResponseAsExpected(CreatePayLoadResponse value,
-            DiffAnalyzedEvent @event)
-        {
-            _notificationHandler.GetEvent<DiffAnalyzedEvent>().Returns(@event);
-
-            var response = _sut.ResponseCreated(value);
-
-            response.Should().BeOfType<CreatedResult>();
-            var objectResult = (CreatedResult)response;
-
-            objectResult.Value.Should().BeOfType<SuccessResponse<CreatePayLoadResponse>>();
-            ((SuccessResponse<CreatePayLoadResponse>)objectResult.Value).Data.Should().Be(value);
-            var link = ((SuccessResponse<CreatePayLoadResponse>)objectResult.Value).Links.FirstOrDefault();
-
-            link.Method.Should().Be("GET");
-            link.Rel.Should().Be("self");
-            link.HRef.Should().Be($"http://apiteste.com.br/v1/diff/{@event.CorrelationId}");
         }
 
         [Fact]
