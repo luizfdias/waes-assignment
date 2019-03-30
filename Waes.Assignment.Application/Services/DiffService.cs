@@ -6,6 +6,9 @@ using Waes.Assignment.Application.ApiModels;
 
 namespace Waes.Assignment.Application.Services
 {
+    /// <summary>
+    /// DiffService gets the difference already analyzed between payloads
+    /// </summary>
     public class DiffService : IDiffService
     {
         private readonly IDiffRepository _diffRepository;
@@ -23,6 +26,11 @@ namespace Waes.Assignment.Application.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        /// <summary>
+        /// Gets the diff as a <see cref="DiffResponse"/>
+        /// </summary>
+        /// <param name="correlationId"></param>
+        /// <returns></returns>
         public async Task<DiffResponse> Get(string correlationId)
         {
             var diff = await _diffRepository.GetByCorrelationId(correlationId);

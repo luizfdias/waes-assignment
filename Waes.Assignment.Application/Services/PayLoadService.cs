@@ -8,6 +8,9 @@ using Waes.Assignment.Domain.Events;
 
 namespace Waes.Assignment.Application.Services
 {
+    /// <summary>
+    /// PayLoadService services the creation of new payloads
+    /// </summary>
     public class PayLoadService : IPayLoadService
     {
         private readonly IMediatorHandler _bus;
@@ -29,6 +32,12 @@ namespace Waes.Assignment.Application.Services
             _notificationHandler = notificationHandler ?? throw new ArgumentNullException(nameof(notificationHandler));
         }
 
+        /// <summary>
+        /// Creates a new payload
+        /// </summary>
+        /// <param name="correlationId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<CreatePayLoadResponse> Create(string correlationId, CreatePayLoadRequest request)
         {            
             var command = _mapper.Map<PayLoadCreateCommand>(request, opt => opt.Items["correlationId"] = correlationId);

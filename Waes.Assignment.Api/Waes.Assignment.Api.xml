@@ -90,7 +90,7 @@
         </member>
         <member name="M:Waes.Assignment.Api.Controllers.DiffController.#ctor(Waes.Assignment.Application.Interfaces.IPayLoadService,Waes.Assignment.Application.Interfaces.IDiffService,Waes.Assignment.Api.Interfaces.IResponseCreator)">
             <summary>
-            The constructor of DiffController
+            Initializes a new instance of <see cref="T:Waes.Assignment.Api.Controllers.DiffController"/>
             </summary>
             <param name="payLoadCreateService"></param>
             <param name="diffAnalyzerService"></param>
@@ -154,7 +154,7 @@
         </member>
         <member name="T:Waes.Assignment.Api.DiffResponseCreator">
             <summary>
-            DiffResponseCreator handles the result and creates a response for the API DiffController <see cref="T:Waes.Assignment.Api.Controllers.DiffController"/>
+            DiffResponseCreator handles the result and creates a response for the API <see cref="T:Waes.Assignment.Api.Controllers.DiffController"/>
             </summary>
         </member>
         <member name="M:Waes.Assignment.Api.DiffResponseCreator.ResponseCreated(System.Object)">
@@ -190,15 +190,15 @@
         </member>
         <member name="M:Waes.Assignment.Api.Filters.ExceptionsFilter.#ctor(Serilog.ILogger)">
             <summary>
-            The constructor of Exceptionsfilter
+            Initializes a new instance of <see cref="T:Waes.Assignment.Api.Filters.ExceptionsFilter"/>
             </summary>
             <param name="logger"></param>
         </member>
         <member name="M:Waes.Assignment.Api.Filters.ExceptionsFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
             <summary>
             It handles the exceptions throwed by the application.
-            If EntityAlreadyExistsException <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/> is throwed, it will respond with 409 (conflict)
-            else another exception is throwed, it will respond with 500 (internal server error)
+            If <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/> is thrown, it will respond with 409 (conflict)
+            else another exception is thrown, it will respond with 500 (internal server error)
             </summary>
             <param name="context"></param>
         </member>
