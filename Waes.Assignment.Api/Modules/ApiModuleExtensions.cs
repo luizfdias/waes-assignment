@@ -56,8 +56,7 @@ namespace Waes.Assignment.Api.Modules
                 c.IncludeXmlComments(Path.Combine(basePath, "Waes.Assignment.Application.xml"));
             });
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IResponseCreator, DiffResponseCreator>();
+            services.AddSingleton<IResponseCreator, DiffResponseCreator>();
             services.AddMediatR(typeof(Startup));
 
             return services;
