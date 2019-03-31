@@ -138,7 +138,7 @@ The tests can be executed in Visual Studio or any similar tool.
 
 ## Future improvements (NICE TO HAVE)
 
-- The analyze of the diff could be asynchronous so the post request would not get stuck in case of the file is too big.
+- The analysis of the diff could be asynchronous so the post request would not get stuck in case of the file is too big.
 
 ## Built With
 API:
