@@ -8,37 +8,19 @@ To get started in a development environment, it's only necessary to clone this r
 
 ### Prerequisites
 
-ASP.NET CORE 2.1 or above
+ASP.NET CORE 2.2 or above
 
 ### Configuration
 
-This ASP.NET CORE API is using MongoDB. In a development environment, Docker is configured to run these services together in two containers. In order to get it running, it is first necessary to set up the configurations in 'appsettings.development.json'.
-
-Here is a sample of that:
-
-```
-  "MongoDB": {
-    "ConnectionString": "mongodb://localhost:27017",
-    "Container": "mongodb://mongo:27017", 
-    "Database": "WaesAssignment"
-  }
-```
-
-To execute the API and MongoDB with Docker, you must choose the docker-compose as the startup project.
-
-![alt text](https://i.imgur.com/YtPeq4u.png)
+No configurations are required, since this API is not using any external components.
 
 ## How to use the Diff Api
 
-The API has 3 entry points as following:
+The API has 3 entry points as following and they are self documented by swagger in the path "HOST/swagger/index.html":
 
-```
-  POST HOST/v1/diff/{id}/left
-  POST HOST/v1/diff/{id}/right
-  GET HOST/v1/diff/{id}
-```
+![Swagger API documentation](https://i.ibb.co/bvv4pBr/swagger.png)
 
-The provided {Id} must be the same between all callings. It will be used as the correlation identification of the whole process to check the diff and obtain the results.
+The provided {CorrelationId} must be the same between all callings. It will be used as the correlation identification of the whole process to check the diff and obtain the results.
 
 First step is provide the data to be Analyzed. The field 'content' must be filled with a Base64 encoded value.
 
@@ -66,23 +48,19 @@ Here is a sample success response to both endpoints:
 ```
   HTTP 201 Created
   {
-    "success": true,
-    "result": {
+    "data": {
         "id": "aae658bc-5692-4feb-aee5-d95e543be5a9",
         "correlationId": "123456789",
-        "content": "YWJjIDEyMw0KIDE1OSA5NTE=",
-        "side": "Left"
+        "content": "YWJjIDEyMw0KIDE1OSA5NTE="
     }
 }
 
   HTTP 201 Created
   {
-    "success": true,
-    "result": {
+    "data": {
         "id": "aae658bc-5692-4feb-aee5-d95e543be5a9",
         "correlationId": "123456789",
-        "content": "YWJjIDEyMw0KIDE1OSA5NTE=",
-        "side": "Right"
+        "content": "YWJjIDEyMw0KIDE1OSA5NTE="
     }
 }
 ```
@@ -92,32 +70,16 @@ To get the result of the diff, the third endpoint must be called, passing the sa
 Here is a sample request to accomplish this:
 
 ```
-  GET HOST/v1/diff/1
+  GET HOST/v1/diff/123456789
 ```
 
 Here is a sample response when differences are not found:
 
 ```
 HTTP 200 OK
-
 {
-    "success": true,
-    "result": {
-        "status": "Equal",
-        "dataInfo": [
-            {
-                "id": "aae658bc-5692-4feb-aee5-d95e543be5a9",
-                "correlationId": "123456789",
-                "length": 17,
-                "side": "Left"
-            },
-            {
-                "id": "84165f5f-ab01-42ba-be1c-5d0887411ed0",
-                "correlationId": "123456789",
-                "length": 17,
-                "side": "Right"
-            }
-        ]
+    "data": {
+        "result": "Equal"
     }
 }
 ```
@@ -126,33 +88,21 @@ Here is a sample response when differences are found:
 
 ```
 HTTP 200 OK
-
 {
-    "success": true,
-    "result": {
-        "status": "NotEqual",
-        "dataInfo": [
+    "data": {
+        "result": "NotEqual",
+        "info": [
             {
-                "id": "c6f2df66-ce51-4e92-8404-98a74298164a",
-                "correlationId": "123456788",
-                "length": 17,
-                "side": "Right"
+                "startIndex": 0,
+                "length": 3
             },
             {
-                "id": "99b2b19c-786b-4955-b82a-0f72b04f6004",
-                "correlationId": "123456788",
-                "length": 17,
-                "side": "Left"
-            }
-        ],
-        "differences": [
-            {
-                "startOffSet": 2,
-                "length": 1
-            },
-            {
-                "startOffSet": 14,
+                "startIndex": 3,
                 "length": 2
+            },
+            {
+                "startIndex": 5,
+                "length": 1
             }
         ]
     }
@@ -164,28 +114,17 @@ Here is a sample response when the data in each set is not the same sized:
 ```
 HTTP 200 OK
 {
-    "success": true,
-    "result": {
-        "status": "NotOfEqualSize",
-        "dataInfo": [
-            {
-                "id": "0a4f5c18-c8d0-4492-9881-8ae753722288",
-                "correlationId": "123456787",
-                "length": 17,
-                "side": "Left"
-            },
-            {
-                "id": "52024c73-f5bc-4515-adc8-1c702e4748ec",
-                "correlationId": "123456787",
-                "length": 20,
-                "side": "Right"
-            }
-        ]
+    "data": {
+        "result": "NotOfEqualSize"
     }
 }
 ```
 
-The "status" field indicate the diff result (Equal | NotEqual | NotOfEqualSize).
+The "result" field indicates the diff result (Equal | NotEqual | NotOfEqualSize).
+
+## Design of the API
+
+![API Design](https://i.ibb.co/mR7jJPP/architecture.png)
 
 ## Running the tests
 
@@ -193,24 +132,21 @@ The "status" field indicate the diff result (Equal | NotEqual | NotOfEqualSize).
 
 The tests of this project are divided in two categories: Unit tests and integration tests. 
 
-Each component has its own project for their unit tests and there is just one project for the integration tests. They are easy to recognize, by its name. The unit tests projects have the suffix "UnitTests" while the integration tests project has the suffix "IntegrationTests".
+Each component has its own tests. They are easy to recognize, by its name. The unit tests projects have the suffix "UnitTests" while the integration tests project has the suffix "IntegrationTests".
 
 The tests can be executed in Visual Studio or any similar tool.
 
-The integration tests are using a fake repository.
+## Future improvements (NICE TO HAVE)
 
-## Future improvements
-
-- Create a persistence model.
-- Find a way to test the MongoDB repository in its unity.
-- See if worth to make the dependencies of the classes private, in order to encapsulate it. The down side will be hard to write tests.
+- The analysis of the diff could be asynchronous so the post request would not get stuck in case of the file is too big.
 
 ## Built With
 API:
 * [ASP.NET CORE](https://www.asp.net/core/overview/aspnet-vnext) 
-* [MongoDB](https://www.mongodb.com/) 
-* [Docker](https://www.docker.com/) 
+* [MediatR](https://github.com/jbogard/MediatR) 
+* [AutoMapper](https://automapper.org/) 
 * [Serilog-AspnetCore](https://github.com/serilog/serilog-aspnetcore) 
+* [Swagger](https://swagger.io/) 
 
 Tests:
 * [AutoFixture](https://github.com/AutoFixture/AutoFixture) 
