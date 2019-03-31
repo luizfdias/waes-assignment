@@ -56,7 +56,7 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
             result.Should().BeTrue();
 
             await _bus.Received(1).RaiseEvent(Arg.Is<PayLoadCreatedEvent>(p
-                => p.AggregateId != Guid.Empty &&
+                => p.EntityId != Guid.Empty &&
                 p.CorrelationId == command.CorrelationId &&
                 p.Content == command.Content &&
                 p.Side == command.Side));
@@ -70,7 +70,7 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
             result.Should().BeTrue();
 
             await _bus.Received(1).RaiseEvent(Arg.Is<PayLoadCreatedEvent>(p
-                => p.AggregateId != Guid.Empty &&
+                => p.EntityId != Guid.Empty &&
                 p.CorrelationId == command.CorrelationId &&
                 p.Content == command.Content &&
                 p.Side == command.Side));

@@ -4,8 +4,16 @@ using Waes.Assignment.Domain.ValueObjects;
 
 namespace Waes.Assignment.Domain.Services
 {
+    /// <summary>
+    /// It is responsible for find the sequence in a given int array
+    /// </summary>
     public class DifferenceIntervalFinder : IDifferenceIntervalFinder
     {
+        /// <summary>
+        /// Finds the sequence in the given int array. If there is no sequence, it returns an empty list
+        /// </summary>
+        /// <param name="indexOfDifferences"></param>
+        /// <returns></returns>
         public IEnumerable<DifferenceInterval> Find(int[] indexOfDifferences)
         {
             var sequences = new List<DifferenceInterval>();

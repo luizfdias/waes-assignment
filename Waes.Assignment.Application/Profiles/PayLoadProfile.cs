@@ -17,7 +17,7 @@ namespace Waes.Assignment.Application.Profiles
                 .ConstructUsing((src, ctx) => new PayLoadCreateCommand(ctx.Items["correlationId"].ToString(), src.Content, SideEnum.Right));
 
             CreateMap<PayLoadCreatedEvent, CreatePayLoadResponse>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AggregateId));            
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.EntityId));            
         }
     }
 }
