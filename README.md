@@ -24,7 +24,7 @@ The API has 3 entry points as following and they are self documented by swagger 
   GET HOST/v1/diff/{id}
 ```
 
-![Swagger API documentation](https://ibb.co/QHHWsN6)
+![Swagger API documentation](https://i.ibb.co/bvv4pBr/swagger.png)
 
 The provided {Id} must be the same between all callings. It will be used as the correlation identification of the whole process to check the diff and obtain the results.
 
