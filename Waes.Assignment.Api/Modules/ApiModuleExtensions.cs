@@ -53,6 +53,7 @@ namespace Waes.Assignment.Api.Modules
             {
                 c.SwaggerDoc("v1", new Info { Title = "Diff API", Version = "v1" });
                 c.IncludeXmlComments(Path.Combine(basePath, "Waes.Assignment.Api.xml"));
+                c.IncludeXmlComments(Path.Combine(basePath, "Waes.Assignment.Application.xml"));
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

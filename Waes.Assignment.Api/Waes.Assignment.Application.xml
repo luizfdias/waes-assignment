@@ -1,0 +1,401 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Waes.Assignment.Application</name>
+    </assembly>
+    <members>
+        <member name="T:Waes.Assignment.Application.ApiModels.CreateLeftPayLoadRequest">
+            <summary>
+            Request object for create a new left payload
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.ApiModels.CreatePayLoadRequest">
+            <summary>
+            Base request object for <see cref="T:Waes.Assignment.Application.ApiModels.CreateLeftPayLoadRequest"/> and <seealso cref="T:Waes.Assignment.Application.ApiModels.CreateRightPayLoadRequest"/>    
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.CreatePayLoadRequest.Content">
+            <summary>
+            The content to be analyzed
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.ApiModels.CreatePayLoadResponse">
+            <summary>
+            Response object for create new payload operation
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.CreatePayLoadResponse.Id">
+            <summary>
+            The generated id
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.CreatePayLoadResponse.CorrelationId">
+            <summary>
+            The given correlation id
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.CreatePayLoadResponse.Content">
+            <summary>
+            The content to be analyzed
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.ApiModels.CreateRightPayLoadRequest">
+            <summary>
+            Request object for create a new left payload
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.ApiModels.DiffInfoResponse">
+            <summary>
+            Response object with the diff information
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.DiffInfoResponse.StartIndex">
+            <summary>
+            The start index of the difference
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.DiffInfoResponse.Length">
+            <summary>
+            The length of the difference
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.ApiModels.DiffResponse">
+            <summary>
+            Base response object for <see cref="T:Waes.Assignment.Application.ApiModels.EqualResponse"/>, <seealso cref="T:Waes.Assignment.Application.ApiModels.NotEqualResponse"/> and <seealso cref="T:Waes.Assignment.Application.ApiModels.NotOfEqualSizeResponse"/>
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.DiffResponse.Result">
+            <summary>
+            The status result of the difference
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.ApiModels.EqualResponse">
+            <summary>
+            The EqualResponse represents the diff result when payloads are equal
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.EqualResponse.Result">
+            <summary>
+            The result: Equal
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.ApiModels.NotEqualResponse">
+            <summary>
+            The NotEqualResponse represents the diff result when payloads are not equal
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.NotEqualResponse.Result">
+            <summary>
+            The result: NotEqual
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.NotEqualResponse.Info">
+            <summary>
+            The information of the differences
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.ApiModels.NotOfEqualSizeResponse">
+            <summary>
+            The NotOfEqualSizeResponse represents the diff result when payloads are not of equal size
+            </summary>
+        </member>
+        <member name="P:Waes.Assignment.Application.ApiModels.NotOfEqualSizeResponse.Result">
+            <summary>
+            The result: NotOfEqualSize
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.Attributes.ContentRequiredAttribute">
+            <summary>
+            Validation attribute to validates the content of the payload
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Attributes.ContentRequiredAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            It validates the bytes content of the payload
+            </summary>
+            <param name="value"></param>
+            <param name="validationContext"></param>
+            <returns>True if content is not null or empty</returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler">
+            <summary>
+            DiffCommandHandler handles the <see cref="T:Waes.Assignment.Domain.Commands.AnalyzeDiffCommand"/>
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler.#ctor(Waes.Assignment.Application.Interfaces.IMediatorHandler,Waes.Assignment.Domain.Interfaces.IDiffEngine,Waes.Assignment.Application.Interfaces.IPayLoadRepository,Waes.Assignment.Application.Interfaces.IDiffRepository)">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler"/>
+            </summary>
+            <param name="bus"></param>
+            <param name="diffEngine"></param>
+            <param name="payLoadRepository"></param>
+            <param name="diffRepository"></param>
+        </member>
+        <member name="M:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler.Handle(Waes.Assignment.Domain.Commands.AnalyzeDiffCommand,System.Threading.CancellationToken)">
+            <summary>
+            It analyzes the diff and raises a <see cref="T:Waes.Assignment.Domain.Events.DiffAnalyzedEvent"/> if it goes right.                
+            The diff will be analyze only if both payloads (left and right) exists.
+            </summary>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.CommandHandlers.PayLoadCommandHandler">
+            <summary>
+            PayLoadCommandHandler handles the <see cref="T:Waes.Assignment.Domain.Commands.PayLoadCreateCommand"/>
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.CommandHandlers.PayLoadCommandHandler.#ctor(Waes.Assignment.Application.Interfaces.IMediatorHandler,Waes.Assignment.Application.Interfaces.IPayLoadRepository)">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.CommandHandlers.PayLoadCommandHandler"/>
+            </summary>
+            <param name="bus"></param>
+            <param name="payLoadRepository"></param>
+        </member>
+        <member name="M:Waes.Assignment.Application.CommandHandlers.PayLoadCommandHandler.Handle(Waes.Assignment.Domain.Commands.PayLoadCreateCommand,System.Threading.CancellationToken)">
+            <summary>
+            It handles the creation of new payload and raises a <see cref="T:Waes.Assignment.Domain.Events.PayLoadCreatedEvent"/> if it goes right        
+            </summary>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+            <exception cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException">Thrown when payload already exists</exception>
+        </member>
+        <member name="T:Waes.Assignment.Application.EventHandlers.NotificationEventHandler">
+            <summary>
+            NotificationEventHandler acts as an in memory events storage. It keeps all events raised during the request time of some operation.    
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.EventHandlers.NotificationEventHandler.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.EventHandlers.NotificationEventHandler"/>
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.EventHandlers.NotificationEventHandler.GetEvent``1">
+            <summary>
+            It gets the event 
+            </summary>
+            <typeparam name="TEvent"></typeparam>
+            <returns>The event or null if it not found</returns>
+        </member>
+        <member name="M:Waes.Assignment.Application.EventHandlers.NotificationEventHandler.Handle(Waes.Assignment.Domain.Events.PayLoadCreatedEvent,System.Threading.CancellationToken)">
+            <summary>
+            It handles a <see cref="T:Waes.Assignment.Domain.Events.PayLoadCreatedEvent"/> adding it to the list of events
+            </summary>
+            <param name="notification"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Application.EventHandlers.NotificationEventHandler.Handle(Waes.Assignment.Domain.Events.DiffAnalyzedEvent,System.Threading.CancellationToken)">
+            <summary>
+            It handles a <see cref="T:Waes.Assignment.Domain.Events.DiffAnalyzedEvent"/> adding it to the list of events
+            </summary>
+            <param name="notification"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.EventHandlers.PayLoadEventHandler">
+            <summary>
+            PayLoadEventHandler handles a <see cref="T:Waes.Assignment.Domain.Events.PayLoadCreatedEvent"/> 
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.EventHandlers.PayLoadEventHandler.#ctor(Waes.Assignment.Application.Interfaces.IMediatorHandler)">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.EventHandlers.PayLoadEventHandler"/>
+            </summary>
+            <param name="bus"></param>
+        </member>
+        <member name="M:Waes.Assignment.Application.EventHandlers.PayLoadEventHandler.Handle(Waes.Assignment.Domain.Events.PayLoadCreatedEvent,System.Threading.CancellationToken)">
+            <summary>
+            It handles a <see cref="T:Waes.Assignment.Domain.Events.PayLoadCreatedEvent"/> creating a <see cref="T:Waes.Assignment.Domain.Commands.AnalyzeDiffCommand"/> from that sending it to the bus
+            </summary>
+            <param name="notification"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException">
+            <summary>
+            The exception that is thrown when an entity already exists 
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/>
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/> with a message
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/> with a message and an inner exception
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.Interfaces.IDiffRepository">
+            <summary>
+            The repository interface of <see cref="T:Waes.Assignment.Domain.Models.Diff"/>
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IDiffRepository.GetByCorrelationId(System.String)">
+            <summary>
+            Gets the <see cref="T:Waes.Assignment.Domain.Models.Diff"/> by the correlation id
+            </summary>
+            <param name="correlationid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Interfaces.IDiffService">
+            <summary>
+            IDiffService interface gets the difference already analyzed between payloads
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IDiffService.Get(System.String)">
+            <summary>
+            Gets the diff as a <see cref="T:Waes.Assignment.Application.ApiModels.DiffResponse"/>
+            </summary>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Interfaces.IMediatorHandler">
+            <summary>
+            IMediatorHandler interface to send commands and raise events
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IMediatorHandler.SendCommand``1(``0)">
+            <summary>
+            Sends a command to the bus
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IMediatorHandler.RaiseEvent``1(``0)">
+            <summary>
+            Raises an event to the bus
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="event"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Interfaces.INotificationHandler">
+            <summary>
+            INotificationEventHandler interface gets the events that had been raised by the application
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.INotificationHandler.GetEvent``1">
+            <summary>
+            It gets the event 
+            </summary>
+            <typeparam name="TEvent"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Interfaces.IPayLoadRepository">
+            <summary>
+            The repository interface of <see cref="T:Waes.Assignment.Domain.Models.PayLoad"/> 
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IPayLoadRepository.GetByCorrelationId(System.String)">
+            <summary>
+            Gets the <see cref="T:Waes.Assignment.Domain.Models.PayLoad"/> by correlationId
+            </summary>
+            <param name="correlationid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IPayLoadRepository.GetByCorrelationIdAndSide(System.String,Waes.Assignment.Domain.Models.Enums.SideEnum)">
+            <summary>
+            Gets the <see cref="T:Waes.Assignment.Domain.Models.PayLoad"/> by correlationId and <see cref="T:Waes.Assignment.Domain.Models.Enums.SideEnum"/>
+            </summary>
+            <param name="correlationid"></param>
+            <param name="side"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Interfaces.IPayLoadService">
+            <summary>
+            IPayLoadService interface services the creation of new payloads
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IPayLoadService.Create(System.String,Waes.Assignment.Application.ApiModels.CreatePayLoadRequest)">
+            <summary>
+            Creates a new payload
+            </summary>
+            <param name="correlationId"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Interfaces.IRepository`1">
+            <summary>
+            An abstraction of the repository pattern
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IRepository`1.GetById(System.Guid)">
+            <summary>
+            Gets the entity by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IRepository`1.Add(`0)">
+            <summary>
+            Adds an entity
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IRepository`1.Remove(`0)">
+            <summary>
+            Removes an entity
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Waes.Assignment.Application.Interfaces.IRepository`1.Update(`0)">
+            <summary>
+            Updates an entity
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Services.DiffService">
+            <summary>
+            DiffService gets the difference already analyzed between payloads
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Services.DiffService.#ctor(Waes.Assignment.Application.Interfaces.IDiffRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Services.DiffService"/>
+            </summary>
+            <param name="diffRepository"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:Waes.Assignment.Application.Services.DiffService.Get(System.String)">
+            <summary>
+            Gets the diff as a <see cref="T:Waes.Assignment.Application.ApiModels.DiffResponse"/>
+            </summary>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Services.PayLoadService">
+            <summary>
+            PayLoadService services the creation of new payloads
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Services.PayLoadService.#ctor(Waes.Assignment.Application.Interfaces.IMediatorHandler,AutoMapper.IMapper,Waes.Assignment.Application.Interfaces.INotificationHandler)">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Services.PayLoadService"/>
+            </summary>
+            <param name="bus"></param>
+            <param name="mapper"></param>
+            <param name="notificationHandler"></param>
+        </member>
+        <member name="M:Waes.Assignment.Application.Services.PayLoadService.Create(System.String,Waes.Assignment.Application.ApiModels.CreatePayLoadRequest)">
+            <summary>
+            Creates a new payload
+            </summary>
+            <param name="correlationId"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
