@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
@@ -39,11 +40,16 @@ namespace Waes.Assignment.Api.Filters
                 context.Result = GetErrorResult(ApiCodes.EntityAlreadyExists, entityEx.Message);
                 context.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
             }
+            else if (context.Exception is ValidationException validationEx)
+            {
+                context.Result = GetErrorResult(ApiCodes.InvalidRequest, validationEx.Message);
+                context.HttpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+            }
             else
             {
                 context.Result = GetErrorResult(ApiCodes.OperationFailure, "An error occurred during the operation.");
                 context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            }            
+            }
 
             context.ExceptionHandled = true;
         }

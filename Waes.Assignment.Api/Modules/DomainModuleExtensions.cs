@@ -20,10 +20,7 @@ namespace Waes.Assignment.Api.Modules
         public static IServiceCollection AddDomainModule(this IServiceCollection services)
         {
             services.AddSingleton<IDiffEngine, DiffEngine>();
-            services.AddSingleton<IDifferenceIntervalFinder, DifferenceIntervalFinder>();
-
-            services.AddScoped<IRequestHandler<AnalyzeDiffCommand, bool>, DiffCommandHandler>();
-            services.AddScoped<IRequestHandler<PayLoadCreateCommand, bool>, PayLoadCommandHandler>();
+            services.AddSingleton<IDifferenceIntervalFinder, DifferenceIntervalFinder>();            
 
             return services;
         }

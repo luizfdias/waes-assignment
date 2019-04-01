@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +47,7 @@ namespace Waes.Assignment.Api.Modules
                                 Errors = ctx.ModelState.Values.Where(v => v.Errors.Count > 0).SelectMany(entry => entry.Errors).Select(error => new Error(ApiCodes.InvalidRequest, error.ErrorMessage))
                             });
                         };
-                    });
+                    }).AddFluentValidation();
 
             var basePath = env.ContentRootPath;
 

@@ -38,14 +38,7 @@ namespace Waes.Assignment.Application.CommandHandlers
         /// <returns></returns>
         /// <exception cref="EntityAlreadyExistsException">Thrown when payload already exists</exception>
         public async Task<bool> Handle(PayLoadCreateCommand request, CancellationToken cancellationToken)
-        {
-            var payLoadFromRepository = await _payLoadRepository.GetByCorrelationIdAndSide(request.CorrelationId, request.Side);
-
-            if (payLoadFromRepository != null)
-            {
-                throw new EntityAlreadyExistsException($"Payload of correlation id {request.CorrelationId} is already taken.");
-            }
-
+        {            
             var payLoad = new PayLoad(request.CorrelationId, request.Content, request.Side);
 
             await _payLoadRepository.Add(payLoad);

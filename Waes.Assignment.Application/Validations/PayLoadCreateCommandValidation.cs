@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Commands;
+using Waes.Assignment.Domain.Models.Enums;
 
 namespace Waes.Assignment.Application.Validations
 {
@@ -15,15 +17,23 @@ namespace Waes.Assignment.Application.Validations
         {
             _payLoadRepository = payLoadRepository ?? throw new ArgumentNullException(nameof(payLoadRepository));
 
-            WhenAsync(NotExistAsync, () =>
-            {
+            RuleFor(x => x.CorrelationId).NotEmpty();
+            RuleFor(x => x.Side).NotEqual(SideEnum.Undefined);
+            RuleFor(x => x.Content).NotEmpty();
 
+            When(x => !string.IsNullOrWhiteSpace(x.CorrelationId), () =>
+            {
+                RuleFor(x => x).MustAsync(NotExistAsync)
+                .WithMessage(x => $"Payload of correlation id {x.CorrelationId} is already taken.")
+                .WithErrorCode("PayloadAlreadyExists");
             });
         }
 
-        private async Task<bool> NotExistAsync(PayLoadCreateCommand correlationId, CancellationToken cancellationToken)
+        private async Task<bool> NotExistAsync(PayLoadCreateCommand payLoadCreateCommand, CancellationToken cancellationToken)
         {
-            var payload = await _payLoadRepository.GetByCorrelationId(correlationId);
+            var payload = await _payLoadRepository.GetByCorrelationIdAndSide(
+                payLoadCreateCommand.CorrelationId, 
+                payLoadCreateCommand.Side);
 
             return payload == null;
         }

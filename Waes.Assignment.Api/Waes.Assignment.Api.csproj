@@ -8,8 +8,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\git\personal\waes-assign\Waes.Assignment.Api\Waes.Assignment.Api.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.2.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.2.0" />
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
