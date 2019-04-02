@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Waes.Assignment.Application.Exceptions;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Commands;
 using Waes.Assignment.Domain.Events;

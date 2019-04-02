@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Waes.Assignment.Api.Common;
-using Waes.Assignment.Application.Exceptions;
 
 namespace Waes.Assignment.Api.Filters
 {
@@ -26,24 +27,30 @@ namespace Waes.Assignment.Api.Filters
         }
 
         /// <summary>
-        /// It handles the exceptions throwed by the application.
-        /// If <see cref="EntityAlreadyExistsException"/> is thrown, it will respond with 409 (conflict)
-        /// else another exception is thrown, it will respond with 500 (internal server error)
+        /// It handles the exceptions thrown by the application.
+        /// If <see cref="ValidationException"/> is thrown, it will check if PayloadAlreadyExists and respond with 409 (conflict).
+        /// If the validation error is anything else, it responds with 422 (unprocessable entity)
+        /// In case of another exception is thrown, it responds with 500 (internal server error)
         /// </summary>
         /// <param name="context"></param>
         public override void OnException(ExceptionContext context)
         {
             _logger.Error(context.Exception, "An error occurred");
 
-            if (context.Exception is EntityAlreadyExistsException entityEx)
+            if (context.Exception is ValidationException validationEx)
             {
-                context.Result = GetErrorResult(ApiCodes.EntityAlreadyExists, entityEx.Message);
-                context.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
-            }
-            else if (context.Exception is ValidationException validationEx)
-            {
-                context.Result = GetErrorResult(ApiCodes.InvalidRequest, validationEx.Message);
-                context.HttpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                var entityAlreadyExistsError = validationEx.Errors.FirstOrDefault(x => x.ErrorCode.Contains("PayloadAlreadyExists", StringComparison.InvariantCultureIgnoreCase));
+
+                if (entityAlreadyExistsError != null)
+                {
+                    context.Result = GetErrorResult(ApiCodes.EntityAlreadyExists, entityAlreadyExistsError.ErrorMessage);
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
+                }
+                else
+                {
+                    context.Result = GetErrorResult(ApiCodes.InvalidRequest, validationEx.Message);
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                }                
             }
             else
             {

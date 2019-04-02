@@ -9,10 +9,17 @@ using Waes.Assignment.Domain.Models.Enums;
 
 namespace Waes.Assignment.Application.Validations
 {
+    /// <summary>
+    /// Validator for <see cref="PayLoadCreateCommand"/>
+    /// </summary>
     public class PayLoadCreateCommandValidation : AbstractValidator<PayLoadCreateCommand>
     {
         private readonly IPayLoadRepository _payLoadRepository;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="PayLoadCreateCommandValidation"/>
+        /// </summary>
+        /// <param name="payLoadRepository"></param>
         public PayLoadCreateCommandValidation(IPayLoadRepository payLoadRepository)
         {
             _payLoadRepository = payLoadRepository ?? throw new ArgumentNullException(nameof(payLoadRepository));

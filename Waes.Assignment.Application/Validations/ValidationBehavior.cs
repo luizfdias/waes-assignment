@@ -1,46 +1,48 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using Waes.Assignment.Application.Exceptions;
+using Waes.Assignment.Domain.Commands;
 
 namespace Waes.Assignment.Application.Validations
 {
-    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    /// <summary>
+    /// ValidationBehavior contains the logic to validate any command that is sent through the application
+    /// </summary>
+    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TResponse"></typeparam>
+    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : Command
     {
         private readonly IValidator<TRequest> _validator;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ValidationBehavior{TRequest, TResponse}"/>
+        /// </summary>
+        /// <param name="validator"></param>
         public ValidationBehavior(IValidator<TRequest> validator)
         {
             _validator = validator ?? throw new ArgumentNullException(nameof(validator));
         }
 
         /// <summary>
-        /// 
+        /// It calls the validator and check if command is valid
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <param name="next"></param>
         /// <returns></returns>
         /// <exception cref="ValidationException">Thrown when payload already exists</exception>
-        /// <exception cref="EntityAlreadyExistsException">Thrown when payload already exists</exception>
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var validationResult = _validator.Validate<TRequest>(request);
 
             if (!validationResult.IsValid)
-            {
-                var payLoadAlreadyExistsError = validationResult.Errors.FirstOrDefault(x => x.ErrorCode.Contains("PayloadAlreadyExists", StringComparison.InvariantCultureIgnoreCase));
-
-                if (payLoadAlreadyExistsError != null)
-                    throw new EntityAlreadyExistsException(payLoadAlreadyExistsError.ErrorMessage);
-
+            {                
                 throw new ValidationException(validationResult.Errors);
             }
 
-            return next();
-        }        
+            return await next();
+        }
     }
 }
