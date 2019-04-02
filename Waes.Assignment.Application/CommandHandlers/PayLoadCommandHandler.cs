@@ -41,6 +41,11 @@ namespace Waes.Assignment.Application.CommandHandlers
 
             await _payLoadRepository.Add(payLoad);
 
+            /// I chose to raise events instead of have an orchestrator class that does know everything.
+            /// This way I can decouple my code better and it makes easier to extend this behavior related to a payload creation.            
+            ///
+            /// Following this events approach, I have implemented the diff analyze during the creation of the second payload and 
+            /// In my opinion this is better, because you just need to do the diff one time and save the results at the database to be search in the Get request later on.            
             await _bus.RaiseEvent(new PayLoadCreatedEvent(payLoad.Id, payLoad.CorrelationId, payLoad.Content, payLoad.Side));
 
             return true;
