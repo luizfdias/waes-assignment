@@ -61,19 +61,5 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
                 p.Content == command.Content &&
                 p.Side == command.Side));
         }
-
-        [Theory, AutoNSubstituteData]
-        public async void Handle_WhenPayLoadAlreadyExist_ShouldRaisePayLoadAlreadyCreatedEvent(PayLoadCreateCommand command)
-        {
-            var result = await _sut.Handle(command, new CancellationToken());
-
-            result.Should().BeTrue();
-
-            await _bus.Received(1).RaiseEvent(Arg.Is<PayLoadCreatedEvent>(p
-                => p.EntityId != Guid.Empty &&
-                p.CorrelationId == command.CorrelationId &&
-                p.Content == command.Content &&
-                p.Side == command.Side));
-        }
     }
 }

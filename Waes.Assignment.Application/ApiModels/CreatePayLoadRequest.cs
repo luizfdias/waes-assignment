@@ -1,4 +1,4 @@
-﻿using Waes.Assignment.Application.Attributes;
+﻿using Waes.Assignment.Application.Validations.Attributes;
 
 namespace Waes.Assignment.Application.ApiModels
 {

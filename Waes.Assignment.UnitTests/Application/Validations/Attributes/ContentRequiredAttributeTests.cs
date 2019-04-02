@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using System.ComponentModel.DataAnnotations;
-using Waes.Assignment.Application.Attributes;
+using Waes.Assignment.Application.Validations.Attributes;
 using Waes.Assignment.UnitTests.AutoData;
 using Xunit;
 
-namespace Waes.Assignment.UnitTests.Application.Attributes
+namespace Waes.Assignment.UnitTests.Application.Validations.Attributes
 {
     public class ContentRequiredAttributeTests
     {

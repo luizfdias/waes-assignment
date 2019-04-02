@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Waes.Assignment.Application.Attributes
+namespace Waes.Assignment.Application.Validations.Attributes
 {
     /// <summary>
     /// Validation attribute to validates the content of the payload

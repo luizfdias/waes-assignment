@@ -17,6 +17,15 @@ namespace Waes.Assignment.Application.Validations
             _validator = validator ?? throw new ArgumentNullException(nameof(validator));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="next"></param>
+        /// <returns></returns>
+        /// <exception cref="ValidationException">Thrown when payload already exists</exception>
+        /// <exception cref="EntityAlreadyExistsException">Thrown when payload already exists</exception>
         public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var validationResult = _validator.Validate<TRequest>(request);

@@ -35,8 +35,7 @@ namespace Waes.Assignment.Application.CommandHandlers
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        /// <exception cref="EntityAlreadyExistsException">Thrown when payload already exists</exception>
+        /// <returns></returns>        
         public async Task<bool> Handle(PayLoadCreateCommand request, CancellationToken cancellationToken)
         {            
             var payLoad = new PayLoad(request.CorrelationId, request.Content, request.Side);
