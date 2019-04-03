@@ -161,4 +161,4 @@ Tests:
 
 ## Authors
 
-* **Luiz Fernando Dias Rezende** 
+* **Luiz Fernando Dias Rezende** [LinkedIn](https://www.linkedin.com/in/lrezende-dev/)
