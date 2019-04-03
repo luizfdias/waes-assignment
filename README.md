@@ -122,7 +122,11 @@ HTTP 200 OK
 
 The "result" field indicates the diff result (Equal | NotEqual | NotOfEqualSize).
 
-## Design of the API
+## About the project
+
+This project is following some concepts of [Clean Architecture](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [CQRS](https://martinfowler.com/bliki/CQRS.html). It also was implemented with good development practices in mind, using [SOLID](https://en.wikipedia.org/wiki/SOLID) principles.
+
+### Layers and dependencies
 
 ![API Design](https://i.ibb.co/mR7jJPP/architecture.png)
 
@@ -145,6 +149,7 @@ API:
 * [ASP.NET CORE](https://www.asp.net/core/overview/aspnet-vnext) 
 * [MediatR](https://github.com/jbogard/MediatR) 
 * [AutoMapper](https://automapper.org/) 
+* [Fluent Validation](https://fluentvalidation.net/)
 * [Serilog-AspnetCore](https://github.com/serilog/serilog-aspnetcore) 
 * [Swagger](https://swagger.io/) 
 
