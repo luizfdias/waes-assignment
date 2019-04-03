@@ -39,4 +39,13 @@
     <ProjectReference Include="..\Waes.Assignment.Infra\Waes.Assignment.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Waes.Assignment.Api.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Waes.Assignment.Application.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

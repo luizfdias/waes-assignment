@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Infra.Bus;
+using Waes.Assignment.Infra.Cache;
 using Waes.Assignment.Infra.Interfaces;
 using Waes.Assignment.Infra.Repositories;
 using Waes.Assignment.Infra.Repositories.Databases.InMemory;
@@ -21,9 +22,10 @@ namespace Waes.Assignment.Api.Modules
         {
             services.AddSingleton(typeof(IDatabase<>), typeof(InMemoryDatabase<>));
 
-            services.AddScoped<IPayLoadRepository, PayLoadRepository>();
-            services.AddScoped<IDiffRepository, DiffRepository>();
+            services.AddScoped<IPayLoadRepository, PayLoadRepository>();            
             services.AddScoped<IMediatorHandler, InMemoryBus>();
+
+            services.AddScoped<ICache, MemoryCacheWrapper>();
 
             return services;
         }

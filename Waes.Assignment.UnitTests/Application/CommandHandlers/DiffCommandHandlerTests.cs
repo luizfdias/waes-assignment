@@ -22,7 +22,7 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
 
         private readonly IDiffEngine _diffEngine;
 
-        private readonly IDiffRepository _diffRepository;
+        private readonly ICache _cache;
 
         private readonly DiffCommandHandler _sut;
 
@@ -31,9 +31,9 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
             _bus = Substitute.For<IMediatorHandler>();
             _payLoadRepository = Substitute.For<IPayLoadRepository>();
             _diffEngine = Substitute.For<IDiffEngine>();
-            _diffRepository = Substitute.For<IDiffRepository>();
+            _cache = Substitute.For<ICache>();
 
-            _sut = new DiffCommandHandler(_bus, _diffEngine, _payLoadRepository, _diffRepository);
+            _sut = new DiffCommandHandler(_bus, _diffEngine, _payLoadRepository, _cache);
         }
 
         [Theory, AutoNSubstituteData]
@@ -91,7 +91,7 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
         }
 
         [Theory, AutoNSubstituteData]
-        public async void Handle_WhenPayLoadIsFound_ShouldProcessDiffAndSaveIt(AnalyzeDiffCommand command, byte[] leftContent, byte[] rightContent,
+        public async void Handle_WhenPayLoadIsFound_ShouldProcessDiffAndSaveItInTheCache(AnalyzeDiffCommand command, byte[] leftContent, byte[] rightContent,
             NotOfEqualSizeDiff diff)
         {            
             var payLoads = new List<PayLoad>
@@ -102,10 +102,9 @@ namespace Waes.Assignment.UnitTests.Application.CommandHandlers
 
             _payLoadRepository.GetByCorrelationId(command.CorrelationId).Returns(payLoads);
             _diffEngine.ProcessDiff(command.CorrelationId, leftContent, rightContent).Returns(diff);
+            _ = await _sut.Handle(command, new CancellationToken());
 
-            var result = await _sut.Handle(command, new CancellationToken());
-
-            await _diffRepository.Received(1).Add(diff);
+            await _cache.Received(1).SetAsync($"diff_{command.CorrelationId}", diff, 86400);
         }
     }
 }

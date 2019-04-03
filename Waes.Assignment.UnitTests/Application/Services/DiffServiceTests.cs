@@ -14,7 +14,7 @@ namespace Waes.Assignment.UnitTests.Application.Services
 {
     public class DiffServiceTests
     {
-        private readonly IDiffRepository _diffRepository;
+        private readonly ICache _cache;
 
         private readonly IMapper _mapper;
 
@@ -22,10 +22,10 @@ namespace Waes.Assignment.UnitTests.Application.Services
 
         public DiffServiceTests()
         {
-            _diffRepository = Substitute.For<IDiffRepository>();
+            _cache = Substitute.For<ICache>();
             _mapper = Substitute.For<IMapper>();
 
-            _sut = new DiffService(_diffRepository, _mapper);
+            _sut = new DiffService(_cache, _mapper);
         }
 
         [Theory, AutoNSubstituteData]
@@ -37,7 +37,7 @@ namespace Waes.Assignment.UnitTests.Application.Services
         [Theory, AutoNSubstituteData]
         public async void Get_WhenDiffIsNotFound_ShouldReturnNull(string correlationId)
         {
-            _diffRepository.GetByCorrelationId(Arg.Any<string>()).ReturnsNull();
+            _cache.GetAsync<Diff>(Arg.Any<string>()).ReturnsNull();
             _mapper.Map<DiffResponse>(Arg.Any<Diff>()).ReturnsNull();
 
             var result = await _sut.Get(correlationId);
@@ -48,7 +48,7 @@ namespace Waes.Assignment.UnitTests.Application.Services
         [Theory, AutoNSubstituteData]
         public async void Get_WhenDiffIsFound_ShouldReturnDiffResponse(string correlationId, EqualDiff diff, DiffResponse diffResponse)
         {
-            _diffRepository.GetByCorrelationId(correlationId).Returns(diff);
+            _cache.GetAsync<Diff>($"diff_{correlationId}").Returns(diff);
 
             _mapper.Map<DiffResponse>(diff).Returns(diffResponse);
 

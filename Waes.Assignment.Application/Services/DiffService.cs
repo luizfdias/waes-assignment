@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Application.ApiModels;
+using Waes.Assignment.Domain.Models;
 
 namespace Waes.Assignment.Application.Services
 {
@@ -11,18 +12,18 @@ namespace Waes.Assignment.Application.Services
     /// </summary>
     public class DiffService : IDiffService
     {
-        private readonly IDiffRepository _diffRepository;
+        private readonly ICache _cache;
 
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of <see cref="DiffService"/>
         /// </summary>
-        /// <param name="diffRepository"></param>
+        /// <param name="cache"></param>
         /// <param name="mapper"></param>
-        public DiffService(IDiffRepository diffRepository, IMapper mapper)
+        public DiffService(ICache cache, IMapper mapper)
         {
-            _diffRepository = diffRepository ?? throw new ArgumentNullException(nameof(diffRepository));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -33,7 +34,7 @@ namespace Waes.Assignment.Application.Services
         /// <returns></returns>
         public async Task<DiffResponse> Get(string correlationId)
         {
-            var diff = await _diffRepository.GetByCorrelationId(correlationId);
+            var diff = await _cache.GetAsync<Diff>($"diff_{correlationId}");
 
             return _mapper.Map<DiffResponse>(diff);
         }

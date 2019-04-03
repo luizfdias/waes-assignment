@@ -38,7 +38,7 @@ namespace Waes.Assignment.Application.CommandHandlers
         public async Task<bool> Handle(PayLoadCreateCommand request, CancellationToken cancellationToken)
         {            
             var payLoad = new PayLoad(request.CorrelationId, request.Content, request.Side);
-
+            
             await _payLoadRepository.Add(payLoad);
 
             /// I chose to raise events instead of have an orchestrator class that does know everything.

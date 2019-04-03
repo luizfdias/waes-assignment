@@ -28,7 +28,7 @@ namespace Waes.Assignment.Api.Modules
         /// <param name="env"></param>
         /// <returns></returns>
         public static IServiceCollection AddApiModule(this IServiceCollection services, IHostingEnvironment env)
-        {
+        {            
             services.AddOptions();
 
             services.AddMvc(opt => opt.Filters.Add<ExceptionsFilter>())
@@ -58,6 +58,7 @@ namespace Waes.Assignment.Api.Modules
                 c.IncludeXmlComments(Path.Combine(basePath, "Waes.Assignment.Application.xml"));
             });
 
+            services.AddMemoryCache();
             services.AddSingleton<IResponseCreator, DiffResponseCreator>();
             services.AddMediatR(typeof(Startup));
 

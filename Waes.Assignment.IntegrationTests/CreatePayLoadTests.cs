@@ -1,38 +1,45 @@
 using FluentAssertions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Waes.Assignment.Api;
+using Waes.Assignment.Application.Interfaces;
 using Waes.Assignment.Domain.Models;
 using Waes.Assignment.Infra.Interfaces;
+using Waes.Assignment.IntegrationTests.Cache;
 using Waes.Assignment.IntegrationTests.Database;
 using Waes.Assignment.IntegrationTests.Helpers;
 using Xunit;
 
 namespace Waes.Assignment.IntegrationTests
 {
-    public class CreatePayLoadTests : IClassFixture<WebApplicationFactory<Startup>>
+    public class CreatePayLoadTests 
     {        
         private readonly HttpClient _client;
 
-        private readonly IDatabase<Diff> _diffDatabase;
+        private readonly ICache _cache;
 
-        public CreatePayLoadTests(WebApplicationFactory<Startup> factory)
+        public CreatePayLoadTests()
         {
-            _diffDatabase = new InMemoryDatabaseTest<Diff>();
+            _cache = new CacheForTests(new Dictionary<string, object>());
             var payloadDatabase = new InMemoryDatabaseTest<PayLoad>(DatabaseHelper.CreatePayloads());
 
-            _client = factory.WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureServices(services =>
+            var webHost = new WebHostBuilder()
+                .ConfigureTestServices(services =>
                 {
                     services.AddSingleton(typeof(IDatabase<PayLoad>), payloadDatabase);
-                    services.AddSingleton(typeof(IDatabase<Diff>), _diffDatabase);
-                });
-            }).CreateClient();
+                    services.AddScoped(typeof(ICache), ctx => _cache);
+                })
+                .UseStartup<Startup>();
+
+            var testserver = new TestServer(webHost);
+
+            _client = testserver.CreateClient();
         }
 
         [Fact]
@@ -65,7 +72,8 @@ namespace Waes.Assignment.IntegrationTests
             var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMTIz"));
 
             response.StatusCode.Should().Be(StatusCodes.Status201Created);
-            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Should().BeOfType<EqualDiff>();
+            var cachedResult = await _cache.GetAsync<EqualDiff>("diff_123456789");
+            cachedResult.Should().BeOfType<EqualDiff>();
         }
 
         [Fact]
@@ -74,7 +82,8 @@ namespace Waes.Assignment.IntegrationTests
             var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMzIx"));
 
             response.StatusCode.Should().Be(StatusCodes.Status201Created);
-            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Should().BeOfType<NotEqualDiff>();
+            var cachedResult = await _cache.GetAsync<NotEqualDiff>("diff_123456789");
+            cachedResult.Should().BeOfType<NotEqualDiff>();
         }
 
         [Fact]
@@ -83,7 +92,8 @@ namespace Waes.Assignment.IntegrationTests
             var response = await _client.PostAsync("v1/diff/123456789/right", CreateContent("YWJjMzIxMzI="));
 
             response.StatusCode.Should().Be(StatusCodes.Status201Created);
-            _diffDatabase.Entities.FirstOrDefault(x => x.CorrelationId.Equals("123456789")).Should().BeOfType<NotOfEqualSizeDiff>();
+            var cachedResult = await _cache.GetAsync<NotOfEqualSizeDiff>("diff_123456789");
+            cachedResult.Should().BeOfType<NotOfEqualSizeDiff>();
         }
 
         private static StringContent CreateContent(string content)
