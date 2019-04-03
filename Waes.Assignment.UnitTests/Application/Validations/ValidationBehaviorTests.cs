@@ -38,7 +38,7 @@ namespace Waes.Assignment.UnitTests.Application.Validations
         {
             var validationResult = new ValidationResult();
 
-            _validator.Validate<PayLoadCreateCommand>(Arg.Any<PayLoadCreateCommand>()).ReturnsForAnyArgs(validationResult);
+            _validator.Validate(Arg.Any<PayLoadCreateCommand>()).Returns(validationResult);
 
             var next = new RequestHandlerDelegate<bool>(() => Task.FromResult(true));
 
@@ -52,7 +52,7 @@ namespace Waes.Assignment.UnitTests.Application.Validations
         {
             var validationResult = new ValidationResult(validationFailures);
 
-            _validator.Validate<PayLoadCreateCommand>(Arg.Any<PayLoadCreateCommand>()).ReturnsForAnyArgs(validationResult);
+            _validator.Validate(Arg.Any<PayLoadCreateCommand>()).Returns(validationResult);
 
             var next = new RequestHandlerDelegate<bool>(() => Task.FromResult(true));
 
