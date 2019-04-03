@@ -3,7 +3,7 @@
 namespace Waes.Assignment.Api.Interfaces
 {
     /// <summary>
-    /// IResponseCreator interface is used to handle the response
+    /// IResponseCreator interface is used to handle the response of any controller
     /// </summary>
     public interface IResponseCreator
     {

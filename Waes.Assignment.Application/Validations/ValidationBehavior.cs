@@ -35,6 +35,9 @@ namespace Waes.Assignment.Application.Validations
         /// <exception cref="ValidationException">Thrown when payload already exists</exception>
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
+            /* All commands have to be validated before they are send to their command handlers. 
+            This is one of the reasons that I chose to use MediatR. It makes possible to easily add
+            some behaviors to the pipeline of a command execution. */
             var validationResult = _validator.Validate<TRequest>(request);
 
             if (!validationResult.IsValid)

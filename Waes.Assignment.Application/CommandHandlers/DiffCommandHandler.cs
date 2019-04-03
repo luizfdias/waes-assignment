@@ -42,7 +42,7 @@ namespace Waes.Assignment.Application.CommandHandlers
 
         /// <summary>
         /// It analyzes the diff and raises a <see cref="DiffAnalyzedEvent"/> if it goes right.                
-        /// The diff will be analyze only if both payloads (left and right) exists.
+        /// The diff will be analyze only if two payloads with same correlation id exists.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -50,22 +50,21 @@ namespace Waes.Assignment.Application.CommandHandlers
         public async Task<bool> Handle(AnalyzeDiffCommand request, CancellationToken cancellationToken)
         {
             var payLoads = await _payLoadRepository.GetByCorrelationId(request.CorrelationId);
-
-            var left = payLoads.FirstOrDefault(x => x.Side == SideEnum.Left);
-            var right = payLoads.FirstOrDefault(x => x.Side == SideEnum.Right);
-
-            if (left == null || right == null)
+                     
+            if (payLoads.Count() != 2)
                 return false;
 
-            var diff = _diffEngine.ProcessDiff(request.CorrelationId, left.Content, right.Content);
+            var diff = _diffEngine.ProcessDiff(request.CorrelationId, 
+                payLoads.FirstOrDefault(x => x.Side == SideEnum.Left).Content, 
+                payLoads.FirstOrDefault(x => x.Side == SideEnum.Right).Content);
 
             /* Reading the assignment, looks like to me the diff result is a read-only data and I believe is 
             something that doesn't need to be stored forever. With that in mind I assumed a cache solution would 
-            be a good approach to maintain the data avaiable.
-            I am using a memory cache with 1 day expiration, just for demonstrations purposes, but I created an abstraction 
+            be a good approach to maintain the data available.
+            I am using a memory cache with 1 day expiration just for demonstrations purposes, but I created an interface 
             that could fit for distributed cache solutions, like redis. */
             await _cache.SetAsync($"diff_{request.CorrelationId}", diff, 86400);
-
+            
             await _bus.RaiseEvent(new DiffAnalyzedEvent(diff.Id, diff.CorrelationId));
 
             return true;

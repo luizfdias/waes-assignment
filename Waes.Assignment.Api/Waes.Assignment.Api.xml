@@ -196,15 +196,16 @@
         </member>
         <member name="M:Waes.Assignment.Api.Filters.ExceptionsFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
             <summary>
-            It handles the exceptions throwed by the application.
-            If <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/> is thrown, it will respond with 409 (conflict)
-            else another exception is thrown, it will respond with 500 (internal server error)
+            It handles the exceptions thrown by the application.
+            If <see cref="T:FluentValidation.ValidationException"/> is thrown, it will check if PayloadAlreadyExists and respond with 409 (conflict).
+            If the validation error is anything else, it responds with 422 (unprocessable entity)
+            In case of another exception is thrown, it responds with 500 (internal server error)
             </summary>
             <param name="context"></param>
         </member>
         <member name="T:Waes.Assignment.Api.Interfaces.IResponseCreator">
             <summary>
-            IResponseCreator interface is used to handle the response
+            IResponseCreator interface is used to handle the response of any controller
             </summary>
         </member>
         <member name="M:Waes.Assignment.Api.Interfaces.IResponseCreator.ResponseCreated(System.Object)">

@@ -32,6 +32,8 @@ namespace Waes.Assignment.Application.EventHandlers
         /// <returns></returns>
         public Task Handle(PayLoadCreatedEvent notification, CancellationToken cancellationToken)
         {
+            /* Whenever a PayLoadCreatedEvent occurs, this event handler sends a command to the
+            bus that reaches the AnalyzeDiffCommandHandler. I created this class to decouple the PayLoadCreateCommand from the AnalyzeDiffCommand */
             var command = new AnalyzeDiffCommand(notification.CorrelationId);
             return _bus.SendCommand(command);
         }

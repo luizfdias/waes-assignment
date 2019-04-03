@@ -104,37 +104,24 @@
             The result: NotOfEqualSize
             </summary>
         </member>
-        <member name="T:Waes.Assignment.Application.Attributes.ContentRequiredAttribute">
-            <summary>
-            Validation attribute to validates the content of the payload
-            </summary>
-        </member>
-        <member name="M:Waes.Assignment.Application.Attributes.ContentRequiredAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
-            <summary>
-            It validates the bytes content of the payload
-            </summary>
-            <param name="value"></param>
-            <param name="validationContext"></param>
-            <returns>True if content is not null or empty</returns>
-        </member>
         <member name="T:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler">
             <summary>
             DiffCommandHandler handles the <see cref="T:Waes.Assignment.Domain.Commands.AnalyzeDiffCommand"/>
             </summary>
         </member>
-        <member name="M:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler.#ctor(Waes.Assignment.Application.Interfaces.IMediatorHandler,Waes.Assignment.Domain.Interfaces.IDiffEngine,Waes.Assignment.Application.Interfaces.IPayLoadRepository,Waes.Assignment.Application.Interfaces.IDiffRepository)">
+        <member name="M:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler.#ctor(Waes.Assignment.Application.Interfaces.IMediatorHandler,Waes.Assignment.Domain.Interfaces.IDiffEngine,Waes.Assignment.Application.Interfaces.IPayLoadRepository,Waes.Assignment.Application.Interfaces.ICache)">
             <summary>
             Initializes a new instance of <see cref="T:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler"/>
             </summary>
             <param name="bus"></param>
             <param name="diffEngine"></param>
             <param name="payLoadRepository"></param>
-            <param name="diffRepository"></param>
+            <param name="cache"></param>
         </member>
         <member name="M:Waes.Assignment.Application.CommandHandlers.DiffCommandHandler.Handle(Waes.Assignment.Domain.Commands.AnalyzeDiffCommand,System.Threading.CancellationToken)">
             <summary>
             It analyzes the diff and raises a <see cref="T:Waes.Assignment.Domain.Events.DiffAnalyzedEvent"/> if it goes right.                
-            The diff will be analyze only if both payloads (left and right) exists.
+            The diff will be analyze only if two payloads with same correlation id exists.
             </summary>
             <param name="request"></param>
             <param name="cancellationToken"></param>
@@ -158,8 +145,7 @@
             </summary>
             <param name="request"></param>
             <param name="cancellationToken"></param>
-            <returns></returns>
-            <exception cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException">Thrown when payload already exists</exception>
+            <returns></returns>        
         </member>
         <member name="T:Waes.Assignment.Application.EventHandlers.NotificationEventHandler">
             <summary>
@@ -213,36 +199,27 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException">
+        <member name="T:Waes.Assignment.Application.Interfaces.ICache">
             <summary>
-            The exception that is thrown when an entity already exists 
+            Abstraction that represents a cache
             </summary>
         </member>
-        <member name="M:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException.#ctor">
+        <member name="M:Waes.Assignment.Application.Interfaces.ICache.GetAsync``1(System.String)">
             <summary>
-            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/>
+            Get <typeparamref name="T"/> in the cache
             </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
         </member>
-        <member name="M:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException.#ctor(System.String)">
+        <member name="M:Waes.Assignment.Application.Interfaces.ICache.SetAsync``1(System.String,``0,System.Int32)">
             <summary>
-            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/> with a message
+            Set <typeparamref name="T"/> in the cache
             </summary>
-        </member>
-        <member name="M:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Exceptions.EntityAlreadyExistsException"/> with a message and an inner exception
-            </summary>
-        </member>
-        <member name="T:Waes.Assignment.Application.Interfaces.IDiffRepository">
-            <summary>
-            The repository interface of <see cref="T:Waes.Assignment.Domain.Models.Diff"/>
-            </summary>
-        </member>
-        <member name="M:Waes.Assignment.Application.Interfaces.IDiffRepository.GetByCorrelationId(System.String)">
-            <summary>
-            Gets the <see cref="T:Waes.Assignment.Domain.Models.Diff"/> by the correlation id
-            </summary>
-            <param name="correlationid"></param>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="cacheDurationInSeconds"></param>
             <returns></returns>
         </member>
         <member name="T:Waes.Assignment.Application.Interfaces.IDiffService">
@@ -362,11 +339,11 @@
             DiffService gets the difference already analyzed between payloads
             </summary>
         </member>
-        <member name="M:Waes.Assignment.Application.Services.DiffService.#ctor(Waes.Assignment.Application.Interfaces.IDiffRepository,AutoMapper.IMapper)">
+        <member name="M:Waes.Assignment.Application.Services.DiffService.#ctor(Waes.Assignment.Application.Interfaces.ICache,AutoMapper.IMapper)">
             <summary>
             Initializes a new instance of <see cref="T:Waes.Assignment.Application.Services.DiffService"/>
             </summary>
-            <param name="diffRepository"></param>
+            <param name="cache"></param>
             <param name="mapper"></param>
         </member>
         <member name="M:Waes.Assignment.Application.Services.DiffService.Get(System.String)">
@@ -396,6 +373,63 @@
             <param name="correlationId"></param>
             <param name="request"></param>
             <returns></returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Validations.AnalyzeDiffCommandValidation">
+            <summary>
+            Validator for <see cref="T:Waes.Assignment.Domain.Commands.AnalyzeDiffCommand"/>
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Validations.AnalyzeDiffCommandValidation.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Validations.AnalyzeDiffCommandValidation"/>
+            </summary>
+        </member>
+        <member name="T:Waes.Assignment.Application.Validations.Attributes.ContentRequiredAttribute">
+            <summary>
+            Validation attribute to validates the content of the payload
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Validations.Attributes.ContentRequiredAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            It validates the bytes content of the payload
+            </summary>
+            <param name="value"></param>
+            <param name="validationContext"></param>
+            <returns>True if content is not null or empty</returns>
+        </member>
+        <member name="T:Waes.Assignment.Application.Validations.PayLoadCreateCommandValidation">
+            <summary>
+            Validator for <see cref="T:Waes.Assignment.Domain.Commands.PayLoadCreateCommand"/>
+            </summary>
+        </member>
+        <member name="M:Waes.Assignment.Application.Validations.PayLoadCreateCommandValidation.#ctor(Waes.Assignment.Application.Interfaces.IPayLoadRepository)">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Validations.PayLoadCreateCommandValidation"/>
+            </summary>
+            <param name="payLoadRepository"></param>
+        </member>
+        <member name="T:Waes.Assignment.Application.Validations.ValidationBehavior`2">
+            <summary>
+            ValidationBehavior contains the logic to validate any command that is sent through the application
+            </summary>
+            <typeparam name="TRequest"></typeparam>
+            <typeparam name="TResponse"></typeparam>
+        </member>
+        <member name="M:Waes.Assignment.Application.Validations.ValidationBehavior`2.#ctor(FluentValidation.IValidator{`0})">
+            <summary>
+            Initializes a new instance of <see cref="T:Waes.Assignment.Application.Validations.ValidationBehavior`2"/>
+            </summary>
+            <param name="validator"></param>
+        </member>
+        <member name="M:Waes.Assignment.Application.Validations.ValidationBehavior`2.Handle(`0,System.Threading.CancellationToken,MediatR.RequestHandlerDelegate{`1})">
+            <summary>
+            It calls the validator and check if command is valid
+            </summary>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+            <param name="next"></param>
+            <returns></returns>
+            <exception cref="T:FluentValidation.ValidationException">Thrown when payload already exists</exception>
         </member>
     </members>
 </doc>

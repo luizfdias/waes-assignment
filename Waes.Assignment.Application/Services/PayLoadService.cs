@@ -39,7 +39,11 @@ namespace Waes.Assignment.Application.Services
         /// <param name="request"></param>
         /// <returns></returns>
         public async Task<CreatePayLoadResponse> Create(string correlationId, CreatePayLoadRequest request)
-        {            
+        {
+            /* I'm using some concepts that are applied to CQRS approach
+            1 - I chose to making commands explicits in code
+            2 - I am working with two sources of datas that represents the write and read models. A database (in memory at this moment) 
+            for payload storage and cache for queries operations in the diff result */
             var command = _mapper.Map<PayLoadCreateCommand>(request, opt => opt.Items["correlationId"] = correlationId);
             await _bus.SendCommand(command);
 

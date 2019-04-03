@@ -34,6 +34,15 @@ namespace Waes.Assignment.Domain.Services
         /// <returns></returns>
         public Diff ProcessDiff<TEquatable>(string correlationId, TEquatable[] left, TEquatable[] right) where TEquatable : IEquatable<TEquatable>
         {
+            /* I chose to separate the analysis of the diff in two parts:
+            First I try to find all the indexes that are differents from each other.
+            If differences are found, I use another service to get the interval of the differences.
+
+            In my opinion it makes more easy to understand and it archieves a better separation of the responsabilities 
+            
+            Another point here, I don't like to make optimizations before it is necessary. Maybe it is not the best algorithm,
+            but until where I've tested, it works. */
+
             if (left.Count() != right.Count())
                 return new NotOfEqualSizeDiff(correlationId);
 

@@ -33,7 +33,7 @@ namespace Waes.Assignment.Application.Services
         /// <param name="correlationId"></param>
         /// <returns></returns>
         public async Task<DiffResponse> Get(string correlationId)
-        {
+        {            
             var diff = await _cache.GetAsync<Diff>($"diff_{correlationId}");
 
             return _mapper.Map<DiffResponse>(diff);
